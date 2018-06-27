@@ -33,7 +33,7 @@ Section
 - President should not be changed in a given room during the morning or the afternoon.
 - Secretary should not be changed in a given room during the morning or the afternoon.
 -	Length of BSc final exams is 40 minutes 
--	Length of BSc final exams is 50 minutes
+-	Length of MSc final exams is 50 minutes
 - Final exams should not start earlier than 8:00
 - Final exams should not last longer than 18:00
 
