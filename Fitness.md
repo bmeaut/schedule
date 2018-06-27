@@ -32,7 +32,9 @@ Section
 -	One person can be only at one room at one time
 -- bela
 - President should not be changed in a given room during the morning or the afternoon.
+  - bela
 - Secretary should not be changed in a given room during the morning or the afternoon.
+* Bela
 -	Length of BSc final exams is 40 minutes 
 -	Length of MSc final exams is 50 minutes
 - Final exams should not start earlier than 8:00
