@@ -54,7 +54,6 @@ Section
 - Lunch break can not be shorter than 40 minutes. The optimal length for lunch break is 60 minutes
 - Final exams should preferably start at 9:00
 - Final exams should preferably end at 17:00
-
 - There should be one CS, and one EE section during a day
 
 
