@@ -36,6 +36,7 @@ Section
 -	Length of MSc final exams is 50 minutes
 - Final exams should not start earlier than 8:00
 - Final exams should not last longer than 18:00
+-- bela
 
 ### Soft constraints
 - President should not be changed during the day
