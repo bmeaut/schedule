@@ -93,11 +93,11 @@ Section
   - Optimal workload = max(number of students in the program/ number of possible members) for all programs that the president can participate in
   - -50%</50%/30%/10%-10%/30%/50%/50%+
   - 30/20/10/0/10/20/30
-- *Examiners should have workloads based on the course preferences*
 - Final exams should preferably start at 9:00
   - see hard constraint
 - Final exams should preferably end at 17:00
   - see hard constraint
+- *Examiners should have workloads based on the course preferences*
 - *Lunch break should start between 11:30 and 13:00*
 
 
