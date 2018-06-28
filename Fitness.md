@@ -89,6 +89,8 @@ Section
   - 30/20/10/0/10/20/30
 - All examiners within a program should have similar workloads
   - optimal workload: sum(students in course  / examiners)
+  - -50%</50%/30%/10%-10%/30%/50%/50%+
+  - 30/20/10/0/10/20/30
 - All members within a program should have similar workloads
   - Optimal workload = max(number of students in the program/ number of possible members) for all programs that the president can participate in
   - -50%</50%/30%/10%-10%/30%/50%/50%+
