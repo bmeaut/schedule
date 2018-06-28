@@ -57,7 +57,7 @@ Section
 - Elnökök saját hallgatói lehetőleg az elnök szekciójában vizsgázzanak
   - 2 büntetőpont msáhol vizsgázó hallgatónként
 - Titkárok saját hallgatói lehetőleg a titkár szekciójában vizsgázzanak
--   1 büntetőpont máshol vizsgázó hallgatónként
+  - 1 büntetőpont máshol vizsgázó hallgatónként
 - There should be at most one CS, and at most one EE section during a day
   - pieces 0/1/2/3/4/5
   - points: 0/0/1/10/30/50
