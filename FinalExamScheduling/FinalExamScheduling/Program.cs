@@ -16,7 +16,7 @@ namespace FinalExamScheduling
 
         static void Main(string[] args)
         {
-            FileInfo existingFile = new FileInfo(@"D:\BME\8.félév\Kutatás\Input.xlsx");
+            FileInfo existingFile = new FileInfo("Input.xlsx");
            
             ExcelHelper eh = new ExcelHelper();
             eh.Read(existingFile, context);
@@ -27,7 +27,7 @@ namespace FinalExamScheduling
             Schedule sch = genSch.Run();
 
 
-            eh.Write(@"D:\BME\8.félév\Kutatás\Done.xlsx", sch);
+            eh.Write("Done.xlsx", sch);
 
 
             Console.WriteLine();
