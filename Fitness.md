@@ -3,26 +3,26 @@
 
 ## Terminology
 
-Student
-Instructor
-Course
-FinalExam
+Student,
+Instructor,
+Course,
+FinalExam,
 
-Context
+Context,
 Schedule
 
-Future:
-Room
+Future: Room
 
-President
-Secretary
-Member
-Examiner 1
+President,
+Secretary,
+Member,
+Examiner 1,
 Examiner 2
 
 Availability
 
-Degree level (BSc, MSc)
+Degree level: BSc, MSc
+
 Program: Computer Science (CS), Electrical Engineering (EE)
 
 Section
