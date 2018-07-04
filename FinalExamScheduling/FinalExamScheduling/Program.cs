@@ -14,6 +14,10 @@ namespace FinalExamScheduling
 
         public static Context context = new Context();
 
+
+
+
+
         static void Main(string[] args)
         {
             // módosítás

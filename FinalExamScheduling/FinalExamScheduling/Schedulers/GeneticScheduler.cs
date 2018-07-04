@@ -34,8 +34,22 @@ namespace FinalExamScheduling.Schedulers
             return instReturn;
         }
 
+        public int GetFitness(Schedule schedule)
+        {
+            return 10000
+                + GetXYScore(schedule)
+                + GetLunchBreakScore(schedule);
+        }
 
+        public int GetXYScore(Schedule schedule)
+        {
+            return -5;
+        }
 
+        public int GetLunchBreakScore(Schedule schedule)
+        {
+            return 2;
+        }
 
         public Schedule GenetareInit()
         {
