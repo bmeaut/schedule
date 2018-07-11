@@ -20,7 +20,7 @@ namespace FinalExamScheduling
 
         static void Main(string[] args)
         {
-            // módosítás
+            
             FileInfo existingFile = new FileInfo("Input.xlsx");
            
             ExcelHelper eh = new ExcelHelper();
