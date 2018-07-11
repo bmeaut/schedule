@@ -35,10 +35,10 @@ Section
   - *President/Examiner in two rooms: 1000*
   - *Member in two rooms: 100*
   - *Supervisor: 10*
-- President shall not be changed in a given room during the morning or the afternoon.
-	- 1000
-- Secretary shall not be changed in a given room during the morning or the afternoon.
-	- 1000
+- *President shall not be changed in a given room during the morning or the afternoon.*
+	- *1000*
+- *Secretary shall not be changed in a given room during the morning or the afternoon.*
+	- *1000*
 - *Final exams shall not start earlier than 8:00*
   - *8:00/10/20/30/40/50/60*
   - *140/100/60/50/40/10/0*
@@ -69,10 +69,10 @@ Section
   - *points: 2/1/0/0*
 - *President should be member of the same program as the student*
   - *1 point for each final exam*
-- President should not be changed during the day
-  - 10 points for change
-- Supervisor should be available during the final exams
-  - Supervisor is not available: 5
+- *President should not be changed during the day*
+  - *10 points for change*
+- *Supervisor should be available during the final exams*
+  - *Supervisor is not available: 5*
 - Presidents should also be examiners 
   - 1 points for every exam where an examiner is not a president (but is president on other days)
 - Instructors should be assigned to continuous exam blocks (that can include moving between rooms and different roles)
