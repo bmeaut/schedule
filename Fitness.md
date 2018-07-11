@@ -75,8 +75,8 @@ Section
   - *Supervisor is not available: 5*
 - Presidents should also be examiners 
   - 1 points for every exam where an examiner is not a president (but is president on other days)
-- Instructors should be assigned to continuous exam blocks (that can include moving between rooms and different roles)
-  - 2 points for every leak in the schedule of an instructor with the exception of the 11:30-13:40 period
+- *Instructors should be assigned to continuous exam blocks (that can include moving between rooms and different roles)*
+  - *2 points for every leak in the schedule of an instructor with the exception of the 11:30-13:40 period*
 - *Final exams in a given room, during a given day should belong to the same program*
   - *50 points for bad final exams*
 - All presidents within a program should have similar workloads
