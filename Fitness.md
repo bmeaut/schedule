@@ -73,6 +73,8 @@ Section
   - *10 points for change*
 - *Supervisor should be available during the final exams*
   - *Supervisor is not available: 5*
+- *Member should be available during the final exams*
+  - *Member is not available: 5*
 - Presidents should also be examiners 
   - 1 points for every exam where an examiner is not a president (but is president on other days)
 - *Instructors should be assigned to continuous exam blocks (that can include moving between rooms and different roles)*
