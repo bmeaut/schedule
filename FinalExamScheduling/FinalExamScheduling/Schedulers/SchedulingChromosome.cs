@@ -12,10 +12,16 @@ namespace FinalExamScheduling.Schedulers
     {
 
         private Context context;
+        public List<Instructor> presidents, secretaries, members;
+        //public int presidentNr, secretaryNr, memberNr;
 
         public SchedulingChromosome(Context cont) : base(100)
         {
             context = cont;
+            //presidentNr = GetByRoles(Role.President).Count;
+            presidents = GetByRoles(Role.President);
+            secretaries = GetByRoles(Role.Secretary);
+            members = GetByRoles(Role.Member);
 
             for (int i = 0; i < 100; i++)
             {
@@ -68,10 +74,10 @@ namespace FinalExamScheduling.Schedulers
             //fe.student = context.students[rnd.Next(0, context.students.Count - 1)];
             fe.student = context.students[geneIndex];
             fe.supervisor = fe.student.supervisor;
-            fe.president = presidents[rnd.Next(0, presidents.Count - 1)];
-            fe.secretary = secretaries[rnd.Next(0, secretaries.Count - 1)];
-            fe.member = members[rnd.Next(0, members.Count - 1)];
-            fe.examiner = fe.student.examCourse.instructors[rnd.Next(0, fe.student.examCourse.instructors.Count - 1)];
+            fe.president = presidents[rnd.Next(0, presidents.Count)];
+            fe.secretary = secretaries[rnd.Next(0, secretaries.Count)];
+            fe.member = members[rnd.Next(0, members.Count)];
+            fe.examiner = fe.student.examCourse.instructors[rnd.Next(0, fe.student.examCourse.instructors.Count)];
 
             return new Gene(fe);
         }

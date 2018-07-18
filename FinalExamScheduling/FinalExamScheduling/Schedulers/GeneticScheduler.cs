@@ -28,20 +28,90 @@ namespace FinalExamScheduling.Schedulers
             var selection = new EliteSelection();
             var crossover = new UniformCrossover(0.5f);
             var mutation = new TworsMutation();
-            var fitness = new SchedulingFitness();
+            
             var chromosome = new SchedulingChromosome(context);
-            //var population = new Population(2500, 5000, chromosome);
-            var population = new Population(100, 500, chromosome);
+
+            List<Instructor> presidents = chromosome.presidents;
+            List<Instructor> secretaries = chromosome.secretaries;
+            List<Instructor> members = chromosome.members;
+
+            var fitness = new SchedulingFitness(presidents, secretaries, members);
+
+            var population = new Population(2500, 5000, chromosome);
+            //var population = new Population(100, 500, chromosome);
             var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            ga.Termination = new GenerationNumberTermination(100);
+            //ga.Termination = new GenerationNumberTermination(250); //TODO
+            ga.Termination = new FitnessStagnationTermination(200);
 
             Console.WriteLine("GA running...");
+
+
+            ga.GenerationRan += (sender, e) =>
+            {
+
+                if (ga.GenerationsNumber % 10 == 0)
+                {
+                    var bestChromosome = ga.BestChromosome as SchedulingChromosome;
+                    var bestFitness = bestChromosome.Fitness.Value;
+                    
+
+                    Console.WriteLine("Generation {0}: {1}", ga.GenerationsNumber, bestFitness);
+                }
+                
+                
+            };
+
             ga.Start();
 
             Console.WriteLine("Best solution found has {0} fitness.", ga.BestChromosome.Fitness);
-            var bestChromosome = ga.BestChromosome as SchedulingChromosome;
-            return bestChromosome.SCH;
+            var bestChromos = ga.BestChromosome as SchedulingChromosome;
+            Schedule best = new Schedule();
+            best = bestChromos.SCH;
+
+            // scores
+            List<Student> studentBefore = new List<Student>();
+            double scoreAvailable = 0;
+            double scoreRoles = 0;
+            double scoreStudentBefore = 0;
+            double scorePresidentWorkload = 0;
+            double scoreSecretaryWorkload = 0;
+            double scoreMemberWorkload = 0;
+            double scorePresidentChange = 0;
+            double scoreSecretaryChange = 0;
+            foreach (FinalExam fi in best.schedule)
+            {
+
+                if (studentBefore.Contains(fi.student))
+                {
+                    scoreStudentBefore += 10000;
+                }
+                scoreAvailable += fitness.GetInstructorAvailableScore(fi);
+                scoreRoles += fitness.GetRolesScore(fi);
+
+                studentBefore.Add(fi.student);
+            }
+
+            scorePresidentWorkload =  fitness.GetPresidentWorkloadScore(best);
+            scoreSecretaryWorkload = fitness.GetSecretaryWorkloadScore(best);
+            scoreMemberWorkload = fitness.GetMemberWorkloadScore(best);
+
+            scorePresidentChange = fitness.GetPresidentChangeScore(best);
+            scoreSecretaryChange = fitness.GetSecretaryChangeScore(best);
+
+            Console.WriteLine("Score for instructor not available: {0}", scoreAvailable);
+            Console.WriteLine("Score for role: {0}", scoreRoles);
+            Console.WriteLine("Score for multiple students: {0}", scoreStudentBefore);
+            Console.WriteLine("Score for Presidents Workload: {0}", scorePresidentWorkload);
+            Console.WriteLine("Score for Secretary Workload: {0}", scoreSecretaryWorkload);
+            Console.WriteLine("Score for Member Workload: {0}", scoreMemberWorkload);
+            Console.WriteLine("Score for Presidents Change: {0}", scorePresidentChange);
+            Console.WriteLine("Score for Secretary Change: {0}", scoreSecretaryChange);
+
+
+            return best;
         }
+
+
 
         /*public List<Instructor> GetByRoles(Role role)
          {
@@ -55,7 +125,7 @@ namespace FinalExamScheduling.Schedulers
              }
              return instReturn;
          }*/
-         
+
 
         /*public int GetFitness(Schedule schedule)
         {

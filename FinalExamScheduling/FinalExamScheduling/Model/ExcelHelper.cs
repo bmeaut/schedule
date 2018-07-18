@@ -128,11 +128,12 @@ namespace FinalExamScheduling.Model
                 ws_scheduling.Cells[1, 4].Value = "Secretary";
                 ws_scheduling.Cells[1, 5].Value = "Member";
                 ws_scheduling.Cells[1, 6].Value = "Examiner";
+                ws_scheduling.Cells[1, 7].Value = "Course";
 
-                for (int j = 1; j <= 6; j++)
+                for (int j = 1; j <= 7; j++)
                 {
                     var cell = ws_scheduling.Cells[1, j];
-                    cell.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                    cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
                     cell.Style.Font.Bold = true;
                     cell.Style.Font.Size = 14;
                 }
@@ -147,6 +148,25 @@ namespace FinalExamScheduling.Model
                     ws_scheduling.Cells[i, 4].Value = exam.secretary.name;
                     ws_scheduling.Cells[i, 5].Value = exam.member.name;
                     ws_scheduling.Cells[i, 6].Value = exam.examiner.name;
+                    ws_scheduling.Cells[i, 7].Value = exam.student.examCourse.name;
+                    ws_scheduling.Cells[i, 8].Value = exam.id;
+
+                    if (i % 10 == 1)
+                    {
+                        for (int j = 1; j <= 7; j++)
+                        {
+                            var cell = ws_scheduling.Cells[i, j];
+                            cell.Style.Border.Bottom.Style = ExcelBorderStyle.Medium;
+                        }
+                    }
+                    if (i % 5 == 1 && i % 10 != 1)
+                    {
+                        for (int j = 1; j <= 7; j++)
+                        {
+                            var cell = ws_scheduling.Cells[i, j];
+                            cell.Style.Border.Bottom.Style = ExcelBorderStyle.Dotted;
+                        }
+                    }
 
                     i++;
                 }
