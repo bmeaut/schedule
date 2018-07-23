@@ -64,9 +64,9 @@ namespace FinalExamScheduling.Schedulers
 
         public override Gene GenerateGene(int geneIndex)
         {
-            List<Instructor> presidents = GetByRoles(Role.President);
-            List<Instructor> secretaries = GetByRoles(Role.Secretary);
-            List<Instructor> members = GetByRoles(Role.Member);
+            //List<Instructor> presidents = GetByRoles(Role.President);
+            //List<Instructor> secretaries = GetByRoles(Role.Secretary);
+            //List<Instructor> members = GetByRoles(Role.Member);
 
             
             FinalExam fe = new FinalExam();

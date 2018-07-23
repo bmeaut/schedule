@@ -37,15 +37,14 @@ namespace FinalExamScheduling.Schedulers
 
             var fitness = new SchedulingFitness(presidents, secretaries, members);
 
-            var population = new Population(2500, 5000, chromosome);
-            //var population = new Population(100, 500, chromosome);
+            var population = new Population(Parameters.minPopulationSize, Parameters.maxPopulationSize, chromosome);
             var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
             //ga.Termination = new GenerationNumberTermination(250); //TODO
-            ga.Termination = new FitnessStagnationTermination(200);
+            ga.Termination = new FitnessStagnationTermination(Parameters.stagnationTermination);
 
             Console.WriteLine("GA running...");
 
-
+            
             ga.GenerationRan += (sender, e) =>
             {
 
@@ -53,12 +52,17 @@ namespace FinalExamScheduling.Schedulers
                 {
                     var bestChromosome = ga.BestChromosome as SchedulingChromosome;
                     var bestFitness = bestChromosome.Fitness.Value;
-                    
 
+                    ExcelHelper.generationFitness.Add(ga.GenerationsNumber, bestFitness);
                     Console.WriteLine("Generation {0}: {1}", ga.GenerationsNumber, bestFitness);
                 }
-                
-                
+                /*if (ga.GenerationsNumber % 50 == 0)
+                {
+                    eh.Write("Gen_"+ga.GenerationsNumber+".xlsx", (ga.BestChromosome as SchedulingChromosome).SCH);
+                }*/
+
+
+
             };
 
             ga.Start();
@@ -83,7 +87,7 @@ namespace FinalExamScheduling.Schedulers
 
                 if (studentBefore.Contains(fi.student))
                 {
-                    scoreStudentBefore += 10000;
+                    scoreStudentBefore += Scores.studentDuplicated;
                 }
                 scoreAvailable += fitness.GetInstructorAvailableScore(fi);
                 scoreRoles += fitness.GetRolesScore(fi);
@@ -113,36 +117,7 @@ namespace FinalExamScheduling.Schedulers
 
 
 
-        /*public List<Instructor> GetByRoles(Role role)
-         {
-             List<Instructor> instReturn = new List<Instructor>();
-             foreach (Instructor inst in context.instructors)
-             {
-                 if (inst.roles.HasFlag(role))
-                 {
-                     instReturn.Add(inst);
-                 }
-             }
-             return instReturn;
-         }*/
 
-
-        /*public int GetFitness(Schedule schedule)
-        {
-            return 10000
-                + GetXYScore(schedule)
-                + GetLunchBreakScore(schedule);
-        }
-
-        public int GetXYScore(Schedule schedule)
-        {
-            return -5;
-        }
-
-        public int GetLunchBreakScore(Schedule schedule)
-        {   
-            return 2;
-        }*/
 
         /*public Schedule GenetareInit()
         {

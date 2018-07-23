@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using FinalExamScheduling.Schedulers;
 using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
 using OfficeOpenXml.Style;
 
 namespace FinalExamScheduling.Model
@@ -12,6 +15,9 @@ namespace FinalExamScheduling.Model
 
     public class ExcelHelper
     {
+
+        static public Dictionary<int, double> generationFitness = new Dictionary<int, double>();
+
         public void Read(FileInfo existingFile, Context context)
         {
             
@@ -120,6 +126,7 @@ namespace FinalExamScheduling.Model
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
                 ExcelWorksheet ws_scheduling = xlPackage_new.Workbook.Worksheets.Add("Scheduling");
+                ExcelWorksheet ws_info = xlPackage_new.Workbook.Worksheets.Add("Information");
 
                 ws_scheduling.Cells[1, 1].Value = "Student";
                 
@@ -173,6 +180,87 @@ namespace FinalExamScheduling.Model
 
                 ws_scheduling.Cells.AutoFitColumns();
 
+
+                if (Parameters.getInfo)
+                {
+                    ws_info.Cells[1, 1].Value = "Generation number";
+                    ws_info.Cells[1, 2].Value = "Actual best fitness";
+                    ws_info.Cells[1, 4].Value = "Best fitness";
+
+                    int rowGen = 2;
+                    foreach (var element in generationFitness)
+                    {
+                        ws_info.Cells[rowGen, 1].Value = element.Key;
+                        ws_info.Cells[rowGen, 2].Value = element.Value;
+
+                        rowGen++;
+                    }
+
+                    ws_info.Cells[1,5].Value = generationFitness.Values.Last();
+
+                    ws_info.Cells[2, 4].Value = "Min size of population";
+                    ws_info.Cells[3, 4].Value = "Max size of population";
+                    ws_info.Cells[4, 4].Value = "Stagnation termination";
+
+                    ws_info.Cells[2, 5].Value = Parameters.minPopulationSize;
+                    ws_info.Cells[3, 5].Value = Parameters.maxPopulationSize;
+                    ws_info.Cells[4, 5].Value = Parameters.stagnationTermination;
+
+                    ws_info.Cells[6, 4].Value = "Scores";
+                    int row = 7;
+                    foreach (FieldInfo info in typeof(Scores).GetFields().Where(x => x.IsStatic && x.IsLiteral))
+                    {
+                        ws_info.Cells[row, 4].Value = info.Name;
+                        ws_info.Cells[row, 5].Value = info.GetValue(info);
+                        row++;
+                    }
+
+                    rowGen--;
+                    ExcelLineChart lineChart = ws_info.Drawings.AddChart("lineChart", eChartType.Line) as ExcelLineChart;
+                    lineChart.Title.Text = "Fitness alakulása a generációk előrehaladtával";
+
+                    //create the ranges for the chart
+                    var rangeLabel = ws_info.Cells["A2:A"+ rowGen];
+                    var range1 = ws_info.Cells["B2:B"+ rowGen];
+                   
+
+                    //add the ranges to the chart
+                    lineChart.Series.Add(range1, rangeLabel);
+                    //lineChart.Series.Add(range2, rangeLabel);
+
+                    //set the names of the legend
+                    //lineChart.Series[0].Header.
+                    lineChart.Series[0].Header = ws_info.Cells["A1"].Text;
+
+                    
+                    //position of the legend
+                    lineChart.Legend.Remove();
+
+                    int width = rowGen * 20;
+
+                    //size of the chart
+                    lineChart.SetSize(width, 500);
+
+                    //add the chart at cell B6
+                    lineChart.SetPosition(1, 0, 7, 0);
+
+
+
+
+
+
+
+
+
+
+
+                }
+
+
+
+
+                ws_info.Cells.AutoFitColumns();
+
                 if (File.Exists(p_strPath))
                     File.Delete(p_strPath);
 
@@ -181,9 +269,26 @@ namespace FinalExamScheduling.Model
                 objFileStrm.Close();
 
                 File.WriteAllBytes(p_strPath, xlPackage_new.GetAsByteArray());
-                
+
+
+
+
+
+
             }
         }
 
+
+        /*private List<FieldInfo> GetConstants(Type type)
+        {
+            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Public |
+                 BindingFlags.Static | BindingFlags.FlattenHierarchy);
+
+            return fieldInfos.Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToList();
+        }
+        */
     }
+
+
+
 }

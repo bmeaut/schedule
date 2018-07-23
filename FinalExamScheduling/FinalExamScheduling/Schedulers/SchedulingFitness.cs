@@ -14,6 +14,7 @@ namespace FinalExamScheduling.Schedulers
         //private int president;
         private List<Instructor> presidents, secretaries, members;
 
+
         public SchedulingFitness(List<Instructor> allPresident, List<Instructor> allSecretary, List<Instructor> allMember)
         {
             presidents = allPresident;
@@ -26,26 +27,26 @@ namespace FinalExamScheduling.Schedulers
             double score = 0;
             if (fi.supervisor.availability[fi.id] == false)
             {
-                    score += 5;               
+                score += Scores.supervisorNotAvailable;      
             }
             if (fi.president.availability[fi.id] == false)
             {
-                    score += 1000;
+                score += Scores.presidentNotAvailable;
             }
             if (fi.secretary.availability[fi.id] == false)
             {
-                    score += 1000;
+                score += Scores.secretaryNotAvailable;
             }
             if (fi.member.availability[fi.id] == false)
             {
-                    score += 5;
+                score += Scores.memberNotAvailable;
             }
             if (fi.examiner.availability[fi.id] == false)
             {
-                    score += 1000;
+                score += Scores.examinerNotAvailable;
             }
 
-            
+           
             return score;
         }
 
@@ -54,15 +55,15 @@ namespace FinalExamScheduling.Schedulers
             double score = 0;
             if (fi.supervisor.roles.HasFlag(Role.President) && fi.supervisor != fi.president)
             {
-                score += 2;
+                score += Scores.presidentSelfStudent;
             }
             if (fi.supervisor.roles.HasFlag(Role.Secretary) && fi.supervisor != fi.secretary)
             {
-                score += 1;
+                score += Scores.secretarySelfStudent;
             }
             if (fi.examiner.roles.HasFlag(Role.President) && fi.examiner != fi.president)
             {
-                score += 1;
+                score += Scores.examinerNotPresident;
             }
         
             return score;
@@ -76,19 +77,19 @@ namespace FinalExamScheduling.Schedulers
             {
                 if(sch.schedule[i].president != sch.schedule[i + 1].president)
                 {
-                    score += 1000;
+                    score += Scores.presidentChange;
                 }
                 if (sch.schedule[i+1].president != sch.schedule[i + 2].president)
                 {
-                    score += 1000;
+                    score += Scores.presidentChange;
                 }
                 if (sch.schedule[i+2].president != sch.schedule[i + 3].president)
                 {
-                    score += 1000;
+                    score += Scores.presidentChange;
                 }
                 if (sch.schedule[i+3].president != sch.schedule[i + 4].president)
                 {
-                    score += 1000;
+                    score += Scores.presidentChange;
                 }
 
             }
@@ -104,19 +105,19 @@ namespace FinalExamScheduling.Schedulers
             {
                 if (sch.schedule[i].secretary != sch.schedule[i + 1].secretary)
                 {
-                    score += 1000;
+                    score += Scores.secretaryChange;
                 }
                 if (sch.schedule[i + 1].secretary != sch.schedule[i + 2].secretary)
                 {
-                    score += 1000;
+                    score += Scores.secretaryChange;
                 }
                 if (sch.schedule[i + 2].secretary != sch.schedule[i + 3].secretary)
                 {
-                    score += 1000;
+                    score += Scores.secretaryChange;
                 }
                 if (sch.schedule[i + 3].secretary != sch.schedule[i + 4].secretary)
                 {
-                    score += 1000;
+                    score += Scores.secretaryChange;
                 }
 
             }
@@ -136,34 +137,34 @@ namespace FinalExamScheduling.Schedulers
 
             GetPresidentWorkload(schedule, presidentWorkload);
 
-            int optimalWorkload = 100 / presidents.Count;
+            double optimalWorkload = 100 / presidents.Count;
 
             foreach (Instructor pres in presidentWorkload.Keys)
             {
                 if (presidentWorkload[pres] < optimalWorkload * 0.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (presidentWorkload[pres] < optimalWorkload * 0.3 && presidentWorkload[pres] > optimalWorkload * 0.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (presidentWorkload[pres] < optimalWorkload * 0.1 && presidentWorkload[pres] > optimalWorkload * 0.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
 
                 if (presidentWorkload[pres] > optimalWorkload * 1.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (presidentWorkload[pres] > optimalWorkload * 1.3 && presidentWorkload[pres] < optimalWorkload * 1.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (presidentWorkload[pres] > optimalWorkload * 1.1 && presidentWorkload[pres] < optimalWorkload * 1.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
             }
             
@@ -182,34 +183,34 @@ namespace FinalExamScheduling.Schedulers
 
             GetSecretaryWorkload(schedule, secretaryWorkload);
 
-            int optimalWorkload = 100 / secretaries.Count;
+            double optimalWorkload = 100 / secretaries.Count;
 
             foreach (Instructor secr in secretaryWorkload.Keys)
             {
                 if (secretaryWorkload[secr] < optimalWorkload * 0.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (secretaryWorkload[secr] < optimalWorkload * 0.3 && secretaryWorkload[secr] > optimalWorkload * 0.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (secretaryWorkload[secr] < optimalWorkload * 0.1 && secretaryWorkload[secr] > optimalWorkload * 0.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
 
                 if (secretaryWorkload[secr] > optimalWorkload * 1.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (secretaryWorkload[secr] > optimalWorkload * 1.3 && secretaryWorkload[secr] < optimalWorkload * 1.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (secretaryWorkload[secr] > optimalWorkload * 1.1 && secretaryWorkload[secr] < optimalWorkload * 1.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
             }
 
@@ -234,28 +235,28 @@ namespace FinalExamScheduling.Schedulers
             {
                 if (memberWorkload[memb] < optimalWorkload * 0.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (memberWorkload[memb] < optimalWorkload * 0.3 && memberWorkload[memb] > optimalWorkload * 0.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (memberWorkload[memb] < optimalWorkload * 0.1 && memberWorkload[memb] > optimalWorkload * 0.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
 
                 if (memberWorkload[memb] > optimalWorkload * 1.5)
                 {
-                    score += 300;
+                    score += Scores.workloadWorst;
                 }
                 if (memberWorkload[memb] > optimalWorkload * 1.3 && memberWorkload[memb] < optimalWorkload * 1.5)
                 {
-                    score += 200;
+                    score += Scores.workloadWorse;
                 }
                 if (memberWorkload[memb] > optimalWorkload * 1.1 && memberWorkload[memb] < optimalWorkload * 1.3)
                 {
-                    score += 100;
+                    score += Scores.workloadBad;
                 }
             }
 
@@ -331,7 +332,7 @@ namespace FinalExamScheduling.Schedulers
                 
                 if (studentBefore.Contains(fi.student))
                 {
-                    score += 10000;
+                    score += Scores.studentDuplicated;
                 }
                 score += GetInstructorAvailableScore(fi)
                         + GetRolesScore(fi);
@@ -347,8 +348,6 @@ namespace FinalExamScheduling.Schedulers
 
             return 10000 - score;
 
-            //return 1 / (
-             //       GetInstructorAvailableScore(sch));
         }
 
     }

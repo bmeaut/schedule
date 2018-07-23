@@ -32,7 +32,7 @@ namespace FinalExamScheduling
             Schedule sch = genSch.Run();
 
 
-            eh.Write("Done.xlsx", sch);
+            eh.Write("Results/Done_"+ DateTime.Now.ToString("yyyyMMdd_HHmm") +".xlsx", sch);
 
 
             Console.WriteLine();

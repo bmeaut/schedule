@@ -79,8 +79,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedulers\GeneticScheduler.cs" />
+    <Compile Include="Schedulers\Parameters.cs" />
     <Compile Include="Schedulers\SchedulingChromosome.cs" />
     <Compile Include="Schedulers\SchedulingFitness.cs" />
+    <Compile Include="Schedulers\Scores.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
