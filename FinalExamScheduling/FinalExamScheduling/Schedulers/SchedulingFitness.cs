@@ -170,7 +170,7 @@ namespace FinalExamScheduling.Schedulers
 
         public double GetSecretaryChangeScore(Schedule sch)
         {
-            double score = 0;
+            double score = 0; 
 
             for (int i = 0; i < sch.FinalExams.Count; i += 5)
             {
