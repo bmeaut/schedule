@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace FinalExamScheduling.Model
 {
     [Flags]
-    public enum Role
+    public enum Roles
     {
         Unknown = 0,
         President = 1,
@@ -15,13 +15,12 @@ namespace FinalExamScheduling.Model
         Secretary = 4
     }
 
-    public class Instructor
+    public class Instructor: Entity
     {
-        public string name;
-        public int id;
+        public string Name;
 
-        public List<bool> availability = new List<bool>();
-        public Role roles;
+        public List<bool> Availability = new List<bool>();
+        public Roles Roles;
      
     }
 }

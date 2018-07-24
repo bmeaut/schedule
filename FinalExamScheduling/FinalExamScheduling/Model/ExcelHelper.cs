@@ -13,14 +13,13 @@ using OfficeOpenXml.Style;
 namespace FinalExamScheduling.Model
 {
 
-    public class ExcelHelper
+    public static class ExcelHelper
     {
 
-        static public Dictionary<int, double> generationFitness = new Dictionary<int, double>();
 
-        public void Read(FileInfo existingFile, Context context)
+        public static Context Read(FileInfo existingFile)
         {
-            
+            var context = new Context();
             using (ExcelPackage xlPackage = new ExcelPackage(existingFile))
             {
                 Console.WriteLine("Reading of Excel was succesful");
@@ -29,6 +28,11 @@ namespace FinalExamScheduling.Model
                 ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets[2];
                 ExcelWorksheet ws_courses = xlPackage.Workbook.Worksheets[3];
 
+                List<Instructor> instructors = new List<Instructor>();
+                List<Student> students = new List<Student>();
+                List<Course> courses = new List<Course>();
+
+
                 var endStud = ws_students.Dimension.End;
                 var endInst = ws_instructors.Dimension.End;
                 var endCour = ws_courses.Dimension.End;
@@ -36,21 +40,21 @@ namespace FinalExamScheduling.Model
                 //Instructor
                 for (int iRow = 3; iRow <= endInst.Row; iRow++)
                 {
-                    Role tempRoles = new Role();
+                    Roles tempRoles = new Roles();
 
                     if (ws_instructors.Cells[iRow, 2].Text == "x")
                     {
-                        tempRoles |= Role.President;
+                        tempRoles |= Roles.President;
                     }
 
                     if (ws_instructors.Cells[iRow, 3].Text == "x")
                     {
-                        tempRoles |= Role.Member;
+                        tempRoles |= Roles.Member;
                     }
 
                     if (ws_instructors.Cells[iRow, 4].Text == "x")
                     {
-                        tempRoles |= Role.Secretary;
+                        tempRoles |= Roles.Secretary;
                     }
 
                     List<bool> tempAvailability = new List<bool>();
@@ -66,11 +70,11 @@ namespace FinalExamScheduling.Model
                         }
                     }
 
-                    context.instructors.Add(new Instructor
+                    instructors.Add(new Instructor
                     {
-                        name = ws_instructors.Cells[iRow, 1].Text,
-                        availability = tempAvailability,
-                        roles = tempRoles
+                        Name = ws_instructors.Cells[iRow, 1].Text,
+                        Availability = tempAvailability,
+                        Roles = tempRoles
                     });
 
                     //Console.WriteLine(context.instructors[iRow - 3].name + "\t " +  "\t " + context.instructors[iRow - 3].roles);
@@ -85,15 +89,15 @@ namespace FinalExamScheduling.Model
                     int iRow = 3;
                     while (ws_courses.Cells[iRow, iCol].Value != null)
                     {
-                        tempInstructors.Add(context.instructors.Find(item => item.name.Equals(ws_courses.Cells[iRow, iCol].Text)));
+                        tempInstructors.Add(instructors.Find(item => item.Name.Equals(ws_courses.Cells[iRow, iCol].Text)));
 
                         iRow++;
                     }
-                    context.courses.Add(new Course
+                    courses.Add(new Course
                     {
-                        name = ws_courses.Cells[2, iCol].Text,
-                        courseCode = ws_courses.Cells[1, iCol].Text,
-                        instructors = tempInstructors
+                        Name = ws_courses.Cells[2, iCol].Text,
+                        CourseCode = ws_courses.Cells[1, iCol].Text,
+                        Instructors = tempInstructors
                     });
 
                     //Console.WriteLine(context.courses[iCol - 1].name + "\t " + context.courses[iCol - 1].courseCode + "\t ");
@@ -102,12 +106,12 @@ namespace FinalExamScheduling.Model
                 //Student
                 for (int iRow = 2; iRow <= endStud.Row; iRow++)
                 {
-                    context.students.Add(new Student
+                    students.Add(new Student
                     {
-                        name = ws_students.Cells[iRow, 1].Text,
-                        neptun = ws_students.Cells[iRow, 2].Text,
-                        supervisor = context.instructors.Find(item => item.name.Equals(ws_students.Cells[iRow, 3].Text)),
-                        examCourse = context.courses.Find(item => item.name.Equals(ws_students.Cells[iRow, 4].Text)),
+                        Name = ws_students.Cells[iRow, 1].Text,
+                        Neptun = ws_students.Cells[iRow, 2].Text,
+                        Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 3].Text)),
+                        ExamCourse = courses.Find(item => item.Name.Equals(ws_students.Cells[iRow, 4].Text)),
 
                     });
 
@@ -115,13 +119,19 @@ namespace FinalExamScheduling.Model
                     //    + context.students[iRow - 2].supervisor.name + "\t " + context.students[iRow - 2].examCourse.name);
                 }
 
+                context.Students = students.ToArray();
+                context.Instructors = instructors.ToArray();
+                context.Courses = courses.ToArray();
             }
+
+
+            return context;
 
             //Console.WriteLine("Cica");
 
         }
 
-        public void Write(string p_strPath, Schedule sch, string elapsed)
+        public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
@@ -147,16 +157,16 @@ namespace FinalExamScheduling.Model
   
 
                 int i = 2;
-                foreach (FinalExam exam in sch.schedule)
+                foreach (FinalExam exam in sch.FinalExams)
                 {
-                    ws_scheduling.Cells[i, 1].Value = exam.student.name;
-                    ws_scheduling.Cells[i, 2].Value = exam.supervisor.name;
-                    ws_scheduling.Cells[i, 3].Value = exam.president.name;
-                    ws_scheduling.Cells[i, 4].Value = exam.secretary.name;
-                    ws_scheduling.Cells[i, 5].Value = exam.member.name;
-                    ws_scheduling.Cells[i, 6].Value = exam.examiner.name;
-                    ws_scheduling.Cells[i, 7].Value = exam.student.examCourse.name;
-                    ws_scheduling.Cells[i, 8].Value = exam.id;
+                    ws_scheduling.Cells[i, 1].Value = exam.Student.Name;
+                    ws_scheduling.Cells[i, 2].Value = exam.Supervisor.Name;
+                    ws_scheduling.Cells[i, 3].Value = exam.President.Name;
+                    ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
+                    ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
+                    ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse.Name;
+                    ws_scheduling.Cells[i, 8].Value = exam.Id;
 
                     if (i % 10 == 1)
                     {
@@ -181,7 +191,7 @@ namespace FinalExamScheduling.Model
                 ws_scheduling.Cells.AutoFitColumns();
 
 
-                if (Parameters.getInfo)
+                if (Parameters.GetInfo)
                 {
                     ws_info.Cells[1, 1].Value = "Generation number";
                     ws_info.Cells[1, 2].Value = "Actual best fitness";
@@ -202,9 +212,9 @@ namespace FinalExamScheduling.Model
                     ws_info.Cells[3, 4].Value = "Max size of population";
                     ws_info.Cells[4, 4].Value = "Stagnation termination";
 
-                    ws_info.Cells[2, 5].Value = Parameters.minPopulationSize;
-                    ws_info.Cells[3, 5].Value = Parameters.maxPopulationSize;
-                    ws_info.Cells[4, 5].Value = Parameters.stagnationTermination;
+                    ws_info.Cells[2, 5].Value = Parameters.MinPopulationSize;
+                    ws_info.Cells[3, 5].Value = Parameters.MaxPopulationSize;
+                    ws_info.Cells[4, 5].Value = Parameters.StagnationTermination;
 
                     ws_info.Cells[6, 4].Value = "Scores";
                     int row = 7;

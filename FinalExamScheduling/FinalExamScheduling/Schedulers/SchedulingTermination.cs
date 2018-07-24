@@ -1,0 +1,22 @@
+﻿using GeneticSharp.Domain;
+using GeneticSharp.Domain.Terminations;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FinalExamScheduling.Schedulers
+{
+    class SchedulingTermination : ITermination
+    {
+        ITermination fitnessStagnation = new FitnessStagnationTermination(Parameters.StagnationTermination);
+        public bool ShouldTerminate { get; set; } = false;
+        public bool HasReached(IGeneticAlgorithm geneticAlgorithm)
+        {
+            if (ShouldTerminate) return true;
+
+            return fitnessStagnation.HasReached(geneticAlgorithm);
+        }
+    }
+}

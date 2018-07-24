@@ -2,6 +2,7 @@
 using FinalExamScheduling.Schedulers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,37 +12,44 @@ namespace FinalExamScheduling
 {
     public class Program
     {
-
-        public static Context context = new Context();
-
-
-
-
+        static GeneticScheduler scheduler;
 
         static void Main(string[] args)
         {
-            var watch = System.Diagnostics.Stopwatch.StartNew();
+            var watch = Stopwatch.StartNew();
 
             FileInfo existingFile = new FileInfo("Input.xlsx");
-           
-            ExcelHelper eh = new ExcelHelper();
-            eh.Read(existingFile, context);
 
-            context.addID();
+            var context = ExcelHelper.Read(existingFile);
 
-            GeneticScheduler genSch = new GeneticScheduler(context);
-            Schedule sch = genSch.Run();
+            context.Init();
 
-            watch.Stop();
-            string elapsed = watch.Elapsed.ToString();
+            scheduler = new GeneticScheduler(context);
+            var task = scheduler.RunAsync().ContinueWith(scheduleTask =>
+            {
+                Console.WriteLine(scheduleTask.Result.ToString(scheduler.Fitness));
 
-            eh.Write(@"..\..\Results\Done_"+ DateTime.Now.ToString("yyyyMMdd_HHmm") +".xlsx", sch, elapsed);
+                string elapsed = watch.Elapsed.ToString();
 
-            
+                ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness);
 
-            Console.WriteLine();
+            }
+            );
 
+            while (true)
+            {
+                if (task.IsCompleted)
+                    break;
+                var ch = Console.ReadKey();
+                if (ch.Key == ConsoleKey.A)
+                {
+                    scheduler.Cancel();
+                }
+                Console.WriteLine("Press A to Abort");
+            }
         }
+
+
 
     }
 }

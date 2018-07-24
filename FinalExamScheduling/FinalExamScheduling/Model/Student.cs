@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.Model
 {
-    public class Student
+    public class Student: Entity
     {
-        public int id;
-
-        public string name;
-        public string neptun;
-        public Instructor supervisor;
-        public Course examCourse;
-        public int timeSlot;
+        public string Name;
+        public string Neptun;
+        public Instructor Supervisor;
+        public Course ExamCourse;
+        public int TimeSlot;
     }
 }

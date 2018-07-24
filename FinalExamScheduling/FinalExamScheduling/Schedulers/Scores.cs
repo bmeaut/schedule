@@ -8,26 +8,26 @@ namespace FinalExamScheduling.Schedulers
 {
     static class Scores
     {
-        public const double studentDuplicated = 10000;
+        public const double StudentDuplicated = 10000;
 
-        public const double presidentNotAvailable = 1000;
-        public const double secretaryNotAvailable = 1000;
-        public const double examinerNotAvailable = 1000;
+        public const double PresidentNotAvailable = 1000;
+        public const double SecretaryNotAvailable = 1000;
+        public const double ExaminerNotAvailable = 1000;
 
-        public const double presidentChange = 1000;
-        public const double secretaryChange = 1000;
+        public const double PresidentChange = 1000;
+        public const double SecretaryChange = 1000;
 
-        public const double workloadWorst = 300;
-        public const double workloadWorse = 200;
-        public const double workloadBad = 100;
+        public const double WorkloadWorst = 300;
+        public const double WorkloadWorse = 200;
+        public const double WorkloadBad = 100;
 
-        public const double memberNotAvailable = 5;
-        public const double supervisorNotAvailable = 5;
+        public const double MemberNotAvailable = 5;
+        public const double SupervisorNotAvailable = 5;
 
 
-        public const double presidentSelfStudent = 2;
-        public const double secretarySelfStudent = 1;
-        public const double examinerNotPresident = 1;
+        public const double PresidentSelfStudent = 2;
+        public const double SecretarySelfStudent = 1;
+        public const double ExaminerNotPresident = 1;
 
 
     }

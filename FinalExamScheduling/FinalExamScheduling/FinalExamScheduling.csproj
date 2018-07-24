@@ -73,6 +73,7 @@
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
     <Compile Include="Model\FinalExam.cs" />
+    <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\Instructor.cs" />
     <Compile Include="Model\Schedule.cs" />
     <Compile Include="Model\Student.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Schedulers\SchedulingChromosome.cs" />
     <Compile Include="Schedulers\SchedulingFitness.cs" />
     <Compile Include="Schedulers\SchedulingMutation.cs" />
+    <Compile Include="Schedulers\SchedulingTermination.cs" />
     <Compile Include="Schedulers\Scores.cs" />
   </ItemGroup>
   <ItemGroup>

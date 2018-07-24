@@ -8,11 +8,11 @@ namespace FinalExamScheduling.Schedulers
 {
     public class Parameters
     {
-        public const int minPopulationSize = 25000;
-        public const int maxPopulationSize = 50000;
+        public const int MinPopulationSize = 25000;
+        public const int MaxPopulationSize = 50000;
 
-        public const int stagnationTermination = 20;
+        public const int StagnationTermination = 20;
 
-        public const bool getInfo = true;
+        public const bool GetInfo = true;
     }
 }

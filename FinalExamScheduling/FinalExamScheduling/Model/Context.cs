@@ -8,41 +8,35 @@ namespace FinalExamScheduling.Model
 {
     public class Context
     {
-        public List<Student> students = new List<Student>();
-        public List<Instructor> instructors = new List<Instructor>();
-        public List<Course> courses = new List<Course>();
+        public Student[] Students;
+        public Instructor[] Instructors;
+        public Course[] Courses;
 
-        public void addID()
+        public Instructor[] Presidents;
+        public Instructor[] Secretaries;
+        public Instructor[] Members;
+
+        public Random Rnd = new Random();
+
+
+        public void Init()
         {
-            addStudentID();
-            addInstructorID();
-            addCourseID();
+            FillIDs(Students);
+            FillIDs(Instructors);
+            FillIDs(Courses);
+            Presidents = Instructors.Where(i => i.Roles.HasFlag(Roles.President)).ToArray();
+            Secretaries = Instructors.Where(i => i.Roles.HasFlag(Roles.Secretary)).ToArray();
+            Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
+
+
         }
 
-        public void addStudentID()
+        private void FillIDs(IEnumerable<Entity> entities)
         {
             int id = 0;
-            foreach (Student s in students)
+            foreach (Student s in Students)
             {
-                s.id = id;
-                id++;
-            }
-        }
-        public void addInstructorID()
-        {
-            int id = 0;
-            foreach (Instructor i in instructors)
-            {
-                i.id = id;
-                id++;
-            }
-        }
-        public void addCourseID()
-        {
-            int id = 0;
-            foreach (Course c in courses)
-            {
-                c.id = id;
+                s.Id = id;
                 id++;
             }
         }

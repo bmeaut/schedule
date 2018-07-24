@@ -10,19 +10,14 @@ namespace FinalExamScheduling.Schedulers
 {
     public class SchedulingChromosome : ChromosomeBase
     {
-
-        private Context context;
-        public List<Instructor> presidents, secretaries, members;
+        private Context ctx;
         //public int presidentNr, secretaryNr, memberNr;
 
-        public SchedulingChromosome(Context cont) : base(100)
-        {
-            context = cont;
-            //presidentNr = GetByRoles(Role.President).Count;
-            presidents = GetByRoles(Role.President);
-            secretaries = GetByRoles(Role.Secretary);
-            members = GetByRoles(Role.Member);
+        
 
+        public SchedulingChromosome(Context context) : base(100)
+        {
+            this.ctx = context;
             for (int i = 0; i < 100; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
@@ -30,54 +25,35 @@ namespace FinalExamScheduling.Schedulers
             
         }
 
-        public Schedule SCH
+        public Schedule Schedule
         {
             get {
-                Schedule sch = new Schedule();
+                Schedule schedule = new Schedule();
                 for (int i = 0; i < 100; i++)
                 {
-                    sch.schedule.Add((FinalExam)GetGene(i).Value);
+                    schedule.FinalExams.Add((FinalExam)GetGene(i).Value);
                 }
-                return sch;
+                return schedule;
             }
         }
 
         public override IChromosome CreateNew()
         {
-            return new SchedulingChromosome(context);
+            return new SchedulingChromosome(ctx);
         }
 
-        public List<Instructor> GetByRoles(Role role)
-        {
-            List<Instructor> instReturn = new List<Instructor>();
-            foreach (Instructor inst in context.instructors)
-            {
-                if (inst.roles.HasFlag(role))
-                {
-                    instReturn.Add(inst);
-                }
-            }
-            return instReturn;
-        }
-
-        Random rnd = new Random();
 
         public override Gene GenerateGene(int geneIndex)
         {
-            //List<Instructor> presidents = GetByRoles(Role.President);
-            //List<Instructor> secretaries = GetByRoles(Role.Secretary);
-            //List<Instructor> members = GetByRoles(Role.Member);
-
-            
             FinalExam fe = new FinalExam();
-            fe.id = geneIndex;
+            fe.Id = geneIndex;
             //fe.student = context.students[rnd.Next(0, context.students.Count - 1)];
-            fe.student = context.students[geneIndex];
-            fe.supervisor = fe.student.supervisor;
-            fe.president = presidents[rnd.Next(0, presidents.Count)];
-            fe.secretary = secretaries[rnd.Next(0, secretaries.Count)];
-            fe.member = members[rnd.Next(0, members.Count)];
-            fe.examiner = fe.student.examCourse.instructors[rnd.Next(0, fe.student.examCourse.instructors.Count)];
+            fe.Student = ctx.Students[geneIndex];
+            fe.Supervisor = fe.Student.Supervisor;
+            fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
+            fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+            fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
+            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Count)];
 
             return new Gene(fe);
         }

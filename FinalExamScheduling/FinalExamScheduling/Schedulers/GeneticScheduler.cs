@@ -5,6 +5,7 @@ using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
+using GeneticSharp.Infrastructure.Framework.Threading;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,140 +16,67 @@ namespace FinalExamScheduling.Schedulers
 {
     public class GeneticScheduler
     {
-        private Context context;
+        private readonly Context ctx;
+        public readonly Dictionary<int, double> GenerationFitness = new Dictionary<int, double>();
+        private GeneticAlgorithm geneticAlgorithm;
+        private SchedulingTermination termination;
+        
 
-        public GeneticScheduler(Context cont)
+        public SchedulingFitness Fitness { get; private set; }
+
+
+        public GeneticScheduler(Context context)
         {
-            context = cont;
+            this.ctx = context;
+
         }
 
-        public Schedule Run()
+        public Task<Schedule> RunAsync()
         {
-            
             var selection = new EliteSelection();
             var crossover = new UniformCrossover(0.5f);
             var mutation = new TworsMutation();
             //var mutation = new UniformMutation();
-            
-            var chromosome = new SchedulingChromosome(context);
 
-            List<Instructor> presidents = chromosome.presidents;
-            List<Instructor> secretaries = chromosome.secretaries;
-            List<Instructor> members = chromosome.members;
+            var chromosome = new SchedulingChromosome(ctx);
+            Fitness = new SchedulingFitness(ctx);
 
-            var fitness = new SchedulingFitness(presidents, secretaries, members);
 
-            var population = new Population(Parameters.minPopulationSize, Parameters.maxPopulationSize, chromosome);
-            var ga = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
-            //ga.Termination = new GenerationNumberTermination(250); //TODO
-            ga.Termination = new FitnessStagnationTermination(Parameters.stagnationTermination);
+            var population = new Population(Parameters.MinPopulationSize, Parameters.MaxPopulationSize, chromosome);
 
-            Console.WriteLine("GA running...");
+            termination = new SchedulingTermination();
 
-            
-            ga.GenerationRan += (sender, e) =>
-            {
+            geneticAlgorithm = new GeneticAlgorithm(population, Fitness, selection, crossover, mutation);
+            geneticAlgorithm.Termination = termination;
+            geneticAlgorithm.GenerationRan += GenerationRan;
 
-                if (ga.GenerationsNumber % 10 == 0)
+
+            return Task.Run<Schedule>(
+                () =>
                 {
-                    var bestChromosome = ga.BestChromosome as SchedulingChromosome;
-                    var bestFitness = bestChromosome.Fitness.Value;
+                    Console.WriteLine("GA running...");
+                    geneticAlgorithm.Start();
+                    Console.WriteLine("Best solution found has {0} fitness.", geneticAlgorithm.BestChromosome.Fitness);
+                    var bestChromosome = geneticAlgorithm.BestChromosome as SchedulingChromosome;
+                    var best = bestChromosome.Schedule;
+                    return best;
 
-                    ExcelHelper.generationFitness.Add(ga.GenerationsNumber, bestFitness);
-                    Console.WriteLine("Generation {0}: {1}", ga.GenerationsNumber, bestFitness);
-                }
-                /*if (ga.GenerationsNumber % 50 == 0)
-                {
-                    eh.Write("Gen_"+ga.GenerationsNumber+".xlsx", (ga.BestChromosome as SchedulingChromosome).SCH);
-                }*/
-
-
-
-            };
-
-            ga.Start();
-
-            Console.WriteLine("Best solution found has {0} fitness.", ga.BestChromosome.Fitness);
-            var bestChromos = ga.BestChromosome as SchedulingChromosome;
-            Schedule best = new Schedule();
-            best = bestChromos.SCH;
-
-            // scores
-            List<Student> studentBefore = new List<Student>();
-            double scoreAvailable = 0;
-            double scoreRoles = 0;
-            double scoreStudentBefore = 0;
-            double scorePresidentWorkload = 0;
-            double scoreSecretaryWorkload = 0;
-            double scoreMemberWorkload = 0;
-            double scorePresidentChange = 0;
-            double scoreSecretaryChange = 0;
-            foreach (FinalExam fi in best.schedule)
-            {
-
-                if (studentBefore.Contains(fi.student))
-                {
-                    scoreStudentBefore += Scores.studentDuplicated;
-                }
-                scoreAvailable += fitness.GetInstructorAvailableScore(fi);
-                scoreRoles += fitness.GetRolesScore(fi);
-
-                studentBefore.Add(fi.student);
-            }
-
-            scorePresidentWorkload =  fitness.GetPresidentWorkloadScore(best);
-            scoreSecretaryWorkload = fitness.GetSecretaryWorkloadScore(best);
-            scoreMemberWorkload = fitness.GetMemberWorkloadScore(best);
-
-            scorePresidentChange = fitness.GetPresidentChangeScore(best);
-            scoreSecretaryChange = fitness.GetSecretaryChangeScore(best);
-
-            Console.WriteLine("Score for instructor not available: {0}", scoreAvailable);
-            Console.WriteLine("Score for role: {0}", scoreRoles);
-            Console.WriteLine("Score for multiple students: {0}", scoreStudentBefore);
-            Console.WriteLine("Score for Presidents Workload: {0}", scorePresidentWorkload);
-            Console.WriteLine("Score for Secretary Workload: {0}", scoreSecretaryWorkload);
-            Console.WriteLine("Score for Member Workload: {0}", scoreMemberWorkload);
-            Console.WriteLine("Score for Presidents Change: {0}", scorePresidentChange);
-            Console.WriteLine("Score for Secretary Change: {0}", scoreSecretaryChange);
-
-
-            return best;
+                });
+           
         }
 
-
-
-
-
-        /*public Schedule GenetareInit()
+        internal void Cancel()
         {
-            Schedule generated = new Schedule();
+            termination.ShouldTerminate = true;
+        }
 
-            int ID = 0;
+        void GenerationRan(object sender, EventArgs e)
+        {
+            var bestChromosome = geneticAlgorithm.BestChromosome as SchedulingChromosome;
+            var bestFitness = bestChromosome.Fitness.Value;
 
-            List<Instructor> presidents = GetByRoles(Role.President);
-            List<Instructor> secretaries = GetByRoles(Role.Secretary);
-            List<Instructor> members = GetByRoles(Role.Member);
-
-            Random rnd = new Random();
-
-            foreach (Student stud in context.students)
-            {
-                
-
-                generated.schedule.Add(new FinalExam {
-                    id = ID,
-                    student = stud,
-                    supervisor = stud.supervisor,
-                    president = presidents[rnd.Next(0, presidents.Count-1)],
-                    secretary = secretaries[rnd.Next(0, secretaries.Count - 1)],
-                    member = members[rnd.Next(0, members.Count - 1)],
-                    examiner = stud.examCourse.instructors[rnd.Next(0, stud.examCourse.instructors.Count - 1)]
-                });
-                ID++;
-            }
-
-            return generated;
-        }*/
+            GenerationFitness.Add(geneticAlgorithm.GenerationsNumber, bestFitness);
+            Console.WriteLine("Generation {0}: {1:N0}", geneticAlgorithm.GenerationsNumber, bestFitness);
+        }
     }
 }
