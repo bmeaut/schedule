@@ -82,6 +82,7 @@
     <Compile Include="Schedulers\Parameters.cs" />
     <Compile Include="Schedulers\SchedulingChromosome.cs" />
     <Compile Include="Schedulers\SchedulingFitness.cs" />
+    <Compile Include="Schedulers\SchedulingMutation.cs" />
     <Compile Include="Schedulers\Scores.cs" />
   </ItemGroup>
   <ItemGroup>

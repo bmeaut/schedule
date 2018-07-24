@@ -20,7 +20,8 @@ namespace FinalExamScheduling
 
         static void Main(string[] args)
         {
-            
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+
             FileInfo existingFile = new FileInfo("Input.xlsx");
            
             ExcelHelper eh = new ExcelHelper();
@@ -31,9 +32,12 @@ namespace FinalExamScheduling
             GeneticScheduler genSch = new GeneticScheduler(context);
             Schedule sch = genSch.Run();
 
+            watch.Stop();
+            string elapsed = watch.Elapsed.ToString();
 
-            eh.Write("Results/Done_"+ DateTime.Now.ToString("yyyyMMdd_HHmm") +".xlsx", sch);
+            eh.Write(@"..\..\Results\Done_"+ DateTime.Now.ToString("yyyyMMdd_HHmm") +".xlsx", sch, elapsed);
 
+            
 
             Console.WriteLine();
 

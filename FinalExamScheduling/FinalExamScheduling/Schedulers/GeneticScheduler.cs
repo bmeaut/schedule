@@ -28,6 +28,7 @@ namespace FinalExamScheduling.Schedulers
             var selection = new EliteSelection();
             var crossover = new UniformCrossover(0.5f);
             var mutation = new TworsMutation();
+            //var mutation = new UniformMutation();
             
             var chromosome = new SchedulingChromosome(context);
 

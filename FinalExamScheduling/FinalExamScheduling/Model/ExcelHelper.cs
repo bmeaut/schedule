@@ -121,7 +121,7 @@ namespace FinalExamScheduling.Model
 
         }
 
-        public void Write(string p_strPath, Schedule sch)
+        public void Write(string p_strPath, Schedule sch, string elapsed)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
@@ -215,42 +215,29 @@ namespace FinalExamScheduling.Model
                         row++;
                     }
 
+                    ws_info.Cells[row + 1, 4].Value = "Time elapsed";
+                    ws_info.Cells[row + 1, 5].Value = elapsed;
+
+
                     rowGen--;
                     ExcelLineChart lineChart = ws_info.Drawings.AddChart("lineChart", eChartType.Line) as ExcelLineChart;
                     lineChart.Title.Text = "Fitness alakulása a generációk előrehaladtával";
 
-                    //create the ranges for the chart
                     var rangeLabel = ws_info.Cells["A2:A"+ rowGen];
                     var range1 = ws_info.Cells["B2:B"+ rowGen];
                    
-
-                    //add the ranges to the chart
                     lineChart.Series.Add(range1, rangeLabel);
-                    //lineChart.Series.Add(range2, rangeLabel);
 
-                    //set the names of the legend
-                    //lineChart.Series[0].Header.
                     lineChart.Series[0].Header = ws_info.Cells["A1"].Text;
 
-                    
-                    //position of the legend
                     lineChart.Legend.Remove();
 
-                    int width = rowGen * 20;
+                    int width = (rowGen * 20 > 300) ? rowGen * 20 : 300;
 
-                    //size of the chart
+
                     lineChart.SetSize(width, 500);
 
-                    //add the chart at cell B6
                     lineChart.SetPosition(1, 0, 7, 0);
-
-
-
-
-
-
-
-
 
 
 
