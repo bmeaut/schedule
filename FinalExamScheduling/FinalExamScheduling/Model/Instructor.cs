@@ -19,7 +19,7 @@ namespace FinalExamScheduling.Model
     {
         public string Name;
 
-        public List<bool> Availability = new List<bool>();
+        public bool[] Availability;
         public Roles Roles;
      
     }

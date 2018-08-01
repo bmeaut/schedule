@@ -8,11 +8,11 @@ namespace FinalExamScheduling.Model
 {
     public class FinalExam: Entity
     {
-        public Student Student;
-        public Instructor Supervisor;
-        public Instructor President;
-        public Instructor Secretary;
-        public Instructor Member;
-        public Instructor Examiner;
+        public Student Student = null;
+        public Instructor Supervisor = null;
+        public Instructor President = null;
+        public Instructor Secretary = null;
+        public Instructor Member = null;
+        public Instructor Examiner = null;
     }
 }

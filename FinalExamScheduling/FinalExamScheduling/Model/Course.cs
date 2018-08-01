@@ -10,7 +10,7 @@ namespace FinalExamScheduling.Model
     {
         public string Name;
         public string CourseCode;
-        public List<Instructor> Instructors = new List<Instructor>();
+        public Instructor[] Instructors;
 
     }
 }

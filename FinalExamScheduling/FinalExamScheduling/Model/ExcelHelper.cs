@@ -73,7 +73,7 @@ namespace FinalExamScheduling.Model
                     instructors.Add(new Instructor
                     {
                         Name = ws_instructors.Cells[iRow, 1].Text,
-                        Availability = tempAvailability,
+                        Availability = tempAvailability.ToArray(),
                         Roles = tempRoles
                     });
 
@@ -97,7 +97,7 @@ namespace FinalExamScheduling.Model
                     {
                         Name = ws_courses.Cells[2, iCol].Text,
                         CourseCode = ws_courses.Cells[1, iCol].Text,
-                        Instructors = tempInstructors
+                        Instructors = tempInstructors.ToArray()
                     });
 
                     //Console.WriteLine(context.courses[iCol - 1].name + "\t " + context.courses[iCol - 1].courseCode + "\t ");

@@ -29,9 +29,10 @@ namespace FinalExamScheduling.Schedulers
         {
             get {
                 Schedule schedule = new Schedule();
+                schedule.FinalExams = new FinalExam[100];
                 for (int i = 0; i < 100; i++)
                 {
-                    schedule.FinalExams.Add((FinalExam)GetGene(i).Value);
+                    schedule.FinalExams[i] = (FinalExam)GetGene(i).Value;
                 }
                 return schedule;
             }
@@ -53,7 +54,7 @@ namespace FinalExamScheduling.Schedulers
             fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
             fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
             fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Count)];
+            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
 
             return new Gene(fe);
         }
