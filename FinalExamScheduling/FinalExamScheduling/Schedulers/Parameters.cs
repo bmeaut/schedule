@@ -8,8 +8,8 @@ namespace FinalExamScheduling.Schedulers
 {
     public class Parameters
     {
-        public const int MinPopulationSize = 25000;
-        public const int MaxPopulationSize = 50000;
+        public const int MinPopulationSize = 2500;
+        public const int MaxPopulationSize = 5000;
 
         public const int StagnationTermination = 20;
 
