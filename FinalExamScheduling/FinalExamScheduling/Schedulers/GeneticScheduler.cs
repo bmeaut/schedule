@@ -85,34 +85,39 @@ namespace FinalExamScheduling.Schedulers
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
             Parameters.Finish = true;
-            List<double> results = new List<double>
-            {
+            //sch.Details = Enumerable.Range(0, 100).Select(i => new FinalexamDetail()).ToArray();
+
+            var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
+         
+
+            //List<double> results = new List<double>
+            //{
                 
-                fitness.GetStudentDuplicatedScore(sch),
-                fitness.GetPresidentNotAvailableScore(sch),
-                fitness.GetSecretaryNotAvailableScore(sch),
-                fitness.GetExaminerNotAvailableScore(sch),
-                fitness.GetMemberNotAvailableScore(sch),
-                fitness.GetSupervisorNotAvailableScore(sch),
-                fitness.GetPresidentChangeScore(sch),
-                fitness.GetSecretaryChangeScore(sch),
+            //    fitness.GetStudentDuplicatedScore(sch),
+            //    fitness.GetPresidentNotAvailableScore(sch),
+            //    fitness.GetSecretaryNotAvailableScore(sch),
+            //    fitness.GetExaminerNotAvailableScore(sch),
+            //    fitness.GetMemberNotAvailableScore(sch),
+            //    fitness.GetSupervisorNotAvailableScore(sch),
+            //    fitness.GetPresidentChangeScore(sch),
+            //    fitness.GetSecretaryChangeScore(sch),
 
-                fitness.GetPresidentWorkloadWorstScore(sch),
-                fitness.GetPresidentWorkloadWorseScore(sch),
-                fitness.GetPresidentWorkloadBadScore(sch),
+            //    fitness.GetPresidentWorkloadWorstScore(sch),
+            //    fitness.GetPresidentWorkloadWorseScore(sch),
+            //    fitness.GetPresidentWorkloadBadScore(sch),
 
-                fitness.GetSecretaryWorkloadWorstScore(sch),
-                fitness.GetSecretaryWorkloadWorseScore(sch),
-                fitness.GetSecretaryWorkloadBadScore(sch),
+            //    fitness.GetSecretaryWorkloadWorstScore(sch),
+            //    fitness.GetSecretaryWorkloadWorseScore(sch),
+            //    fitness.GetSecretaryWorkloadBadScore(sch),
 
-                fitness.GetMemberWorkloadWorstScore(sch),
-                fitness.GetMemberWorkloadWorseScore(sch),
-                fitness.GetMemberWorkloadBadScore(sch),
+            //    fitness.GetMemberWorkloadWorstScore(sch),
+            //    fitness.GetMemberWorkloadWorseScore(sch),
+            //    fitness.GetMemberWorkloadBadScore(sch),
 
-                fitness.GetPresidentSelfStudentScore(sch),
-                fitness.GetSecretarySelfStudentScore(sch),
-                fitness.GetExaminerNotPresidentScore(sch)
-            };
+            //    fitness.GetPresidentSelfStudentScore(sch),
+            //    fitness.GetSecretarySelfStudentScore(sch),
+            //    fitness.GetExaminerNotPresidentScore(sch)
+            //};
 
 
             /*foreach (FieldInfo info in typeof(Scores).GetFields().Where(x => x.IsStatic && x.IsLiteral))

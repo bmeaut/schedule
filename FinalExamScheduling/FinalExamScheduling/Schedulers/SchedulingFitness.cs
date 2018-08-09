@@ -15,13 +15,13 @@ namespace FinalExamScheduling.Schedulers
         //public int president;
         private Context ctx;
 
-        List<Func<Schedule, double>> costFunctions;
+       public readonly List<Func<Schedule, double>> CostFunctions;
 
 
         public SchedulingFitness(Context context)
         {
             ctx = context;
-            costFunctions = new List<Func<Schedule, double>>()
+            CostFunctions = new List<Func<Schedule, double>>()
             {
                 GetStudentDuplicatedScore,
                 GetPresidentNotAvailableScore,
@@ -64,7 +64,7 @@ namespace FinalExamScheduling.Schedulers
                 sch.FinalExams[i]=(FinalExam)chromosome.GetGene(i).Value;
             }
 
-            var tasks = costFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
+            var tasks = CostFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
             Task.WaitAll(tasks);
             foreach (var task in tasks)
             {
@@ -158,8 +158,9 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.Examiner.Availability[fi.Id] == false)
                 {
                     score += Scores.ExaminerNotAvailable;
-                    if (Parameters.Finish)
+                    if (sch.Details!=null)
                     {
+                        //sch.Details[fi.Id].ExaminerComment...
                         fi.ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
                         fi.ExaminerScore += Scores.ExaminerNotAvailable;
                     }
