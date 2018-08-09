@@ -27,11 +27,14 @@ namespace FinalExamScheduling
             scheduler = new GeneticScheduler(context);
             var task = scheduler.RunAsync().ContinueWith(scheduleTask =>
             {
-                Console.WriteLine(scheduleTask.Result.ToString(scheduler.Fitness));
+               // Console.WriteLine(scheduleTask.Result.ToString(scheduler.Fitness));
+
+                Schedule resultSchedule = scheduleTask.Result;
+                
 
                 string elapsed = watch.Elapsed.ToString();
 
-                ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness);
+                ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness));
 
             }
             );

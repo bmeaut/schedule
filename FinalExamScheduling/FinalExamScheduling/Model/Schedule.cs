@@ -12,7 +12,7 @@ namespace FinalExamScheduling.Model
         public FinalExam[] FinalExams;
 
 
-        public string ToString(SchedulingFitness fitness)
+        /*public string ToString(SchedulingFitness fitness)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Score for instructor not available: {fitness.GetInstructorAvailableScore(this)}");
@@ -24,6 +24,6 @@ namespace FinalExamScheduling.Model
             sb.AppendLine($"Score for Presidents Change: {fitness.GetPresidentChangeScore(this)}" );
             sb.AppendLine($"Score for Secretary Change: {fitness.GetSecretaryChangeScore(this)}");
             return sb.ToString();
-        }
+        }*/
     }
 }

@@ -127,11 +127,11 @@ namespace FinalExamScheduling.Model
 
             return context;
 
-            //Console.WriteLine("Cica");
+
 
         }
 
-        public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness)
+        public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness, double[] finalScores)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
@@ -154,19 +154,52 @@ namespace FinalExamScheduling.Model
                     cell.Style.Font.Bold = true;
                     cell.Style.Font.Size = 14;
                 }
-  
+                string author = "Szilvia Erdős";
 
                 int i = 2;
                 foreach (FinalExam exam in sch.FinalExams)
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.Student.Name;
+                    if(exam.StudentComment != "")
+                    {
+                        ws_scheduling.Cells[i, 1].AddComment(exam.StudentComment, author);
+                        //ws_scheduling.Cells[i,1].Style.Fill.BackgroundColor = 
+                    }
+                    
                     ws_scheduling.Cells[i, 2].Value = exam.Supervisor.Name;
+                    if (exam.SupervisorComment != "")
+                    {
+                        ws_scheduling.Cells[i, 2].AddComment(exam.SupervisorComment, author);
+                    }
+
                     ws_scheduling.Cells[i, 3].Value = exam.President.Name;
+                    if (exam.PresidentComment != "")
+                    {
+                        ws_scheduling.Cells[i, 3].AddComment(exam.PresidentComment, author);
+                    }
+                    
+
                     ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
+                    if (exam.SecretaryComment != "")
+                    {
+                        ws_scheduling.Cells[i, 4].AddComment(exam.SecretaryComment, author);
+                    }
+
                     ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
+                    if (exam.MemberComment != "")
+                    {
+                        ws_scheduling.Cells[i, 5].AddComment(exam.MemberComment, author);
+                    }
+
                     ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    if (exam.ExaminerComment != "")
+                    {
+                        ws_scheduling.Cells[i, 6].AddComment(exam.ExaminerComment, author);
+                    }
+
                     ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse.Name;
-                    ws_scheduling.Cells[i, 8].Value = exam.Id;
+                     ws_scheduling.Cells[i, 8].Value = exam.Id;
+                    
 
                     if (i % 10 == 1)
                     {
@@ -222,6 +255,9 @@ namespace FinalExamScheduling.Model
                     {
                         ws_info.Cells[row, 4].Value = info.Name;
                         ws_info.Cells[row, 5].Value = info.GetValue(info);
+                        ws_info.Cells[row, 6].Value = finalScores[row - 7];
+                        
+                        
                         row++;
                     }
 

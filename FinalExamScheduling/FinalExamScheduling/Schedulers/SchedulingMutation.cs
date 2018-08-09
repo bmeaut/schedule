@@ -14,48 +14,66 @@ namespace FinalExamScheduling.Schedulers
     {
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
-
-            for (int i = 0; i < 100; i+=5)
+            if (RandomizationProvider.Current.GetDouble() <= probability)
             {
-                List<Gene> genes = new List<Gene>();
-                //Gene gene0 = chromosome.GetGene(i);
-                List<FinalExam> finalExams = new List<FinalExam>();
-                List<Instructor> presidents = new List<Instructor>();
-                List<Instructor> secretaries = new List<Instructor>();
-                for (int j = 0; j < 5; j++)
+                for (int i = 0; i < 100; i += 5)
                 {
-                    genes.Add(chromosome.GetGene(j+i));
-                    finalExams.Add((FinalExam)genes[j].Value);
-                    presidents.Add(finalExams[j].President);
-                    secretaries.Add(finalExams[j].Secretary);
-                }
-
-                var mostPresident = presidents.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-
-                var mostSecretary = secretaries.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-
-
-
-                for (int l = 0; l < 5; l++)
-                {
-                    if(finalExams[l].President != mostPresident)
+                    List<Gene> genes = new List<Gene>();
+                    //Gene gene0 = chromosome.GetGene(i);
+                    List<FinalExam> finalExams = new List<FinalExam>();
+                    List<Instructor> presidents = new List<Instructor>();
+                    List<Instructor> secretaries = new List<Instructor>();
+                    for (int j = 0; j < 5; j++)
                     {
-                        ((FinalExam)genes[l].Value).President = mostPresident;
-                        chromosome.ReplaceGene(i, genes[l]);
+                        genes.Add(chromosome.GetGene(j + i));
+                        finalExams.Add((FinalExam)genes[j].Value);
+                        presidents.Add(finalExams[j].President);
+                        secretaries.Add(finalExams[j].Secretary);
                     }
 
-                    if (finalExams[l].Secretary != mostSecretary)
-                    {
-                        ((FinalExam)genes[l].Value).Secretary = mostSecretary;
-                        chromosome.ReplaceGene(i, genes[l]);
-                    }
-                }
+                    var mostPresident = presidents.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
 
+                    var mostSecretary = secretaries.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+
+
+
+                    for (int l = 0; l < 5; l++)
+                    {
+                        if (finalExams[l].President != mostPresident)
+                        {
+                            ((FinalExam)genes[l].Value).President = mostPresident;
+                            chromosome.ReplaceGene(i, genes[l]);
+
+                        }
+
+                        if (finalExams[l].Secretary != mostSecretary)
+                        {
+                            ((FinalExam)genes[l].Value).Secretary = mostSecretary;
+                            chromosome.ReplaceGene(i, genes[l]);
+                        }
+                    }
+
+
+                    /*if (.Supervisor.Roles.HasFlag(Roles.President) && fi.Supervisor != fi.President)
+                    {
+
+                    }*/
+
+
+                }
             }
 
+            /*for (int i = 0; i < 100; i++)
+            {
+                Gene gene = chromosome.GetGene(i);
+                FinalExam fe = ((FinalExam)gene.Value);
+                Instructor
+                presidents.Add(finalExams[j].President);
 
-           
-            
+            }*/
+
+
+
 
             /*if (RandomizationProvider.Current.GetDouble() <= probability)
             {
