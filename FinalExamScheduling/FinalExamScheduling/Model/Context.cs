@@ -18,6 +18,8 @@ namespace FinalExamScheduling.Model
 
         public Random Rnd = new Random();
 
+        public bool FillDetails;
+
 
         public void Init()
         {

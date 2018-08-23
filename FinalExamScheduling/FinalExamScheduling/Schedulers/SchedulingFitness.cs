@@ -13,7 +13,7 @@ namespace FinalExamScheduling.Schedulers
     public class SchedulingFitness : IFitness
     {
         //public int president;
-        private Context ctx;
+       private Context ctx;
 
        public readonly List<Func<Schedule, double>> CostFunctions;
 
@@ -59,6 +59,7 @@ namespace FinalExamScheduling.Schedulers
 
             Schedule sch = new Schedule();
             sch.FinalExams = new FinalExam[100];
+            sch.Details = new FinalExamDetail[100];
             for (int i = 0; i < 100; i++)
             {
                 sch.FinalExams[i]=(FinalExam)chromosome.GetGene(i).Value;
@@ -116,10 +117,10 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.President.Availability[fi.Id] == false)
                 {
                     score += Scores.PresidentNotAvailable;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.PresidentComment += $"President not available: {Scores.PresidentNotAvailable}\n";
-                        fi.PresidentScore += Scores.PresidentNotAvailable;
+                        sch.Details[fi.Id].PresidentComment += $"President not available: {Scores.PresidentNotAvailable}\n";
+                        sch.Details[fi.Id].PresidentScore += Scores.PresidentNotAvailable;
                     }
                     
                 }
@@ -138,10 +139,10 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.Secretary.Availability[fi.Id] == false)
                 {
                     score += Scores.SecretaryNotAvailable;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.SecretaryComment += $"Secretary not available: {Scores.SecretaryNotAvailable}\n";
-                        fi.SecretaryScore += Scores.SecretaryNotAvailable;
+                        sch.Details[fi.Id].SecretaryComment += $"Secretary not available: {Scores.SecretaryNotAvailable}\n";
+                        sch.Details[fi.Id].SecretaryScore += Scores.SecretaryNotAvailable;
                     }
                 }
 
@@ -158,11 +159,11 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.Examiner.Availability[fi.Id] == false)
                 {
                     score += Scores.ExaminerNotAvailable;
-                    if (sch.Details!=null)
+                    if (ctx.FillDetails)
                     {
                         //sch.Details[fi.Id].ExaminerComment...
-                        fi.ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
-                        fi.ExaminerScore += Scores.ExaminerNotAvailable;
+                        sch.Details[fi.Id].ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
+                        sch.Details[fi.Id].ExaminerScore += Scores.ExaminerNotAvailable;
                     }
                 }
 
@@ -179,10 +180,10 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.Member.Availability[fi.Id] == false)
                 {
                     score += Scores.MemberNotAvailable;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.MemberComment += $"Member not available: {Scores.MemberNotAvailable}\n";
-                        fi.MemberScore += Scores.MemberNotAvailable;
+                        sch.Details[fi.Id].MemberComment += $"Member not available: {Scores.MemberNotAvailable}\n";
+                        sch.Details[fi.Id].MemberScore += Scores.MemberNotAvailable;
                     }
                 }
 
@@ -200,10 +201,10 @@ namespace FinalExamScheduling.Schedulers
                 if (fi.Supervisor.Availability[fi.Id] == false)
                 {
                     score += Scores.SupervisorNotAvailable;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.SupervisorComment += $"Supervisor not available: {Scores.SupervisorNotAvailable}\n";
-                        fi.SupervisorScore += Scores.SupervisorNotAvailable;
+                        sch.Details[fi.Id].SupervisorComment += $"Supervisor not available: {Scores.SupervisorNotAvailable}\n";
+                        sch.Details[fi.Id].SupervisorScore += Scores.SupervisorNotAvailable;
                     }
                 }
 
@@ -225,37 +226,37 @@ namespace FinalExamScheduling.Schedulers
                 if (sch.FinalExams[i].President != sch.FinalExams[i + 1].President)
                 {
                     score += Scores.PresidentChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i + 1].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.FinalExams[i + 1].PresidentScore += Scores.PresidentChange;
+                        sch.Details[sch.FinalExams[i + 1].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[sch.FinalExams[i + 1].Id].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 1].President != sch.FinalExams[i + 2].President)
                 {
                     score += Scores.PresidentChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i+2].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.FinalExams[i + 2].PresidentScore += Scores.PresidentChange;
+                        sch.Details[sch.FinalExams[i + 2].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[sch.FinalExams[i + 2].Id].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 2].President != sch.FinalExams[i + 3].President)
                 {
                     score += Scores.PresidentChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i+3].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.FinalExams[i + 3].PresidentScore += Scores.PresidentChange;
+                        sch.Details[sch.FinalExams[i + 3].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[sch.FinalExams[i + 3].Id].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 3].President != sch.FinalExams[i + 4].President)
                 {
                     score += Scores.PresidentChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i+4].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.FinalExams[i + 4].PresidentScore += Scores.PresidentChange;
+                        sch.Details[sch.FinalExams[i + 4].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[sch.FinalExams[i + 4].Id].PresidentScore += Scores.PresidentChange;
                     }
                 }
 
@@ -273,37 +274,37 @@ namespace FinalExamScheduling.Schedulers
                 if (sch.FinalExams[i].Secretary != sch.FinalExams[i + 1].Secretary)
                 {
                     score += Scores.SecretaryChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i+1].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.FinalExams[i + 1].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[sch.FinalExams[i + 1].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[sch.FinalExams[i + 1].Id].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 1].Secretary != sch.FinalExams[i + 2].Secretary)
                 {
                     score += Scores.SecretaryChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i + 2].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.FinalExams[i + 2].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[sch.FinalExams[i + 2].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[sch.FinalExams[i + 2].Id].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 2].Secretary != sch.FinalExams[i + 3].Secretary)
                 {
                     score += Scores.SecretaryChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i + 3].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.FinalExams[i + 3].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[sch.FinalExams[i + 3].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[sch.FinalExams[i + 3].Id].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 3].Secretary != sch.FinalExams[i + 4].Secretary)
                 {
                     score += Scores.SecretaryChange;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        sch.FinalExams[i + 4].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.FinalExams[i + 4].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[sch.FinalExams[i + 4].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[sch.FinalExams[i + 4].Id].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
 
@@ -772,10 +773,10 @@ namespace FinalExamScheduling.Schedulers
                 if ((fi.Supervisor.Roles & Roles.President) == Roles.President && fi.Supervisor != fi.President)
                 {
                     score += Scores.PresidentSelfStudent;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
-                        fi.SupervisorScore += Scores.PresidentSelfStudent;
+                        sch.Details[fi.Id].SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
+                        sch.Details[fi.Id].SupervisorScore += Scores.PresidentSelfStudent;
                     }
                 }
 
@@ -793,10 +794,10 @@ namespace FinalExamScheduling.Schedulers
                 if ((fi.Supervisor.Roles & Roles.Secretary) == Roles.Secretary && fi.Supervisor != fi.Secretary)
                 {
                     score += Scores.SecretarySelfStudent;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
-                        fi.SupervisorScore += Scores.SecretarySelfStudent;
+                        sch.Details[fi.Id].SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
+                        sch.Details[fi.Id].SupervisorScore += Scores.SecretarySelfStudent;
                     }
                 }
 
@@ -814,10 +815,10 @@ namespace FinalExamScheduling.Schedulers
                 if ((fi.Examiner.Roles & Roles.President) == Roles.President && fi.Examiner != fi.President)
                 {
                     score += Scores.ExaminerNotPresident;
-                    if (Parameters.Finish)
+                    if (ctx.FillDetails)
                     {
-                        fi.ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
-                        fi.ExaminerScore += Scores.ExaminerNotPresident;
+                        sch.Details[fi.Id].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
+                        sch.Details[fi.Id].ExaminerScore += Scores.ExaminerNotPresident;
                     }
                 }
 

@@ -17,7 +17,7 @@ namespace FinalExamScheduling.Schedulers
 {
     public class GeneticScheduler
     {
-        private readonly Context ctx;
+        private Context ctx;
         public readonly Dictionary<int, double> GenerationFitness = new Dictionary<int, double>();
         private GeneticAlgorithm geneticAlgorithm;
         private SchedulingTermination termination;
@@ -84,8 +84,9 @@ namespace FinalExamScheduling.Schedulers
 
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
-            Parameters.Finish = true;
-            //sch.Details = Enumerable.Range(0, 100).Select(i => new FinalexamDetail()).ToArray();
+            ctx.FillDetails = true;
+            //Parameters.Finish = true;
+            sch.Details = Enumerable.Range(0, 100).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
          

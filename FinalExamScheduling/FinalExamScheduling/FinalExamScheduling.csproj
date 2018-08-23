@@ -74,6 +74,7 @@
     <Compile Include="Model\ExcelHelper.cs" />
     <Compile Include="Model\FinalExam.cs" />
     <Compile Include="Model\Entity.cs" />
+    <Compile Include="Model\FinalExamDetail.cs" />
     <Compile Include="Model\Instructor.cs" />
     <Compile Include="Model\Schedule.cs" />
     <Compile Include="Model\Student.cs" />
