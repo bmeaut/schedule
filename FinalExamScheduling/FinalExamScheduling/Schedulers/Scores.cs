@@ -8,8 +8,7 @@ namespace FinalExamScheduling.Schedulers
 {
     static class Scores
     {
-        public const double StudentDuplicated = 10000;
-        
+        public const double StudentDuplicated = 10000;      
 
         public const double PresidentNotAvailable = 1000;
         public const double SecretaryNotAvailable = 1000;
@@ -32,9 +31,6 @@ namespace FinalExamScheduling.Schedulers
         public const double MemberWorkloadWorst = 30;
         public const double MemberWorkloadWorse = 20;
         public const double MemberWorkloadBad = 10;
-
-
-
 
         public const double PresidentSelfStudent = 2;
         public const double SecretarySelfStudent = 1;

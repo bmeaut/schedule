@@ -13,11 +13,12 @@ namespace FinalExamScheduling.Schedulers
         private Context ctx;
         //public int presidentNr, secretaryNr, memberNr;
 
-        
+        //private Student[] randStudents;
 
         public SchedulingChromosome(Context context) : base(100)
         {
             this.ctx = context;
+            //randStudents = context.Students.OrderBy(x => context.Rnd.Next()).ToArray();
             for (int i = 0; i < 100; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
@@ -48,8 +49,15 @@ namespace FinalExamScheduling.Schedulers
         {
             FinalExam fe = new FinalExam();
             fe.Id = geneIndex;
-            //fe.student = context.students[rnd.Next(0, context.students.Count - 1)];
-            fe.Student = ctx.Students[geneIndex];
+           
+            //ctx.Students.ToList().Sort((x, y) => random.Next(-1, 1));
+            
+           
+
+
+            //fe.Student = ctx.Students[ctx.Rnd.Next(0, ctx.Students.Length)];
+
+            fe.Student = ctx.RandStudents[geneIndex];
             fe.Supervisor = fe.Student.Supervisor;
             fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
             fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
@@ -58,5 +66,6 @@ namespace FinalExamScheduling.Schedulers
 
             return new Gene(fe);
         }
+
     }
 }

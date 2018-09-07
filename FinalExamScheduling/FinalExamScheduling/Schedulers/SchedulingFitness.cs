@@ -320,19 +320,22 @@ namespace FinalExamScheduling.Schedulers
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                presidentWorkloads[fi.President.Id]++;
+                //TODO
+                
+               // presidentWorkloads[Array.FindIndex(ctx.Presidents, item => item == fi.President)]++;
+                presidentWorkloads[Array.IndexOf(ctx.Presidents, fi.President)]++;
             }
 
             double optimalWorkload = 100 / ctx.Presidents.Length;
 
             foreach (Instructor pres in ctx.Presidents)
             {
-                if (presidentWorkloads[pres.Id] < optimalWorkload * 0.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.5)
                 {
                     score += Scores.PresidentWorkloadWorst;
                 }
 
-                if (presidentWorkloads[pres.Id] > optimalWorkload * 1.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.5)
                 {
                     score += Scores.PresidentWorkloadWorst;
                 }
@@ -349,7 +352,9 @@ namespace FinalExamScheduling.Schedulers
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                presidentWorkloads[fi.President.Id]++;
+                //presidentWorkloads[fi.President.Id]++;
+                //presidentWorkloads[Array.FindIndex(ctx.Presidents, item => item == fi.President)]++;
+                presidentWorkloads[Array.IndexOf(ctx.Presidents, fi.President)]++;
             }
 
 
@@ -358,12 +363,12 @@ namespace FinalExamScheduling.Schedulers
             foreach (Instructor pres in ctx.Presidents)
             {
 
-                if (presidentWorkloads[pres.Id] < optimalWorkload * 0.3 && presidentWorkloads[pres.Id] > optimalWorkload * 0.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.5)
                 {
                     score += Scores.PresidentWorkloadWorse;
                 }
 
-                if (presidentWorkloads[pres.Id] > optimalWorkload * 1.3 && presidentWorkloads[pres.Id] < optimalWorkload * 1.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.5)
                 {
                     score += Scores.PresidentWorkloadWorse;
                 }
@@ -380,7 +385,9 @@ namespace FinalExamScheduling.Schedulers
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                presidentWorkloads[fi.President.Id]++;
+                //presidentWorkloads[fi.President.Id]++;
+                //presidentWorkloads[Array.FindIndex(ctx.Presidents, item => item == fi.President)]++;
+                presidentWorkloads[Array.IndexOf(ctx.Presidents, fi.President)]++;
             }
 
 
@@ -389,12 +396,12 @@ namespace FinalExamScheduling.Schedulers
             foreach (Instructor pres in ctx.Presidents)
             {
 
-                if (presidentWorkloads[pres.Id] < optimalWorkload * 0.1 && presidentWorkloads[pres.Id] > optimalWorkload * 0.3)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.3)
                 {
                     score += Scores.PresidentWorkloadBad;
                 }
 
-                if (presidentWorkloads[pres.Id] > optimalWorkload * 1.1 && presidentWorkloads[pres.Id] < optimalWorkload * 1.3)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.3)
                 {
                     score += Scores.PresidentWorkloadBad;
                 }
@@ -420,28 +427,28 @@ namespace FinalExamScheduling.Schedulers
 
              foreach (Instructor pres in ctx.Presidents)
              {
-                 if (presidentWorkloads[pres.Id] < optimalWorkload * 0.5)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.5)
                  {
                      score += Scores.WorkloadWorst;
                  }
-                 if (presidentWorkloads[pres.Id] < optimalWorkload * 0.3 && presidentWorkloads[pres.Id] > optimalWorkload * 0.5)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.5)
                  {
                      score += Scores.WorkloadWorse;
                  }
-                 if (presidentWorkloads[pres.Id] < optimalWorkload * 0.1 && presidentWorkloads[pres.Id] > optimalWorkload * 0.3)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.3)
                  {
                      score += Scores.WorkloadBad;
                  }
 
-                 if (presidentWorkloads[pres.Id] > optimalWorkload * 1.5)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.5)
                  {
                      score += Scores.WorkloadWorst;
                  }
-                 if (presidentWorkloads[pres.Id] > optimalWorkload * 1.3 && presidentWorkloads[pres.Id] < optimalWorkload * 1.5)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.5)
                  {
                      score += Scores.WorkloadWorse;
                  }
-                 if (presidentWorkloads[pres.Id] > optimalWorkload * 1.1 && presidentWorkloads[pres.Id] < optimalWorkload * 1.3)
+                 if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.3)
                  {
                      score += Scores.WorkloadBad;
                  }
@@ -456,23 +463,25 @@ namespace FinalExamScheduling.Schedulers
         public double GetSecretaryWorkloadWorstScore(Schedule schedule)
         {
             double score = 0;
-            int[] SecretaryWorkloads = new int[ctx.Secretaries.Length];
+            int[] secretaryWorkloads = new int[ctx.Secretaries.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                SecretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[Array.FindIndex(ctx.Secretaries, item => item == fi.Secretary)]++;
+                secretaryWorkloads[Array.IndexOf(ctx.Secretaries, fi.Secretary)]++;
             }
 
             double optimalWorkload = 100 / ctx.Secretaries.Length;
 
-            foreach (Instructor pres in ctx.Secretaries)
+            foreach (Instructor secr in ctx.Secretaries)
             {
-                if (SecretaryWorkloads[pres.Id] < optimalWorkload * 0.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.5)
                 {
                     score += Scores.SecretaryWorkloadWorst;
                 }
 
-                if (SecretaryWorkloads[pres.Id] > optimalWorkload * 1.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.5)
                 {
                     score += Scores.SecretaryWorkloadWorst;
                 }
@@ -485,25 +494,27 @@ namespace FinalExamScheduling.Schedulers
         public double GetSecretaryWorkloadWorseScore(Schedule schedule)
         {
             double score = 0;
-            int[] SecretaryWorkloads = new int[ctx.Secretaries.Length];
+            int[] secretaryWorkloads = new int[ctx.Secretaries.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                SecretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[Array.FindIndex(ctx.Secretaries, item => item == fi.Secretary)]++;
+                secretaryWorkloads[Array.IndexOf(ctx.Secretaries, fi.Secretary)]++;
             }
 
 
             double optimalWorkload = 100 / ctx.Secretaries.Length;
 
-            foreach (Instructor pres in ctx.Secretaries)
+            foreach (Instructor secr in ctx.Secretaries)
             {
 
-                if (SecretaryWorkloads[pres.Id] < optimalWorkload * 0.3 && SecretaryWorkloads[pres.Id] > optimalWorkload * 0.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.3 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 0.5)
                 {
                     score += Scores.SecretaryWorkloadWorse;
                 }
 
-                if (SecretaryWorkloads[pres.Id] > optimalWorkload * 1.3 && SecretaryWorkloads[pres.Id] < optimalWorkload * 1.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.3 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 1.5)
                 {
                     score += Scores.SecretaryWorkloadWorse;
                 }
@@ -516,25 +527,27 @@ namespace FinalExamScheduling.Schedulers
         public double GetSecretaryWorkloadBadScore(Schedule schedule)
         {
             double score = 0;
-            int[] SecretaryWorkloads = new int[ctx.Secretaries.Length];
+            int[] secretaryWorkloads = new int[ctx.Secretaries.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                SecretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[fi.Secretary.Id]++;
+                //secretaryWorkloads[Array.FindIndex(ctx.Secretaries, item => item == fi.Secretary)]++;
+                secretaryWorkloads[Array.IndexOf(ctx.Secretaries, fi.Secretary)]++;
             }
 
 
             double optimalWorkload = 100 / ctx.Secretaries.Length;
 
-            foreach (Instructor pres in ctx.Secretaries)
+            foreach (Instructor secr in ctx.Secretaries)
             {
 
-                if (SecretaryWorkloads[pres.Id] < optimalWorkload * 0.1 && SecretaryWorkloads[pres.Id] > optimalWorkload * 0.3)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.1 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 0.3)
                 {
                     score += Scores.SecretaryWorkloadBad;
                 }
 
-                if (SecretaryWorkloads[pres.Id] > optimalWorkload * 1.1 && SecretaryWorkloads[pres.Id] < optimalWorkload * 1.3)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.1 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 1.3)
                 {
                     score += Scores.SecretaryWorkloadBad;
                 }
@@ -594,23 +607,25 @@ namespace FinalExamScheduling.Schedulers
         public double GetMemberWorkloadWorstScore(Schedule schedule)
         {
             double score = 0;
-            int[] MemberWorkloads = new int[ctx.Members.Length];
+            int[] memberWorkloads = new int[ctx.Members.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                MemberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[Array.FindIndex(ctx.Members, item => item == fi.Member)]++;
+                memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
 
             double optimalWorkload = 100 / ctx.Members.Length;
 
-            foreach (Instructor pres in ctx.Members)
+            foreach (Instructor memb in ctx.Members)
             {
-                if (MemberWorkloads[pres.Id] < optimalWorkload * 0.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.5)
                 {
                     score += Scores.MemberWorkloadWorst;
                 }
 
-                if (MemberWorkloads[pres.Id] > optimalWorkload * 1.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.5)
                 {
                     score += Scores.MemberWorkloadWorst;
                 }
@@ -623,25 +638,27 @@ namespace FinalExamScheduling.Schedulers
         public double GetMemberWorkloadWorseScore(Schedule schedule)
         {
             double score = 0;
-            int[] MemberWorkloads = new int[ctx.Members.Length];
+            int[] memberWorkloads = new int[ctx.Members.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                MemberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[Array.FindIndex(ctx.Members, item => item == fi.Member)]++;
+                memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
 
 
             double optimalWorkload = 100 / ctx.Members.Length;
 
-            foreach (Instructor pres in ctx.Members)
+            foreach (Instructor memb in ctx.Members)
             {
 
-                if (MemberWorkloads[pres.Id] < optimalWorkload * 0.3 && MemberWorkloads[pres.Id] > optimalWorkload * 0.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.3 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 0.5)
                 {
                     score += Scores.MemberWorkloadWorse;
                 }
 
-                if (MemberWorkloads[pres.Id] > optimalWorkload * 1.3 && MemberWorkloads[pres.Id] < optimalWorkload * 1.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.3 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 1.5)
                 {
                     score += Scores.MemberWorkloadWorse;
                 }
@@ -654,25 +671,27 @@ namespace FinalExamScheduling.Schedulers
         public double GetMemberWorkloadBadScore(Schedule schedule)
         {
             double score = 0;
-            int[] MemberWorkloads = new int[ctx.Members.Length];
+            int[] memberWorkloads = new int[ctx.Members.Length];
 
             foreach (FinalExam fi in schedule.FinalExams)
             {
-                MemberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[fi.Member.Id]++;
+                //memberWorkloads[Array.FindIndex(ctx.Members, item => item == fi.Member)]++;
+                memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
 
 
             double optimalWorkload = 100 / ctx.Members.Length;
 
-            foreach (Instructor pres in ctx.Members)
+            foreach (Instructor memb in ctx.Members)
             {
 
-                if (MemberWorkloads[pres.Id] < optimalWorkload * 0.1 && MemberWorkloads[pres.Id] > optimalWorkload * 0.3)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.1 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 0.3)
                 {
                     score += Scores.MemberWorkloadBad;
                 }
 
-                if (MemberWorkloads[pres.Id] > optimalWorkload * 1.1 && MemberWorkloads[pres.Id] < optimalWorkload * 1.3)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.1 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 1.3)
                 {
                     score += Scores.MemberWorkloadBad;
                 }

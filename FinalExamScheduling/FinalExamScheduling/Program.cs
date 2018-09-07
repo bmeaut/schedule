@@ -34,7 +34,7 @@ namespace FinalExamScheduling
 
                 string elapsed = watch.Elapsed.ToString();
 
-                ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness));
+                ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness), context);
 
             }
             );

@@ -132,12 +132,15 @@ namespace FinalExamScheduling.Model
 
         }
 
-        public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness, double[] finalScores)
+        public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness, double[] finalScores, Context context)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
                 ExcelWorksheet ws_scheduling = xlPackage_new.Workbook.Worksheets.Add("Scheduling");
                 ExcelWorksheet ws_info = xlPackage_new.Workbook.Worksheets.Add("Information");
+                ExcelWorksheet ws_workload = xlPackage_new.Workbook.Worksheets.Add("Workloads");
+
+                #region Scheduling
 
                 ws_scheduling.Cells[1, 1].Value = "Student";
                 
@@ -249,6 +252,9 @@ namespace FinalExamScheduling.Model
 
                 ws_scheduling.Cells.AutoFitColumns();
 
+                #endregion
+
+                #region Information
 
                 if (Parameters.GetInfo)
                 {
@@ -315,10 +321,59 @@ namespace FinalExamScheduling.Model
 
                 }
 
-
-
-
                 ws_info.Cells.AutoFitColumns();
+                #endregion
+
+
+                #region Workload
+
+                int[] presidentWorkloads = new int[context.Presidents.Length];
+                int[] secretaryWorkloads = new int[context.Secretaries.Length];
+                int[] memberWorkloads = new int[context.Members.Length];
+
+                foreach (FinalExam fi in sch.FinalExams)
+                {
+                    //presidentWorkloads[Array.FindIndex(context.Presidents, item => item == fi.President)]++;
+                    //secretaryWorkloads[Array.FindIndex(context.Secretaries, item => item == fi.Secretary)]++;
+                    //memberWorkloads[Array.FindIndex(context.Members, item => item == fi.Member)]++;
+                    presidentWorkloads[Array.IndexOf(context.Presidents, fi.President)]++;
+                    secretaryWorkloads[Array.IndexOf(context.Secretaries, fi.Secretary)]++;
+                    memberWorkloads[Array.IndexOf(context.Members, fi.Member)]++;
+                }
+
+                ws_workload.Cells[1, 1].Value = "Presidents";
+                ws_workload.Cells[1, 2].Value = "Nr of exams";
+                ws_workload.Cells[1, 3].Value = "Secretaries";
+                ws_workload.Cells[1, 4].Value = "Nr of exams";
+                ws_workload.Cells[1, 5].Value = "Members";
+                ws_workload.Cells[1, 6].Value = "Nr of exams";
+
+                for (int j = 0; j < context.Presidents.Length; j++)
+                {
+                    ws_workload.Cells[j + 2, 1].Value = context.Presidents[j].Name;
+                    ws_workload.Cells[j + 2, 2].Value = presidentWorkloads[j];
+
+                }
+
+                for (int j = 0; j < context.Secretaries.Length; j++)
+                {
+                    ws_workload.Cells[j + 2, 3].Value = context.Secretaries[j].Name;
+                    ws_workload.Cells[j + 2, 4].Value = secretaryWorkloads[j];
+
+                }
+
+                for (int j = 0; j < context.Members.Length; j++)
+                {
+                    ws_workload.Cells[j + 2, 5].Value = context.Members[j].Name;
+                    ws_workload.Cells[j + 2, 6].Value = memberWorkloads[j];
+
+                }
+
+                ws_workload.Cells.AutoFitColumns();
+
+
+                #endregion
+
 
                 if (File.Exists(p_strPath))
                     File.Delete(p_strPath);

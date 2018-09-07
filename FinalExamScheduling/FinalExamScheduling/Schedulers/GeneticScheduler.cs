@@ -37,7 +37,9 @@ namespace FinalExamScheduling.Schedulers
             var selection = new EliteSelection();
             var crossover = new UniformCrossover(0.5f);
             //var mutation = new TworsMutation();
-            var mutation = new SchedulingMutation();
+            var mutation = new SchedulingMutation(ctx);
+      
+
             //var mutation = new UniformMutation();
 
             var chromosome = new SchedulingChromosome(ctx);
@@ -51,6 +53,7 @@ namespace FinalExamScheduling.Schedulers
             geneticAlgorithm = new GeneticAlgorithm(population, Fitness, selection, crossover, mutation);
             geneticAlgorithm.Termination = termination;
             geneticAlgorithm.GenerationRan += GenerationRan;
+            geneticAlgorithm.MutationProbability = 0.05f;
 
 
             return Task.Run<Schedule>(
@@ -85,7 +88,7 @@ namespace FinalExamScheduling.Schedulers
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
             ctx.FillDetails = true;
-            //Parameters.Finish = true;
+            
             sch.Details = Enumerable.Range(0, 100).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();

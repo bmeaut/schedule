@@ -20,15 +20,21 @@ namespace FinalExamScheduling.Model
 
         public bool FillDetails;
 
+        public Student[] RandStudents;
 
         public void Init()
         {
             FillIDs(Students);
             FillIDs(Instructors);
             FillIDs(Courses);
+            //FillIDs(Presidents);
+            //FillIDs(Secretaries);
+            //FillIDs(Members);
             Presidents = Instructors.Where(i => i.Roles.HasFlag(Roles.President)).ToArray();
             Secretaries = Instructors.Where(i => i.Roles.HasFlag(Roles.Secretary)).ToArray();
             Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
+            RandStudents = Students.OrderBy(x => this.Rnd.Next()).ToArray();
+
 
 
         }
@@ -36,9 +42,9 @@ namespace FinalExamScheduling.Model
         private void FillIDs(IEnumerable<Entity> entities)
         {
             int id = 0;
-            foreach (Student s in Students)
+            foreach (var e in entities)
             {
-                s.Id = id;
+                e.Id = id;
                 id++;
             }
         }
