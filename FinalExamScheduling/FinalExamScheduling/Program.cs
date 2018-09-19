@@ -1,5 +1,7 @@
-﻿using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.HeuristicScheduling;
+using FinalExamScheduling.Model;
 using FinalExamScheduling.Schedulers;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +15,7 @@ namespace FinalExamScheduling
     public class Program
     {
         static GeneticScheduler scheduler;
+        static HeuristicScheduler heuristicScheduler;
 
         static void Main(string[] args)
         {
@@ -23,9 +26,13 @@ namespace FinalExamScheduling
             var context = ExcelHelper.Read(existingFile);
 
             context.Init();
-
+            
             scheduler = new GeneticScheduler(context);
-            var task = scheduler.RunAsync().ContinueWith(scheduleTask =>
+            heuristicScheduler = new HeuristicScheduler(context);
+            Schedule schedule = heuristicScheduler.Run();
+            
+
+            /*var task = scheduler.RunAsync().ContinueWith(scheduleTask =>
             {
                // Console.WriteLine(scheduleTask.Result.ToString(scheduler.Fitness));
 
@@ -49,7 +56,7 @@ namespace FinalExamScheduling
                     scheduler.Cancel();
                 }
                 Console.WriteLine("Press A to Abort");
-            }
+            }*/
         }
 
 

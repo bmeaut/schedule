@@ -49,6 +49,9 @@
     <Reference Include="GeneticSharp.Infrastructure.Threading, Version=1.1.6601.1439, Culture=neutral, PublicKeyToken=f24c5e2578f0ecff, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\GeneticSharp.Infrastructure.Threading.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\NCalc.dll</HintPath>
     </Reference>
@@ -60,6 +63,8 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -69,6 +74,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
+    <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
+    <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
