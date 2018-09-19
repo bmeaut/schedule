@@ -23,7 +23,7 @@ namespace FinalExamScheduling.HeuristicScheduling
         public Schedule Run()
         {
             Schedule schedule = new Schedule();
-            int presidentOne = (int)((100 / ctx.Presidents.Length) * 1.15);
+            int presidentOne = (int)((100 / ctx.Presidents.Length) * 1.0);
             int presindetAll = presidentOne * ctx.Presidents.Length;
             Instructor[] allPresidents = new Instructor[presindetAll];
             //int presidentNr = 0;
@@ -53,7 +53,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                         scores[p, f] = -Scores.PresidentNotAvailable;
                     }
                 }
-                for (int f = 0; f < 100; f+=10)
+                /*for (int f = 0; f < 100; f+=10)
                 {
                     int countMinus = 0;
                     for (int i = f; i < f+10; i++)
@@ -68,7 +68,26 @@ namespace FinalExamScheduling.HeuristicScheduling
                     {
                         for (int j = f; j < f+10; j++)
                         {
-                            scores[p, j] -= countMinus * Scores.PresidentChange*10;
+                            scores[p, j] -= countMinus * Scores.PresidentChange;
+                        }
+                    }
+                }*/
+                for (int f = 0; f < 100; f += 5)
+                {
+                    int countMinus = 0;
+                    for (int i = f; i < f + 5; i++)
+                    {
+                        if (allPresidents[p].Availability[i] == false)
+                        {
+                            countMinus++;
+                            //scores[p, i] -= Scores.PresidentChange;
+                        }
+                    }
+                    if (countMinus > 0)
+                    {
+                        for (int j = f; j < f + 5; j++)
+                        {
+                            scores[p, j] -= countMinus * Scores.PresidentChange;
                         }
                     }
                 }
@@ -79,7 +98,7 @@ namespace FinalExamScheduling.HeuristicScheduling
             {
 
                 
-                Console.WriteLine($"A {f}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name}  elnök van");
+                Console.WriteLine($"A {f}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name} az elnök, {scores[finalExamIndexes[f], f]} súllyal");
             }
 
             return schedule;
