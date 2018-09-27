@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FinalExamScheduling.Schedulers
+namespace FinalExamScheduling.GeneticScheduling
 {
     public class SchedulingFitness : IFitness
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinalExamScheduling.Schedulers
+namespace FinalExamScheduling.GeneticScheduling
 {
     static class Scores
     {

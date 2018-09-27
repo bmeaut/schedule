@@ -75,8 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
+    <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
+    <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
@@ -88,13 +90,13 @@
     <Compile Include="Model\Student.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schedulers\GeneticScheduler.cs" />
-    <Compile Include="Schedulers\Parameters.cs" />
-    <Compile Include="Schedulers\SchedulingChromosome.cs" />
-    <Compile Include="Schedulers\SchedulingFitness.cs" />
-    <Compile Include="Schedulers\SchedulingMutation.cs" />
-    <Compile Include="Schedulers\SchedulingTermination.cs" />
-    <Compile Include="Schedulers\Scores.cs" />
+    <Compile Include="GeneticScheduling\GeneticScheduler.cs" />
+    <Compile Include="GeneticScheduling\Parameters.cs" />
+    <Compile Include="GeneticScheduling\SchedulingChromosome.cs" />
+    <Compile Include="GeneticScheduling\SchedulingFitness.cs" />
+    <Compile Include="GeneticScheduling\SchedulingMutation.cs" />
+    <Compile Include="GeneticScheduling\SchedulingTermination.cs" />
+    <Compile Include="GeneticScheduling\Scores.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

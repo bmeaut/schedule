@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinalExamScheduling.Schedulers
+namespace FinalExamScheduling.GeneticScheduling
 {
     public class GeneticScheduler
     {

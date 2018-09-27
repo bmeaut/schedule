@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinalExamScheduling.Schedulers
+namespace FinalExamScheduling.GeneticScheduling
 {
     public class SchedulingMutation : MutationBase
     {

@@ -1,6 +1,6 @@
 ﻿using FinalExamScheduling.HeuristicScheduling;
 using FinalExamScheduling.Model;
-using FinalExamScheduling.Schedulers;
+using FinalExamScheduling.GeneticScheduling;
 
 using System;
 using System.Collections.Generic;

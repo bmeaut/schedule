@@ -1,6 +1,6 @@
 ﻿using Alairas.Common;
 using FinalExamScheduling.Model;
-using FinalExamScheduling.Schedulers;
+using FinalExamScheduling.GeneticScheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +12,12 @@ namespace FinalExamScheduling.HeuristicScheduling
 {
     public class HeuristicScheduler
     {
-        Context ctx;
-        
+        HeuristicContext ctx;
+
 
         public HeuristicScheduler(Context context)
         {
-            this.ctx = context;
+            this.ctx = new HeuristicContext();
         }
 
         public Schedule Run()
@@ -26,9 +26,10 @@ namespace FinalExamScheduling.HeuristicScheduling
 
             GetPresidents(schedule);
             GetSecretaries(schedule);
+            //ctx.Heuristics[student.Id].ScoreForTimeSlot = GetStudentPoints();
             Dictionary<Student, int[]> studentPoints = GetStudentPoints();
-            
-         
+
+
             return schedule;
         }
 
@@ -43,17 +44,16 @@ namespace FinalExamScheduling.HeuristicScheduling
                 for (int j = 0; j < 100; j++)
                 {
                     points[j] = random.Next(0, 5000);
-                }
+                }                
                 studentPoints.Add(ctx.Students[i], points);
             }
-            
 
 
             return studentPoints;
         }
 
         public void GetPresidents(Schedule schedule)
-        {          
+        {
 
             int presidentOne = (int)((20 / ctx.Presidents.Length) * 1.2);
             int presindetAll = presidentOne * ctx.Presidents.Length;
@@ -120,7 +120,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                     {
 
                         scores[p, j] -= countMinus * Scores.PresidentNotAvailable;
-                        
+
                     }
                     j++;
                 }
@@ -132,7 +132,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 FinalExam finalExam = new FinalExam();
                 finalExam.President = allPresidents[finalExamIndexes[f]];
 
-                for (int i = f*5; i < f*5+5; i++)
+                for (int i = f * 5; i < f * 5 + 5; i++)
                 {
                     schedule.FinalExams[i] = finalExam;
                     Console.WriteLine($"A {i}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name} az elnök, {scores[finalExamIndexes[f], f]} súllyal");
