@@ -11,7 +11,10 @@ namespace FinalExamScheduling.Model
     {
         public FinalExam[] FinalExams;
         public FinalExamDetail[] Details;
-
+        public Schedule(int examCount)
+        {
+            FinalExams = new FinalExam[examCount];
+        }
 
         /*public string ToString(SchedulingFitness fitness)
         {

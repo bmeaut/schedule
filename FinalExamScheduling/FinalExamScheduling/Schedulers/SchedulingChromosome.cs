@@ -29,8 +29,8 @@ namespace FinalExamScheduling.Schedulers
         public Schedule Schedule
         {
             get {
-                Schedule schedule = new Schedule();
-                schedule.FinalExams = new FinalExam[100];
+                Schedule schedule = new Schedule(100);
+                //schedule.FinalExams = new FinalExam[100];
                 for (int i = 0; i < 100; i++)
                 {
                     schedule.FinalExams[i] = (FinalExam)GetGene(i).Value;

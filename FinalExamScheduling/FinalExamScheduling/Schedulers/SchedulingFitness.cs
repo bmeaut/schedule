@@ -57,8 +57,8 @@ namespace FinalExamScheduling.Schedulers
         {
             int score = 0;
 
-            Schedule sch = new Schedule();
-            sch.FinalExams = new FinalExam[100];
+            Schedule sch = new Schedule(100);
+            //sch.FinalExams = new FinalExam[100];
             sch.Details = new FinalExamDetail[100];
             for (int i = 0; i < 100; i++)
             {
