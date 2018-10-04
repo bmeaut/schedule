@@ -66,7 +66,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 schedule.FinalExams[f].Student = students[finalExamIndexes[f]];
                 schedule.FinalExams[f].Supervisor = schedule.FinalExams[f].Student.Supervisor;
                 Console.WriteLine($"A {f}. záróvizsgán {students[finalExamIndexes[f]].Name} a diák, {scores[finalExamIndexes[f], f]} súllyal");
-                Console.WriteLine(schedule.FinalExams[f].Student.Name);
+                //Console.WriteLine(schedule.FinalExams[f].Student.Name);
 
 
 
@@ -217,12 +217,15 @@ namespace FinalExamScheduling.HeuristicScheduling
             EgervaryAlgorithm.RunAlgorithm(scores, presidentIndexes, finalExamIndexes);
             for (int f = 0; f < finalExamIndexes.Length; f++)
             {
-                FinalExam finalExam = new FinalExam();
-                finalExam.President = allPresidents[finalExamIndexes[f]];
+                //FinalExam finalExam = new FinalExam();
+                //finalExam.President = allPresidents[finalExamIndexes[f]];
 
                 for (int i = f * 5; i < f * 5 + 5; i++)
                 {
-                    schedule.FinalExams[i] = finalExam;
+                    schedule.FinalExams[i] = new FinalExam();
+                    //FinalExam finalExam = new FinalExam();
+                    //finalExam.President = allPresidents[finalExamIndexes[f]];
+                    schedule.FinalExams[i].President = allPresidents[finalExamIndexes[f]];
                     Console.WriteLine($"A {i}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name} az elnök, {scores[finalExamIndexes[f], f]} súllyal");
 
                 }
