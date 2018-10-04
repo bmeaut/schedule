@@ -334,7 +334,11 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetExaminers(Schedule schedule)
         {
-            foreach (Course course in ctx.Courses)
+            for (int i = 0; i < 100; i++)
+            {
+                schedule.FinalExams[i].Examiner = ctx.Instructors[ctx.Rnd.Next(0, ctx.Instructors.Length)];
+            }
+            /*foreach (Course course in ctx.Courses)
             {
                 int numOfStudents = 0;
                 List<Student> allStudents = new List<Student>();
@@ -372,10 +376,10 @@ namespace FinalExamScheduling.HeuristicScheduling
                     for (int instr = 0; instr < allInstructorsNr; instr++)
                     {
 
-                        /*if (allExaminer[instr].Availability[] == false)
-                        {
-                            scores[stud, instr] -= Scores.MemberNotAvailable;
-                        }*/
+                        //if (allExaminer[instr].Availability[] == false)
+                        //{
+                        //    scores[stud, instr] -= Scores.MemberNotAvailable;
+                        //}
 
 
                     }
@@ -390,8 +394,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
 
                 }
-
-            }
+                
+            }*/
         }
 
     }

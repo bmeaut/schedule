@@ -164,7 +164,7 @@ namespace FinalExamScheduling.Model
                 foreach (FinalExam exam in sch.FinalExams)
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.Student.Name;
-                    double studentScore = sch.Details[exam.Id].StudentScore;
+                    /*double studentScore = sch.Details[exam.Id].StudentScore;
                     if (studentScore > 0)
                     {
                         ws_scheduling.Cells[i, 1].AddComment(sch.Details[exam.Id].StudentComment, author);
@@ -173,9 +173,9 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(studentScore), 0));
                        
                     }
-
+                    */
                     ws_scheduling.Cells[i, 2].Value = exam.Supervisor.Name;
-                    double supervisorScore = sch.Details[exam.Id].SupervisorScore;
+                    /*double supervisorScore = sch.Details[exam.Id].SupervisorScore;
                     if (supervisorScore > 0)
                     {
                         ws_scheduling.Cells[i, 2].AddComment(sch.Details[exam.Id].SupervisorComment, author);
@@ -184,9 +184,9 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 2].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(supervisorScore), 0));
 
                     }
-
+                    */
                     ws_scheduling.Cells[i, 3].Value = exam.President.Name;
-                    double presidentScore = sch.Details[exam.Id].PresidentScore;
+                    /*double presidentScore = sch.Details[exam.Id].PresidentScore;
                     if (presidentScore > 0)
                     {
                         ws_scheduling.Cells[i, 3].AddComment(sch.Details[exam.Id].PresidentComment, author);
@@ -194,10 +194,10 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 3].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 3].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(presidentScore), 0));
                     }
-                    
+                    */
 
                     ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
-                    double secretaryScore = sch.Details[exam.Id].SecretaryScore;
+                    /*double secretaryScore = sch.Details[exam.Id].SecretaryScore;
                     if (secretaryScore > 0)
                     {
                         ws_scheduling.Cells[i, 4].AddComment(sch.Details[exam.Id].SecretaryComment, author);
@@ -205,9 +205,9 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(secretaryScore), 0));
                     }
-
+                    */
                     ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
-                    double memberScore = sch.Details[exam.Id].MemberScore;
+                    /*double memberScore = sch.Details[exam.Id].MemberScore;
                     if (memberScore > 0)
                     {
                         ws_scheduling.Cells[i, 5].AddComment(sch.Details[exam.Id].MemberComment, author);
@@ -215,9 +215,9 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(memberScore), 0));
                     }
-
-                    ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
-                    double examinerScore = sch.Details[exam.Id].ExaminerScore;
+                    */
+                    //ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    /*double examinerScore = sch.Details[exam.Id].ExaminerScore;
                     if (examinerScore > 0)
                     {
                         ws_scheduling.Cells[i, 6].AddComment(sch.Details[exam.Id].ExaminerComment, author);
@@ -225,7 +225,7 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 6].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(examinerScore), 0));
                     }
-
+                    */
                     ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse.Name;
                     ws_scheduling.Cells[i, 8].Value = exam.Id;
                     

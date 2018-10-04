@@ -13,7 +13,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public const int StagnationTermination = 50;
 
-        public const bool GetInfo = true;
+        public const bool GetInfo = false;
 
         public static bool Finish = false;
     }
