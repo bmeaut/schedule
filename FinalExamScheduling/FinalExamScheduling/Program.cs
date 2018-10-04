@@ -27,7 +27,7 @@ namespace FinalExamScheduling
 
             context.Init();
             
-            scheduler = new GeneticScheduler(context);
+            //scheduler = new GeneticScheduler(context);
             heuristicScheduler = new HeuristicScheduler(context);
             Schedule schedule = heuristicScheduler.Run();
             //ExcelHelper.Write(@"..\..\Results\Done_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, "", null, null, context);

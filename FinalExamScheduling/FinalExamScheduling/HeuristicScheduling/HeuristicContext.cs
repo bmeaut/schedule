@@ -7,8 +7,26 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.HeuristicScheduling
 {
-    class HeuristicContext: Context
+    public class HeuristicContext: Context
     {
-        public StudentHeuristics[] Heuristics { get; set; }
+        public StudentHeuristics[] Heuristics;
+
+        public HeuristicContext(Context context)
+        {
+            this.Students = context.Students;
+            this.Secretaries = context.Secretaries;
+            this.Presidents = context.Presidents;
+            this.Members = context.Members;
+            this.Courses = context.Courses;
+            this.Instructors = context.Instructors;
+            
+
+        }
+
+        /*public HeuristicContext() : base()
+        {
+
+        }*/
+
     }
 }

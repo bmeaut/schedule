@@ -8,6 +8,7 @@ namespace FinalExamScheduling.Model
 {
     public class Context
     {
+
         public Student[] Students;
         public Instructor[] Instructors;
         public Course[] Courses;

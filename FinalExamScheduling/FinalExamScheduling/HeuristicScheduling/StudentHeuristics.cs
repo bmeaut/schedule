@@ -6,10 +6,19 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.HeuristicScheduling
 {
-    class StudentHeuristics
+    public class StudentHeuristics
     {
-        public int[] ScoreForTimeSlot;
 
-        public int TotalScore;
+        public double[] ScoreForTimeSlot = null;
+        public double TotalScore;
+
+
+
+        public StudentHeuristics(int ts)
+        {
+            ScoreForTimeSlot = new double[ts];
+            TotalScore = 0;
+        }
+
     }
 }
