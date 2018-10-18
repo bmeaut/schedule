@@ -112,7 +112,7 @@ namespace FinalExamScheduling.Model
                         Name = ws_students.Cells[iRow, 1].Text,
                         Neptun = ws_students.Cells[iRow, 2].Text,
                         Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 3].Text)),
-                        ExamCourse = courses.Find(item => item.Name.Equals(ws_students.Cells[iRow, 4].Text)),
+                        ExamCourse = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 5].Text)),
 
                     });
 
@@ -216,7 +216,7 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(memberScore), 0));
                     }
                     */
-                    //ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
                     /*double examinerScore = sch.Details[exam.Id].ExaminerScore;
                     if (examinerScore > 0)
                     {
@@ -258,11 +258,12 @@ namespace FinalExamScheduling.Model
 
                 if (Parameters.GetInfo)
                 {
+                    int rowGen = 2;
                     ws_info.Cells[1, 1].Value = "Generation number";
                     ws_info.Cells[1, 2].Value = "Actual best fitness";
                     ws_info.Cells[1, 4].Value = "Best fitness";
 
-                    int rowGen = 2;
+                    
                     foreach (var element in generationFitness)
                     {
                         ws_info.Cells[rowGen, 1].Value = element.Key;
@@ -270,7 +271,7 @@ namespace FinalExamScheduling.Model
 
                         rowGen++;
                     }
-
+                    
                     ws_info.Cells[1,5].Value = generationFitness.Values.Last();
 
                     ws_info.Cells[2, 4].Value = "Min size of population";
@@ -280,7 +281,7 @@ namespace FinalExamScheduling.Model
                     ws_info.Cells[2, 5].Value = Parameters.MinPopulationSize;
                     ws_info.Cells[3, 5].Value = Parameters.MaxPopulationSize;
                     ws_info.Cells[4, 5].Value = Parameters.StagnationTermination;
-
+                    
                     ws_info.Cells[6, 4].Value = "Scores";
                     int row = 7;
                     foreach (FieldInfo info in typeof(Scores).GetFields().Where(x => x.IsStatic && x.IsLiteral))
@@ -317,7 +318,7 @@ namespace FinalExamScheduling.Model
 
                     lineChart.SetPosition(1, 0, 7, 0);
 
-
+                
 
                 }
 
