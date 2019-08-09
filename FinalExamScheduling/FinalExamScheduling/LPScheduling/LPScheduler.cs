@@ -12,17 +12,15 @@ namespace FinalExamScheduling.LPScheduling
     {
         LPContext ctx;
 
-        
-
         public LPScheduler(Context context)
         {
             this.ctx = new LPContext(context);
         }
 
-        public LPScheduler(LPContext lpContext)
+        /*public LPScheduler(LPContext lpContext)
         {
             this.ctx = lpContext;
-        }
+        }*/
 
         public Schedule Run()
         {
@@ -40,6 +38,8 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,] varInstructors = new GRBVar[ctx.Instructors.Length, 100];
                 GRBVar[,] varStudents = new GRBVar[ctx.Students.Length, 100];
 
+                GRBVar[,] varPresidentsSessions = new GRBVar[ctx.Presidents.Length, 20];
+
 
                 for (int ts = 0; ts < 100; ts++)
                 {
@@ -52,6 +52,14 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         varStudents[s, ts] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Students[s].Name + " " + ts);
 
+                    }
+                }
+
+                for (int session = 0; session < 20; session++)
+                {
+                    for (int president = 0; president < ctx.Presidents.Length; president++)
+                    {
+                        varPresidentsSessions[president, session] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Presidents[president].Name + "_session_" + session);
                     }
                 }
 
@@ -71,7 +79,7 @@ namespace FinalExamScheduling.LPScheduling
 
                 // Add constraint: be min a president in every ts
                 string[] nameOfPresidentsConstrs = Enumerable.Range(0, 100).Select(x => "President" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), greaterArray, oneArray, nameOfPresidentsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), equalArray, oneArray, nameOfPresidentsConstrs);
 
                 // Add constraint: be min a secretary in every ts
                 string[] nameOfSecretariesConstrs = Enumerable.Range(0, 100).Select(x => "Secretary" + x).ToArray();
@@ -107,6 +115,32 @@ namespace FinalExamScheduling.LPScheduling
                         model.AddConstr(varStudents[student, ts] - sumOfExaminersVarsPerTs[ts] <= 0.0, "Examiner" + ts + "_" + student);
                     }
                 }
+
+
+                // Add constraint: president not change
+
+                GRBVar[,] presidentsVars = GetPresidentsVars(varInstructors);
+
+                for (int session = 0; session < 20; session++)
+                {
+                    for (int president = 0; president < ctx.Presidents.Length; president++)
+                    {
+                        GRBVar[] presidentsVarsInSession = new GRBVar[]
+                        {
+                            presidentsVars[president,session*5],
+                            presidentsVars[president,session*5+1],
+                            presidentsVars[president,session*5+2],
+                            presidentsVars[president,session*5+3],
+                            presidentsVars[president,session*5+4]
+                        };
+                        model.AddGenConstrAnd(varPresidentsSessions[president, session], presidentsVarsInSession, "PresindentInSession" + president + "_" + session);
+                    }
+                    
+
+                }
+                string[] nameOfPresidentsSessionsConstraints = Enumerable.Range(0, 100).Select(x => "PresidentSession" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerTs(varPresidentsSessions), equalArray, oneArray, nameOfPresidentsSessionsConstraints);
+
 
                 // Optimize model
                 model.Optimize();
