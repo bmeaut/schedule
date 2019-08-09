@@ -47,8 +47,6 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetSecretarySelfStudentScore,
                 GetExaminerNotPresidentScore
 
-
-
            };
         }
 

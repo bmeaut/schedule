@@ -144,8 +144,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetPresidents(Schedule schedule)
         {
-
-            int presidentOne = (int)((20 / ctx.Presidents.Length) * 1.2);
+            int sectionNr = ctx.Students.Length / 5;
+            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2);
             int presindetAll = presidentOne * ctx.Presidents.Length;
             Instructor[] allPresidents = new Instructor[presindetAll];
 
@@ -157,43 +157,13 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
 
             }
-            //100 => ctx.Students.Lenght
             double[,] scores = new double[presindetAll, 20];
             int[] presidentIndexes = Enumerable.Range(0, presindetAll).ToArray();
-            int[] finalExamIndexes = Enumerable.Range(0, 20).ToArray();
+            int[] finalExamIndexes = Enumerable.Range(0, sectionNr).ToArray();
 
             for (int p = 0; p < presindetAll; p++)
             {
-                /*for (int f = 0; f < 20; f++)
-                {
-                    if (allPresidents[p].Availability[f] == true)
-                    {
-                        scores[p, f] = 0;
-                    }
-                    else
-                    {
-                        scores[p, f] = -Scores.PresidentNotAvailable;
-                    }
-                }*/
-                /*for (int f = 0; f < 100; f+=10)
-                {
-                    int countMinus = 0;
-                    for (int i = f; i < f+10; i++)
-                    {
-                        if(allPresidents[p].Availability[i] == false)
-                        {
-                            countMinus++;
-                            //scores[p, i] -= Scores.PresidentChange;
-                        }
-                    }
-                    if(countMinus > 0)
-                    {
-                        for (int j = f; j < f+10; j++)
-                        {
-                            scores[p, j] -= countMinus * Scores.PresidentChange;
-                        }
-                    }
-                }*/
+                
                 int j = 0;
                 for (int f = 0; f < 100; f += 5)
                 {
@@ -203,30 +173,24 @@ namespace FinalExamScheduling.HeuristicScheduling
                         if (allPresidents[p].Availability[i] == false)
                         {
                             countMinus++;
-
                         }
                     }
                     if (countMinus > 0)
                     {
-
                         scores[p, j] -= countMinus * Scores.PresidentNotAvailable;
-
                     }
                     j++;
                 }
             }
 
             EgervaryAlgorithm.RunAlgorithm(scores, presidentIndexes, finalExamIndexes);
+
             for (int f = 0; f < finalExamIndexes.Length; f++)
             {
-                //FinalExam finalExam = new FinalExam();
-                //finalExam.President = allPresidents[finalExamIndexes[f]];
 
                 for (int i = f * 5; i < f * 5 + 5; i++)
                 {
                     schedule.FinalExams[i] = new FinalExam();
-                    //FinalExam finalExam = new FinalExam();
-                    //finalExam.President = allPresidents[finalExamIndexes[f]];
                     schedule.FinalExams[i].Id = i;
                     schedule.FinalExams[i].President = allPresidents[finalExamIndexes[f]];
                     Console.WriteLine($"A {i}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name} az elnök, {scores[finalExamIndexes[f], f]} súllyal");
@@ -444,8 +408,9 @@ namespace FinalExamScheduling.HeuristicScheduling
                 for (int f = 0; f < studentIndexes.Length; f++)
                 {
                     schedule.FinalExams[studentFEIndexes[f]].Examiner = allExaminer[studentIndexes[f]];
+
                     //schedule.FinalExams[f].Member = allMembers[finalExamIndexes[f]];
-                    //Console.WriteLine($"A {f}. záróvizsgán {allMembers[finalExamIndexes[f]].Name} a tag, {scores[finalExamIndexes[f], f]} súllyal");
+                    Console.WriteLine($"A {studentFEIndexes[f]}. záróvizsgán {allExaminer[studentIndexes[f]].Name} a vizsgáztató, {scores[studentIndexes[f], f]} súllyal");
 
 
                 }

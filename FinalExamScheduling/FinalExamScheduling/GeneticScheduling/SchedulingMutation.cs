@@ -99,7 +99,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
 
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) && finalExam.Supervisor != finalExam.Secretary
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) 
+                        && finalExam.Supervisor != finalExam.Secretary
                         && RandomizationProvider.Current.GetDouble() <= probability)
                     {
                         ((FinalExam)gene.Value).Secretary = finalExam.Supervisor;
@@ -132,7 +133,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
 
             }
-
+            
 
 
 
