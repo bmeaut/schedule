@@ -39,7 +39,7 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,] varStudents = new GRBVar[ctx.Students.Length, 100];
 
                 GRBVar[,] varPresidentsSessions = new GRBVar[ctx.Presidents.Length, 20];
-
+                GRBVar[,] varSecretariesSessions = new GRBVar[ctx.Secretaries.Length, 20];
 
                 for (int ts = 0; ts < 100; ts++)
                 {
@@ -61,6 +61,10 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         varPresidentsSessions[president, session] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Presidents[president].Name + "_session_" + session);
                     }
+                    for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                    {
+                        varSecretariesSessions[secretary, session] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Secretaries[secretary].Name + "_session_" + session);
+                    }
                 }
 
 
@@ -75,7 +79,7 @@ namespace FinalExamScheduling.LPScheduling
                 // Add constraint: max 5 instructors
                 double[] fiveArray = Enumerable.Range(0, 100).Select(x => 5.0).ToArray();
                 string[] nameOfMaxNrInstructorsConstrs = Enumerable.Range(0, 100).Select(x => "MaxInstructorsNr" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), equalArray, fiveArray, nameOfMaxNrInstructorsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), lessArray, fiveArray, nameOfMaxNrInstructorsConstrs);
 
                 // Add constraint: be min a president in every ts
                 string[] nameOfPresidentsConstrs = Enumerable.Range(0, 100).Select(x => "President" + x).ToArray();
@@ -83,7 +87,7 @@ namespace FinalExamScheduling.LPScheduling
 
                 // Add constraint: be min a secretary in every ts
                 string[] nameOfSecretariesConstrs = Enumerable.Range(0, 100).Select(x => "Secretary" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), greaterArray, oneArray, nameOfSecretariesConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), equalArray, oneArray, nameOfSecretariesConstrs);
 
                 // Add constraint: be min a member in every ts
                 string[] nameOfMembersConstrs = Enumerable.Range(0, 100).Select(x => "Member" + x).ToArray();
@@ -140,6 +144,31 @@ namespace FinalExamScheduling.LPScheduling
                 }
                 string[] nameOfPresidentsSessionsConstraints = Enumerable.Range(0, 100).Select(x => "PresidentSession" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(varPresidentsSessions), equalArray, oneArray, nameOfPresidentsSessionsConstraints);
+
+                // Add constraint: secretary not change
+
+                GRBVar[,] secretariesVars = GetSecretariesVars(varInstructors);
+
+                for (int session = 0; session < 20; session++)
+                {
+                    for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                    {
+                        GRBVar[] secretariesVarsInSession = new GRBVar[]
+                        {
+                            secretariesVars[secretary,session*5],
+                            secretariesVars[secretary,session*5+1],
+                            secretariesVars[secretary,session*5+2],
+                            secretariesVars[secretary,session*5+3],
+                            secretariesVars[secretary,session*5+4]
+                        };
+                        model.AddGenConstrAnd(varSecretariesSessions[secretary, session], secretariesVarsInSession, "SecretaryInSession" + secretary + "_" + session);
+                    }
+
+
+                }
+                string[] nameOfSecretariesSessionsConstraints = Enumerable.Range(0, 100).Select(x => "SecretariesSession" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerTs(varSecretariesSessions), equalArray, oneArray, nameOfSecretariesSessionsConstraints);
+
 
 
                 // Optimize model
