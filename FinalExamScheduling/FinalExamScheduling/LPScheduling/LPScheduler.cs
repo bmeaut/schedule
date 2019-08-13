@@ -17,11 +17,6 @@ namespace FinalExamScheduling.LPScheduling
             this.ctx = new LPContext(context);
         }
 
-        /*public LPScheduler(LPContext lpContext)
-        {
-            this.ctx = lpContext;
-        }*/
-
         public Schedule Run()
         {
             Schedule schedule = new Schedule(100);
@@ -353,6 +348,19 @@ namespace FinalExamScheduling.LPScheduling
                 }
             }
             return examinersVars;
+        }
+
+        GRBLinExpr SumOfAllVars(GRBVar[,] vars)
+        {
+            GRBLinExpr sum = 0.0;
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int i = 0; i < vars.GetLength(1); i++)
+                {
+                    sum.AddTerm(1, vars[person, i]);
+                }
+            }
+            return sum;
         }
 
     }
