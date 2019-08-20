@@ -549,11 +549,10 @@ namespace FinalExamScheduling.Model
                     //secretaryWorkloads[Array.FindIndex(context.Secretaries, item => item == fi.Secretary)]++;
                     //memberWorkloads[Array.FindIndex(context.Members, item => item == fi.Member)]++;
 
-
-                    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    /*presidentWorkloads[Array.IndexOf(context.Presidents, fi.President)]++;
+                    
+                    presidentWorkloads[Array.IndexOf(context.Presidents, fi.President)]++;
                     secretaryWorkloads[Array.IndexOf(context.Secretaries, fi.Secretary)]++;
-                    memberWorkloads[Array.IndexOf(context.Members, fi.Member)]++;*/
+                    memberWorkloads[Array.IndexOf(context.Members, fi.Member)]++;
                 }
 
                 ws_workload.Cells[1, 1].Value = "Presidents";

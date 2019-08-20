@@ -51,6 +51,22 @@ namespace FinalExamScheduling.GeneticScheduling
         }
 
 
+        public double EvaluateAll(Schedule sch)
+        {
+            int score = 0;
+
+            sch.Details = new FinalExamDetail[100];
+
+            var tasks = CostFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
+            Task.WaitAll(tasks);
+            foreach (var task in tasks)
+            {
+                score -= (int)task.Result;
+            }
+
+            return score;
+        }
+
         public double Evaluate(IChromosome chromosome)
         {
             int score = 0;
@@ -69,19 +85,6 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 score -= (int)task.Result;
             }
-
-            //var rolesScoreTask = Task.Run(() => GetRolesScore(sch));
-            //var rolesScoreTask = Task.Run(() => GetRolesScore(sch));
-            //var rolesScoreTask = Task.Run(() => GetRolesScore(sch));
-            //var rolesScoreTask = Task.Run(() => GetRolesScore(sch));
-
-
-
-
-            //Parallel.ForEach(costFunctions, costFunction =>
-            //{
-            //    Interlocked.Add(ref score, -(int)costFunction(sch));
-            //});
 
             return score;
         }

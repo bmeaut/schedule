@@ -22,8 +22,8 @@ namespace FinalExamScheduling
         static void Main(string[] args)
         {
             //RunGenetic();
-            //RunHeuristic();
-            RunLP();
+            RunHeuristic();
+            //RunLP();
 
         }
 
@@ -36,6 +36,13 @@ namespace FinalExamScheduling
             context.Init();
             lpScheduler = new LPScheduler(context);
             Schedule schedule = lpScheduler.Run();
+
+
+            context.FillDetails = true;
+            
+            SchedulingFitness evaluator = new SchedulingFitness(context);
+            double penaltyScore = evaluator.EvaluateAll(schedule);
+            Console.WriteLine("Penalty score: " + penaltyScore);
             ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context);
         }
 
@@ -48,6 +55,13 @@ namespace FinalExamScheduling
             context.Init();
             heuristicScheduler = new HeuristicScheduler(context);
             Schedule schedule = heuristicScheduler.Run();
+
+            context.FillDetails = true;
+            SchedulingFitness evaluator = new SchedulingFitness(context);
+            double penaltyScore = evaluator.EvaluateAll(schedule);
+            Console.WriteLine("Penalty score: " + penaltyScore);
+
+
             ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context);
         }
 
@@ -66,6 +80,10 @@ namespace FinalExamScheduling
                 Schedule resultSchedule = scheduleTask.Result;   
 
                 string elapsed = watch.Elapsed.ToString();
+
+                SchedulingFitness evaluator = new SchedulingFitness(context);
+                double penaltyScore = evaluator.EvaluateAll(resultSchedule);
+                Console.WriteLine("Penalty score: " + penaltyScore);
 
                 ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness), context);
 

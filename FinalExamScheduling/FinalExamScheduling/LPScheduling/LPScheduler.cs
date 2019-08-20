@@ -64,7 +64,7 @@ namespace FinalExamScheduling.LPScheduling
 
 
                 // Set objective
-                model.SetObjective(SumProduct(varInstructors), GRB.MINIMIZE);
+                model.SetObjective(SumProduct(varInstructors, ctx.Instructors), GRB.MINIMIZE);
             
                 double[] oneArray = Enumerable.Range(0, 100).Select(x => 1.0).ToArray();
                 char[] equalArray = Enumerable.Range(0, 100).Select(x => GRB.EQUAL).ToArray();
@@ -76,7 +76,7 @@ namespace FinalExamScheduling.LPScheduling
                 string[] nameOfMaxNrInstructorsConstrs = Enumerable.Range(0, 100).Select(x => "MaxInstructorsNr" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), lessArray, fiveArray, nameOfMaxNrInstructorsConstrs);
 
-                // Add constraint: be min a president in every ts
+                // Add constraint: be min a president in every ts (enélkül több elnök is lehet 1 ts-ban)
                 string[] nameOfPresidentsConstrs = Enumerable.Range(0, 100).Select(x => "President" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), equalArray, oneArray, nameOfPresidentsConstrs);
 
@@ -164,7 +164,30 @@ namespace FinalExamScheduling.LPScheduling
                 string[] nameOfSecretariesSessionsConstraints = Enumerable.Range(0, 100).Select(x => "SecretariesSession" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(varSecretariesSessions), equalArray, oneArray, nameOfSecretariesSessionsConstraints);
 
+                // Add constraint: presidents available
+                model.AddConstr(SumProduct(GetPresidentsVars(varInstructors), ctx.Presidents) == 0.0, "PresindetsAvailable");
 
+                // Add constraint: secretaries available
+                model.AddConstr(SumProduct(GetSecretariesVars(varInstructors), ctx.Secretaries) == 0.0, "SecretariesAvailable");
+
+
+                // Add constraint: workload of presidents
+                double[] threeArray = Enumerable.Range(0, 100).Select(x => 3.0).ToArray();
+                double[] sevenArray = Enumerable.Range(0, 100).Select(x => 7.0).ToArray();
+
+                string[] nameOfPresidentWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "PresintWorkloadMin" + x).ToArray();
+                string[] nameOfPresidentWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "PresintWorkloadMax" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), greaterArray, threeArray, nameOfPresidentWorkloadMinConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), lessArray, sevenArray, nameOfPresidentWorkloadMaxConstrs);
+
+                // Add constraint: workload of secretaries
+                double[] fourArray = Enumerable.Range(0, 100).Select(x => 4.0).ToArray();
+                double[] twoArray = Enumerable.Range(0, 100).Select(x => 2.0).ToArray();
+
+                string[] nameOfSecretaryWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "SecretaryWorkloadMin" + x).ToArray();
+                string[] nameOfSecretaryWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "SecretaryWorkloadMax" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), greaterArray, oneArray, nameOfSecretaryWorkloadMinConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), lessArray, threeArray, nameOfSecretaryWorkloadMaxConstrs);
 
                 // Optimize model
                 model.Optimize();
@@ -182,8 +205,8 @@ namespace FinalExamScheduling.LPScheduling
                     schedule.FinalExams[ts] = new FinalExam();
                     schedule.FinalExams[ts].Id = ts;
 
-                    schedule.FinalExams[ts].President = instructorsTS.Find(i => i.Roles.HasFlag(Roles.President));
-                    schedule.FinalExams[ts].Secretary = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Secretary));
+                    //schedule.FinalExams[ts].President = instructorsTS.Find(i => i.Roles.HasFlag(Roles.President));
+                    //schedule.FinalExams[ts].Secretary = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Secretary));
                     schedule.FinalExams[ts].Member = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Member));
 
                     for (int i = 0; i < ctx.Students.Length; i++)
@@ -210,6 +233,33 @@ namespace FinalExamScheduling.LPScheduling
 
                 }
 
+                for (int session = 0; session < 20; session++)
+                {
+                    Instructor presindetInSession = new Instructor();
+                    Instructor secretaryInSession = new Instructor();
+                    for (int president = 0; president < ctx.Presidents.Length; president++)
+                    {
+                        if(varPresidentsSessions[president,session].X == 1)
+                        {
+                            presindetInSession = ctx.Presidents[president];
+                        }
+                    }
+
+                    for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                    {
+                        if (varSecretariesSessions[secretary, session].X == 1)
+                        {
+                            secretaryInSession = ctx.Secretaries[secretary];
+                        }
+                    }
+
+                    for (int ts = session * 5 + 0; ts < session * 5 + 5; ts++)
+                    {
+                        schedule.FinalExams[ts].President = presindetInSession;
+                        schedule.FinalExams[ts].Secretary = secretaryInSession;
+                    }
+                }
+
                 Console.WriteLine("Obj: " + model.ObjVal);
 
                 // Dispose of model and env
@@ -227,7 +277,7 @@ namespace FinalExamScheduling.LPScheduling
         }
 
         // availabilities of instructors
-        GRBLinExpr SumProduct(GRBVar[,] vars)
+        GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
         {
             GRBLinExpr result = 0.0;
             for (int person = 0; person < vars.GetLength(0); person++)
@@ -235,7 +285,7 @@ namespace FinalExamScheduling.LPScheduling
                 for (int i = 0; i < vars.GetLength(1); i++)
                 {
                     double coefficient = 0.0;
-                    if (ctx.Instructors[person].Availability[i] == false) coefficient = 1000.0;
+                    if (instructors[person].Availability[i] == false) coefficient = 1000.0;
                     result.AddTerm(coefficient, vars[person, i]);
                 }
             }

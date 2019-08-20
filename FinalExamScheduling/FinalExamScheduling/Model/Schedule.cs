@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace FinalExamScheduling.Model
 {
     public class Schedule
@@ -29,5 +30,7 @@ namespace FinalExamScheduling.Model
             sb.AppendLine($"Score for Secretary Change: {fitness.GetSecretaryChangeScore(this)}");
             return sb.ToString();
         }*/
+
+        
     }
 }
