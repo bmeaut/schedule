@@ -415,12 +415,12 @@ namespace FinalExamScheduling.Model
         }
         */
 
-        public static void Write(string p_strPath, Schedule sch, Context context)
+        public static void Write(string p_strPath, Schedule sch, Context context, double[] finalScores)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
                 ExcelWorksheet ws_scheduling = xlPackage_new.Workbook.Worksheets.Add("Scheduling");
-                //ExcelWorksheet ws_info = xlPackage_new.Workbook.Worksheets.Add("Information");
+                ExcelWorksheet ws_info = xlPackage_new.Workbook.Worksheets.Add("Information");
                 ExcelWorksheet ws_workload = xlPackage_new.Workbook.Worksheets.Add("Workloads");
 
                 #region Scheduling
@@ -536,6 +536,30 @@ namespace FinalExamScheduling.Model
                 ws_scheduling.Cells.AutoFitColumns();
 
                 #endregion
+
+                #region Information
+
+                if (Parameters.GetInfo)
+                {
+                    
+
+                    ws_info.Cells[1, 1].Value = "Scores";
+                    int row = 2;
+                    foreach (FieldInfo info in typeof(Scores).GetFields().Where(x => x.IsStatic && x.IsLiteral))
+                    {
+                        ws_info.Cells[row, 1].Value = info.Name;
+                        ws_info.Cells[row, 2].Value = info.GetValue(info);
+                        ws_info.Cells[row, 3].Value = finalScores[row - 2];
+
+
+                        row++;
+                    }
+
+                }
+
+                ws_info.Cells.AutoFitColumns();
+                #endregion
+
 
                 #region Workload
 

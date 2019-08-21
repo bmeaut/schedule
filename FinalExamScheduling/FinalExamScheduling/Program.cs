@@ -22,8 +22,8 @@ namespace FinalExamScheduling
         static void Main(string[] args)
         {
             //RunGenetic();
-            RunHeuristic();
-            //RunLP();
+            //RunHeuristic();
+            RunLP();
 
         }
 
@@ -43,7 +43,9 @@ namespace FinalExamScheduling
             SchedulingFitness evaluator = new SchedulingFitness(context);
             double penaltyScore = evaluator.EvaluateAll(schedule);
             Console.WriteLine("Penalty score: " + penaltyScore);
-            ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context);
+
+            scheduler = new GeneticScheduler(context);
+            ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
 
         static void RunHeuristic()
@@ -61,8 +63,8 @@ namespace FinalExamScheduling
             double penaltyScore = evaluator.EvaluateAll(schedule);
             Console.WriteLine("Penalty score: " + penaltyScore);
 
-
-            ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context);
+            scheduler = new GeneticScheduler(context);
+            ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
 
         static void RunGenetic()

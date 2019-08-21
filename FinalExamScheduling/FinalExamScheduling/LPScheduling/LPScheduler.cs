@@ -189,6 +189,15 @@ namespace FinalExamScheduling.LPScheduling
                 model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), greaterArray, oneArray, nameOfSecretaryWorkloadMinConstrs);
                 model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), lessArray, threeArray, nameOfSecretaryWorkloadMaxConstrs);
 
+                // Add constraint: workload of members
+                double[] eightArray = Enumerable.Range(0, 100).Select(x => 8.0).ToArray();
+                double[] twelveArray = Enumerable.Range(0, 100).Select(x => 12.0).ToArray();
+
+                string[] nameOfMemberWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMin" + x).ToArray();
+                string[] nameOfMemberWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMax" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), greaterArray, sevenArray, nameOfMemberWorkloadMinConstrs);
+                //model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), lessArray, twelveArray, nameOfMemberWorkloadMaxConstrs);
+
                 // Optimize model
                 model.Optimize();
 
