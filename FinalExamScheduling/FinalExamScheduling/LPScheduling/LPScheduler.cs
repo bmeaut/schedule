@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Gurobi;
+using FinalExamScheduling.GeneticScheduling;
 
 namespace FinalExamScheduling.LPScheduling
 {
@@ -36,6 +37,15 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,] varPresidentsSessions = new GRBVar[ctx.Presidents.Length, 20];
                 GRBVar[,] varSecretariesSessions = new GRBVar[ctx.Secretaries.Length, 20];
 
+                GRBVar[] varPresidentsTempP = new GRBVar[ctx.Presidents.Length];
+                GRBVar[] varPresidentsTempQ = new GRBVar[ctx.Presidents.Length];
+
+                GRBVar[] varSecretariesTempP = new GRBVar[ctx.Secretaries.Length];
+                GRBVar[] varSecretariesTempQ = new GRBVar[ctx.Secretaries.Length];
+
+                GRBVar[] varMembersTempP = new GRBVar[ctx.Members.Length];
+                GRBVar[] varMembersTempQ = new GRBVar[ctx.Members.Length];
+
                 for (int ts = 0; ts < 100; ts++)
                 {
                     for (int i = 0; i < ctx.Instructors.Length; i++)
@@ -62,38 +72,61 @@ namespace FinalExamScheduling.LPScheduling
                     }
                 }
 
+                for (int president = 0; president < ctx.Presidents.Length; president++)
+                {
+                    varPresidentsTempP[president] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Presidents[president].Name + "_workload_P");
+                    varPresidentsTempQ[president] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Presidents[president].Name + "_workload_Q");
+                }
+
+                for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                {
+                    varSecretariesTempP[secretary] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Secretaries[secretary].Name + "_workload_P");
+                    varSecretariesTempQ[secretary] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Secretaries[secretary].Name + "_workload_Q");
+                }
+
+                for (int member = 0; member < ctx.Members.Length; member++)
+                {
+                    varMembersTempP[member] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Members[member].Name + "workload_P");
+                    varMembersTempQ[member] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, ctx.Members[member].Name + "workload_Q");
+                }
+
 
                 // Set objective
-                model.SetObjective(SumProduct(varInstructors, ctx.Instructors), GRB.MINIMIZE);
+                model.SetObjective(SumProduct(varInstructors, ctx.Instructors) 
+                    + SumOfVars(varPresidentsTempP) + SumOfVars(varPresidentsTempQ)
+                    + SumOfVars(varSecretariesTempP) + SumOfVars(varSecretariesTempQ)
+                    + SumOfVars(varMembersTempP) + SumOfVars(varMembersTempQ)
+                    , GRB.MINIMIZE);
             
-                double[] oneArray = Enumerable.Range(0, 100).Select(x => 1.0).ToArray();
                 char[] equalArray = Enumerable.Range(0, 100).Select(x => GRB.EQUAL).ToArray();
                 char[] greaterArray = Enumerable.Range(0, 100).Select(x => GRB.GREATER_EQUAL).ToArray();
                 char[] lessArray = Enumerable.Range(0, 100).Select(x => GRB.LESS_EQUAL).ToArray();
 
                 // Add constraint: max 5 instructors
-                double[] fiveArray = Enumerable.Range(0, 100).Select(x => 5.0).ToArray();
                 string[] nameOfMaxNrInstructorsConstrs = Enumerable.Range(0, 100).Select(x => "MaxInstructorsNr" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), lessArray, fiveArray, nameOfMaxNrInstructorsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), lessArray, NrArray(5.0), nameOfMaxNrInstructorsConstrs);
 
                 // Add constraint: be min a president in every ts (enélkül több elnök is lehet 1 ts-ban)
                 string[] nameOfPresidentsConstrs = Enumerable.Range(0, 100).Select(x => "President" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), equalArray, oneArray, nameOfPresidentsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), equalArray, NrArray(1.0), nameOfPresidentsConstrs);
 
                 // Add constraint: be min a secretary in every ts
                 string[] nameOfSecretariesConstrs = Enumerable.Range(0, 100).Select(x => "Secretary" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), equalArray, oneArray, nameOfSecretariesConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), equalArray, NrArray(1.0), nameOfSecretariesConstrs);
 
                 // Add constraint: be min a member in every ts
                 string[] nameOfMembersConstrs = Enumerable.Range(0, 100).Select(x => "Member" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), greaterArray, oneArray, nameOfMembersConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), greaterArray, NrArray(1.0), nameOfMembersConstrs);
+
+                string[] nameOfMembersMaxConstrs = Enumerable.Range(0, 100).Select(x => "MemberMax" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), lessArray, NrArray(2.0), nameOfMembersMaxConstrs);
 
                 // Add constraint: be a student in every ts
                 string[] nameOfStudentsPerTsConstrs = Enumerable.Range(0, 100).Select(x => "Student" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varStudents), equalArray, oneArray, nameOfStudentsPerTsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerTs(varStudents), equalArray, NrArray(1.0), nameOfStudentsPerTsConstrs);
 
                 string[] nameOfStudentsConstrs = Enumerable.Range(0, 100).Select(x => "Student" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerPerson(varStudents), equalArray, oneArray, nameOfStudentsConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varStudents), equalArray, NrArray(1.0), nameOfStudentsConstrs);
 
                 // Add constraint: be the supervisor of student there
                 for (int ts = 0; ts < varStudents.GetLength(1); ts++)
@@ -138,7 +171,7 @@ namespace FinalExamScheduling.LPScheduling
 
                 }
                 string[] nameOfPresidentsSessionsConstraints = Enumerable.Range(0, 100).Select(x => "PresidentSession" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varPresidentsSessions), equalArray, oneArray, nameOfPresidentsSessionsConstraints);
+                model.AddConstrs(SumOfPersonVarsPerTs(varPresidentsSessions), equalArray, NrArray(1.0), nameOfPresidentsSessionsConstraints);
 
                 // Add constraint: secretary not change
 
@@ -162,7 +195,7 @@ namespace FinalExamScheduling.LPScheduling
 
                 }
                 string[] nameOfSecretariesSessionsConstraints = Enumerable.Range(0, 100).Select(x => "SecretariesSession" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varSecretariesSessions), equalArray, oneArray, nameOfSecretariesSessionsConstraints);
+                model.AddConstrs(SumOfPersonVarsPerTs(varSecretariesSessions), equalArray, NrArray(1.0), nameOfSecretariesSessionsConstraints);
 
                 // Add constraint: presidents available
                 model.AddConstr(SumProduct(GetPresidentsVars(varInstructors), ctx.Presidents) == 0.0, "PresindetsAvailable");
@@ -172,31 +205,43 @@ namespace FinalExamScheduling.LPScheduling
 
 
                 // Add constraint: workload of presidents
-                double[] threeArray = Enumerable.Range(0, 100).Select(x => 3.0).ToArray();
-                double[] sevenArray = Enumerable.Range(0, 100).Select(x => 7.0).ToArray();
 
                 string[] nameOfPresidentWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "PresintWorkloadMin" + x).ToArray();
                 string[] nameOfPresidentWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "PresintWorkloadMax" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), greaterArray, threeArray, nameOfPresidentWorkloadMinConstrs);
-                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), lessArray, sevenArray, nameOfPresidentWorkloadMaxConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), greaterArray, NrArray(3.0), nameOfPresidentWorkloadMinConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varPresidentsSessions), lessArray, NrArray(7.0), nameOfPresidentWorkloadMaxConstrs);
+
+                for (int president = 0; president < ctx.Presidents.Length; president++)
+                {
+                    // for soft constraint:
+                    model.AddConstr(varPresidentsTempP[president] - varPresidentsTempQ[president] == SumOfPersonVarsPerPerson(varPresidentsSessions)[president] - 5.0, "workloadSoft" + president);
+                }
 
                 // Add constraint: workload of secretaries
-                double[] fourArray = Enumerable.Range(0, 100).Select(x => 4.0).ToArray();
-                double[] twoArray = Enumerable.Range(0, 100).Select(x => 2.0).ToArray();
 
                 string[] nameOfSecretaryWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "SecretaryWorkloadMin" + x).ToArray();
                 string[] nameOfSecretaryWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "SecretaryWorkloadMax" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), greaterArray, oneArray, nameOfSecretaryWorkloadMinConstrs);
-                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), lessArray, threeArray, nameOfSecretaryWorkloadMaxConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), greaterArray, NrArray(1.0), nameOfSecretaryWorkloadMinConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(varSecretariesSessions), lessArray, NrArray(3.0), nameOfSecretaryWorkloadMaxConstrs);
+
+                for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                {
+                    // for soft constraint:
+                    model.AddConstr(varSecretariesTempP[secretary] - varSecretariesTempQ[secretary] == SumOfPersonVarsPerPerson(varSecretariesSessions)[secretary] - 2.0, "workloadSoft" + secretary);
+                }
 
                 // Add constraint: workload of members
-                double[] eightArray = Enumerable.Range(0, 100).Select(x => 8.0).ToArray();
-                double[] twelveArray = Enumerable.Range(0, 100).Select(x => 12.0).ToArray();
 
                 string[] nameOfMemberWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMin" + x).ToArray();
                 string[] nameOfMemberWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMax" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), greaterArray, sevenArray, nameOfMemberWorkloadMinConstrs);
-                //model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), lessArray, twelveArray, nameOfMemberWorkloadMaxConstrs);
+                model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), greaterArray, NrArray(7.0), nameOfMemberWorkloadMinConstrs);
+                //model.AddConstrs(SumOfPersonVarsPerPerson(GetMembersVars(varInstructors)), lessArray, NrArray(12.0), nameOfMemberWorkloadMaxConstrs);
+
+                for (int member = 0; member < ctx.Members.Length; member++)
+                {
+                    // for soft constraint:
+                    model.AddConstr(varMembersTempP[member] - varMembersTempQ[member] == SumOfPersonVarsPerPerson(GetMembersVars(varInstructors))[member] - 10.0, "workloadSoft" + member);
+                }
 
                 // Optimize model
                 model.Optimize();
@@ -294,7 +339,7 @@ namespace FinalExamScheduling.LPScheduling
                 for (int i = 0; i < vars.GetLength(1); i++)
                 {
                     double coefficient = 0.0;
-                    if (instructors[person].Availability[i] == false) coefficient = 1000.0;
+                    if (instructors[person].Availability[i] == false) coefficient = Scores.SupervisorNotAvailable;
                     result.AddTerm(coefficient, vars[person, i]);
                 }
             }
@@ -422,5 +467,18 @@ namespace FinalExamScheduling.LPScheduling
             return sum;
         }
 
+        double[] NrArray(double number) {
+            return Enumerable.Range(0, 100).Select(x => number).ToArray();
+        }
+
+        GRBLinExpr SumOfVars(GRBVar[] vars)
+        {
+            GRBLinExpr sum = 0.0;
+            for (int person = 0; person < vars.Length; person++)
+            {
+                sum.AddTerm(1, vars[person]);
+            }
+            return sum;
+        }
     }
 }
