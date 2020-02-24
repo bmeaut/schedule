@@ -21,9 +21,9 @@ namespace FinalExamScheduling
 
         static void Main(string[] args)
         {
-            //RunGenetic();
+            RunGenetic();
             //RunHeuristic();
-            RunLP();
+            //RunLP();
 
         }
 
