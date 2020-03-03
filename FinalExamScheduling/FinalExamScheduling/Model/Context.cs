@@ -17,11 +17,9 @@ namespace FinalExamScheduling.Model
         public Instructor[] Secretaries;
         public Instructor[] Members;
 
-        public Random Rnd = new Random();
 
         public bool FillDetails;
-
-        public Student[] RandStudents;
+        
 
         public void Init()
         {
@@ -33,8 +31,7 @@ namespace FinalExamScheduling.Model
             //FillIDs(Members);
             Presidents = Instructors.Where(i => i.Roles.HasFlag(Roles.President)).ToArray();
             Secretaries = Instructors.Where(i => i.Roles.HasFlag(Roles.Secretary)).ToArray();
-            Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
-            RandStudents = Students.OrderBy(x => this.Rnd.Next()).ToArray();
+            Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray(); 
 
 
 

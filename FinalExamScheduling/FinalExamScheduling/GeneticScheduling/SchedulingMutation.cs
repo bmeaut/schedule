@@ -12,6 +12,7 @@ namespace FinalExamScheduling.GeneticScheduling
 {
     public class SchedulingMutation : MutationBase
     {
+        private Random Rnd = new Random();
         Context ctx;
 
         public SchedulingMutation(Context context)
@@ -119,13 +120,13 @@ namespace FinalExamScheduling.GeneticScheduling
 
                     if (finalExam.President.Availability[i] == false)
                     {
-                        ((FinalExam)gene.Value).President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
+                        ((FinalExam)gene.Value).President = ctx.Presidents[Rnd.Next(0, ctx.Presidents.Length)];
                         chromosome.ReplaceGene(i, gene);
                     }
 
                     if (finalExam.Secretary.Availability[i] == false)
                     {
-                        ((FinalExam)gene.Value).Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+                        ((FinalExam)gene.Value).Secretary = ctx.Secretaries[Rnd.Next(0, ctx.Secretaries.Length)];
                         chromosome.ReplaceGene(i, gene);
                     }
 

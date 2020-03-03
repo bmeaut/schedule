@@ -12,13 +12,13 @@ namespace FinalExamScheduling.GeneticScheduling
     {
         private Context ctx;
         //public int presidentNr, secretaryNr, memberNr;
-
-        //private Student[] randStudents;
+        private Random Rnd = new Random();
+        private Student[] randStudents;
 
         public SchedulingChromosome(Context context) : base(100)
         {
             this.ctx = context;
-            //randStudents = context.Students.OrderBy(x => context.Rnd.Next()).ToArray();
+            randStudents = context.Students.OrderBy(x => Rnd.Next()).ToArray();
             for (int i = 0; i < 100; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
@@ -57,12 +57,12 @@ namespace FinalExamScheduling.GeneticScheduling
 
             //fe.Student = ctx.Students[ctx.Rnd.Next(0, ctx.Students.Length)];
 
-            fe.Student = ctx.RandStudents[geneIndex];
+            fe.Student = randStudents[geneIndex];
             fe.Supervisor = fe.Student.Supervisor;
-            fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
-            fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
-            fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
+            fe.President = ctx.Presidents[Rnd.Next(0, ctx.Presidents.Length)];
+            fe.Secretary = ctx.Secretaries[Rnd.Next(0, ctx.Secretaries.Length)];
+            fe.Member = ctx.Members[Rnd.Next(0, ctx.Members.Length)];
+            fe.Examiner = fe.Student.ExamCourse.Instructors[Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
 
             return new Gene(fe);
         }

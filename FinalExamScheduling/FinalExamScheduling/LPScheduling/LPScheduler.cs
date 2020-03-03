@@ -11,11 +11,11 @@ namespace FinalExamScheduling.LPScheduling
 {
     public class LPScheduler
     {
-        LPContext ctx;
+        Context ctx;
 
         public LPScheduler(Context context)
         {
-            this.ctx = new LPContext(context);
+            ctx = context;
         }
 
         public Schedule Run()
