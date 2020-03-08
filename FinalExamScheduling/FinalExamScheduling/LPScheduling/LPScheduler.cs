@@ -13,10 +13,12 @@ namespace FinalExamScheduling.LPScheduling
     {
         Context ctx;
 
-        //tsCount == sessionCount * tssInSections
+        //tsCount == sessionCount * tssInSession
         private int tsCount = 100; //Timeslot count
         private int sessionCount = 20;
         private int tssInSession = 5; //Timeslots in a single session
+
+        private int examCount => ctx.Students.Length;
 
         public LPScheduler(Context context)
         {
@@ -25,7 +27,7 @@ namespace FinalExamScheduling.LPScheduling
 
         public Schedule Run()
         {
-            Schedule schedule = new Schedule(tsCount);
+            Schedule schedule=null;
   
             try
             {
@@ -38,6 +40,8 @@ namespace FinalExamScheduling.LPScheduling
                 // Create variables
                 GRBVar[,] varInstructors = new GRBVar[ctx.Instructors.Length, tsCount];
                 GRBVar[,] varStudents = new GRBVar[ctx.Students.Length, tsCount];
+                GRBVar[] varSkipTss = new GRBVar[tsCount];
+                GRBVar[] varSkipSessions = new GRBVar[sessionCount];
 
                 GRBVar[,] varPresidentsSessions = new GRBVar[ctx.Presidents.Length, sessionCount];
                 GRBVar[,] varSecretariesSessions = new GRBVar[ctx.Secretaries.Length, sessionCount];
@@ -62,7 +66,8 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         varStudents[s, ts] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Students[s].Name + " " + ts);
                     }
-
+                    
+                    varSkipTss[ts] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "Timeslot is skipped " + ts);
                 }
 
                 for (int session = 0; session < sessionCount; session++)
@@ -75,6 +80,8 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         varSecretariesSessions[secretary, session] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, ctx.Secretaries[secretary].Name + "_session_" + session);
                     }
+
+                    varSkipSessions[session] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "Session is skipped " + session);
                 }
 
                 for (int president = 0; president < ctx.Presidents.Length; president++)
@@ -108,29 +115,42 @@ namespace FinalExamScheduling.LPScheduling
                 char[] lessArray = Enumerable.Range(0, tsCount).Select(x => GRB.LESS_EQUAL).ToArray();
 
 
+                // Add constraint: examcount equals total timeslots minus skipped timeslots
+                model.AddConstr(SumOfVars(varSkipTss) == tsCount - examCount, "Skipped timeslots equals total timeslots minus examcount");
+
+                // Add constraint: skip or keep every timeslot in a session
+                AddContraintsToSessionTimeslotConsistency(model, varSkipTss, varSkipSessions, "SkipExamNotChange");
+
                 // Add constraint: max 5 instructors
                 string[] nameOfMaxNrInstructorsConstrs = Enumerable.Range(0, tsCount).Select(x => "MaxInstructorsNr" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(varInstructors), lessArray, NrArray(5.0), nameOfMaxNrInstructorsConstrs);
 
-                // Add constraint: be exactly? a president in every ts (enélkül több elnök is lehet 1 ts-ban)
+
+                var linExprSkipExams = varSkipTss.Select(item => (1.0*item)).ToArray();
+                var linExprSkipSessions = varSkipSessions.Select(item => (1.0*item)).ToArray();                                
+
+
+                // Add constraint: be exactly a president in every exam (enélkül több elnök is lehet 1 ts-ban)
                 string[] nameOfPresidentsConstrs = Enumerable.Range(0, tsCount).Select(x => "President" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), equalArray, NrArray(1.0), nameOfPresidentsConstrs);
+                model.AddConstrs(Sum(SumOfPersonVarsPerTs(GetPresidentsVars(varInstructors)), linExprSkipExams), equalArray, NrArray(1.0), nameOfPresidentsConstrs);
 
-                // Add constraint: be exactly? a secretary in every ts
+                // Add constraint: be exactly a secretary in every exam
                 string[] nameOfSecretariesConstrs = Enumerable.Range(0, tsCount).Select(x => "Secretary" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), equalArray, NrArray(1.0), nameOfSecretariesConstrs);
+                model.AddConstrs(Sum(SumOfPersonVarsPerTs(GetSecretariesVars(varInstructors)), linExprSkipExams), equalArray, NrArray(1.0), nameOfSecretariesConstrs);
 
-                // Add constraint: be min a member in every ts
+                // Add constraint: be min a member in every exam
                 string[] nameOfMembersConstrs = Enumerable.Range(0, tsCount).Select(x => "Member" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), greaterArray, NrArray(1.0), nameOfMembersConstrs);
+                model.AddConstrs(Sum(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), linExprSkipExams), greaterArray, NrArray(1.0), nameOfMembersConstrs);
 
+                // Add constraint: be max two member in every ts
                 string[] nameOfMembersMaxConstrs = Enumerable.Range(0, tsCount).Select(x => "MemberMax" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerTs(GetMembersVars(varInstructors)), lessArray, NrArray(2.0), nameOfMembersMaxConstrs);
 
-                // Add constraint: be a student in every ts
+                // Add constraint: be exactly one student in every exam
                 string[] nameOfStudentsPerTsConstrs = Enumerable.Range(0, tsCount).Select(x => "Student" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varStudents), equalArray, NrArray(1.0), nameOfStudentsPerTsConstrs);
+                model.AddConstrs(Sum(SumOfPersonVarsPerTs(varStudents), linExprSkipExams), equalArray, NrArray(1.0), nameOfStudentsPerTsConstrs);
 
+                // Add constraint: every student in exactly one exam
                 string[] nameOfStudentsConstrs = Enumerable.Range(0, tsCount).Select(x => "Student" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerPerson(varStudents), equalArray, NrArray(1.0), nameOfStudentsConstrs);
 
@@ -156,47 +176,24 @@ namespace FinalExamScheduling.LPScheduling
 
 
                 // Add constraint: president not change
-
                 GRBVar[,] presidentsVars = GetPresidentsVars(varInstructors);
-
-                for (int session = 0; session < sessionCount; session++)
+                for (int instructor = 0; instructor < presidentsVars.GetLength(0); instructor++)
                 {
-                    for (int president = 0; president < ctx.Presidents.Length; president++)
-                    {
-                        GRBVar[] presidentsVarsInSession = 
-                            Enumerable.Range(0, tssInSession)
-                            .Select(ts => presidentsVars[president, session * tssInSession + ts])
-                            .ToArray();
-
-                        model.AddGenConstrAnd(varPresidentsSessions[president, session], presidentsVarsInSession, "PresindentInSession" + president + "_" + session);
-                    }
-                    
-
+                    var varsTs = presidentsVars.GetRow(instructor);
+                    var varsSession = varPresidentsSessions.GetRow(instructor);
+                    AddContraintsToSessionTimeslotConsistency(model, varsTs, varsSession, "PresidentNotChange");
                 }
-                string[] nameOfPresidentsSessionsConstraints = Enumerable.Range(0, tsCount).Select(x => "PresidentSession" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varPresidentsSessions), equalArray, NrArray(1.0), nameOfPresidentsSessionsConstraints);
 
                 // Add constraint: secretary not change
-
                 GRBVar[,] secretariesVars = GetSecretariesVars(varInstructors);
-
-                for (int session = 0; session < sessionCount; session++)
+                for (int instructor = 0; instructor < secretariesVars.GetLength(0); instructor++)
                 {
-                    for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
-                    {
-                        GRBVar[] secretariesVarsInSession =
-                            Enumerable.Range(0, tssInSession)
-                            .Select(ts => secretariesVars[secretary, session * tssInSession + ts])
-                            .ToArray();
-
-                        model.AddGenConstrAnd(varSecretariesSessions[secretary, session], secretariesVarsInSession, "SecretaryInSession" + secretary + "_" + session);
-                    }
-
-
+                    var varsTs = secretariesVars.GetRow(instructor);
+                    var varsSession = varSecretariesSessions.GetRow(instructor);
+                    AddContraintsToSessionTimeslotConsistency(model, varsTs, varsSession, "SecretaryNotChange");
                 }
-                string[] nameOfSecretariesSessionsConstraints = Enumerable.Range(0, tsCount).Select(x => "SecretariesSession" + x).ToArray();
-                model.AddConstrs(SumOfPersonVarsPerTs(varSecretariesSessions), equalArray, NrArray(1.0), nameOfSecretariesSessionsConstraints);
 
+           
                 // Add constraint: presidents available
                 model.AddConstr(SumProduct(GetPresidentsVars(varInstructors), ctx.Presidents) == 0.0, "PresindetsAvailable");
 
@@ -250,51 +247,69 @@ namespace FinalExamScheduling.LPScheduling
                     Console.WriteLine("The model can't be optimal!");
                     return null;
                 }
-                
 
+                //Constructing schedule from model
+                schedule = new Schedule(examCount);
+                var exam = 0;
                 for (int ts = 0; ts < tsCount; ts++)
                 {
+                    if (varSkipTss[ts].X == 1.0)
+                        continue;
+
+                    schedule.FinalExams[exam] = new FinalExam();
+                    schedule.FinalExams[exam].Id = ts;
+
+
                     List<Instructor> instructorsTS = new List<Instructor>();
                     for (int person = 0; person < ctx.Instructors.Length; person++)
                     {
-                        if(varInstructors[person,ts].X == 1.0)
+                        if (varInstructors[person, ts].X == 1.0)
                         {
                             instructorsTS.Add(ctx.Instructors[person]);
                         }
                     }
-                    schedule.FinalExams[ts] = new FinalExam();
-                    schedule.FinalExams[ts].Id = ts;
 
                     //schedule.FinalExams[ts].President = instructorsTS.Find(i => i.Roles.HasFlag(Roles.President));
                     //schedule.FinalExams[ts].Secretary = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Secretary));
-                    schedule.FinalExams[ts].Member = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Member));
+                    schedule.FinalExams[exam].Member = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Member));
 
                     for (int i = 0; i < ctx.Students.Length; i++)
                     {
                         if(varStudents[i,ts].X == 1.0)
                         {
-                            schedule.FinalExams[ts].Student = ctx.Students[i];
+                            schedule.FinalExams[exam].Student = ctx.Students[i];
                         }
                     }
-                    if (instructorsTS.Contains(schedule.FinalExams[ts].Student.Supervisor))
-                    {
-                        schedule.FinalExams[ts].Supervisor = schedule.FinalExams[ts].Student.Supervisor;
-                    }
 
-                    Course courseOfStudent = schedule.FinalExams[ts].Student.ExamCourse;
+                    //Right now there is a constraint for this, so we always should enter this if statement
+                    //And if we change the constraints, and happen to skip this if statement, evaluater (ScheduleFitness) will throw NullReferenceException
+                    if (instructorsTS.Contains(schedule.FinalExams[exam].Student.Supervisor))
+                    {
+                        schedule.FinalExams[exam].Supervisor = schedule.FinalExams[exam].Student.Supervisor;
+                    }
+                  
+
+                    Course courseOfStudent = schedule.FinalExams[exam].Student.ExamCourse;
 
                     for (int i = 0; i < courseOfStudent.Instructors.Length; i++)
                     {
                         if (instructorsTS.Contains(courseOfStudent.Instructors[i]))
                         {
-                            schedule.FinalExams[ts].Examiner = courseOfStudent.Instructors[i];
+                            schedule.FinalExams[exam].Examiner = courseOfStudent.Instructors[i];
                         }
                     }
 
+                    exam++;
+
                 }
 
+                var realSession = 0;
                 for (int session = 0; session < sessionCount; session++)
                 {
+                    if (varSkipSessions[session].X == 1.0)
+                        continue;
+
+
                     Instructor presindetInSession = new Instructor();
                     Instructor secretaryInSession = new Instructor();
                     for (int president = 0; president < ctx.Presidents.Length; president++)
@@ -313,14 +328,17 @@ namespace FinalExamScheduling.LPScheduling
                         }
                     }
 
-                    for (int ts = session * 5 + 0; ts < session * 5 + 5; ts++)
+                    for (int ts = realSession * tssInSession + 0; ts < (realSession+1) * tssInSession; ts++)
                     {
                         schedule.FinalExams[ts].President = presindetInSession;
                         schedule.FinalExams[ts].Secretary = secretaryInSession;
                     }
+                    
+                    realSession++;
                 }
 
                 Console.WriteLine("Obj: " + model.ObjVal);
+                Console.WriteLine("Gen constraints: " + model.GetGenConstrs().Length);
 
                 // Dispose of model and env
                 model.Dispose();
@@ -335,6 +353,12 @@ namespace FinalExamScheduling.LPScheduling
 
             return schedule;
         }
+
+        GRBLinExpr[] Sum(GRBLinExpr[] vars1, GRBLinExpr[] vars2)
+        {
+            return vars1.Zip(vars2, (var1, var2) => var1 + var2).ToArray();
+        }
+
 
         // availabilities of instructors
         GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
@@ -472,8 +496,8 @@ namespace FinalExamScheduling.LPScheduling
             return sum;
         }
 
-        double[] NrArray(double number) {
-            return Enumerable.Range(0, tsCount).Select(x => number).ToArray();
+        double[] NrArray(double number, int? lengthOfArray=null) {
+            return Enumerable.Range(0, lengthOfArray ?? tsCount).Select(x => number).ToArray();
         }
 
         GRBLinExpr SumOfVars(GRBVar[] vars)
@@ -484,6 +508,30 @@ namespace FinalExamScheduling.LPScheduling
                 sum.AddTerm(1, vars[person]);
             }
             return sum;
+        }
+
+        void AddContraintsToSessionTimeslotConsistency(GRBModel model, GRBVar[] varsTs, GRBVar[] varsSession, string constraintName)
+        {
+            //for (int session = 0; session < sessionCount; session++)
+            //{
+            //    GRBVar[] varsInSession =
+            //        Enumerable.Range(0, tssInSession)
+            //        .Select(ts => varsTs[session * tssInSession + ts])
+            //        .ToArray();
+
+            //    model.AddGenConstrAnd(varsSession[session], varsInSession, constraintName + "_And_" + session);
+            //    model.AddGenConstrOr(varsSession[session], varsInSession, constraintName + "_Or_" + session);
+            //}
+
+            for (int session = 0; session < sessionCount; session++)
+            {
+                var varSession = varsSession[session];
+                for (int ts = 0; ts < tssInSession; ts++)
+                {
+                    var varExam = varsTs[session * tssInSession + ts];
+                    model.AddConstr(varExam == varSession, $"{constraintName}_{session}_{ts}");
+                }
+            }
         }
     }
 }

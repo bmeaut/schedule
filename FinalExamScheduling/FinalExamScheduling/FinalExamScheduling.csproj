@@ -49,8 +49,8 @@
     <Reference Include="GeneticSharp.Infrastructure.Threading, Version=1.1.6601.1439, Culture=neutral, PublicKeyToken=f24c5e2578f0ecff, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\GeneticSharp.Infrastructure.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="Gurobi81.NET">
-      <HintPath>C:\gurobi811\win64\bin\Gurobi81.NET.dll</HintPath>
+    <Reference Include="Gurobi90.NET">
+      <HintPath>..\..\..\..\..\..\..\gurobi901\win64\bin\Gurobi90.NET.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
@@ -82,6 +82,7 @@
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
+    <Compile Include="LPScheduling\ArrayExtensions.cs" />
     <Compile Include="LPScheduling\LPContext.cs" />
     <Compile Include="LPScheduling\LPScheduler.cs" />
     <Compile Include="Model\Context.cs" />
@@ -110,7 +111,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
