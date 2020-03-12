@@ -21,39 +21,39 @@ namespace FinalExamScheduling.GeneticScheduling
         public readonly Dictionary<int, double> GenerationFitness = new Dictionary<int, double>();
         private GeneticAlgorithm geneticAlgorithm;
         private SchedulingTermination termination;
-        
 
-        public SchedulingFitness Fitness { get; private set; }
+
+        public SchedulingFitness fitness { get; private set; }
+        private SchedulingSelection selection;
 
 
         public GeneticScheduler(Context context)
         {
             this.ctx = context;
-
         }
 
         public Task<Schedule> RunAsync()
         {
+            var chromosome = new SchedulingChromosome(ctx);
+
             var selection = new EliteSelection();
+            //selection = new SchedulingSelection(ctx);
+            //selection.ratio = 4;
             var crossover = new UniformCrossover(0.5f);
             //var mutation = new TworsMutation();
             var mutation = new SchedulingMutation(ctx);
-      
 
             //var mutation = new UniformMutation();
-
-            var chromosome = new SchedulingChromosome(ctx);
-            Fitness = new SchedulingFitness(ctx);
-
+            fitness = new SchedulingFitness(ctx);
 
             var population = new Population(Parameters.MinPopulationSize, Parameters.MaxPopulationSize, chromosome);
 
             termination = new SchedulingTermination();
 
-            geneticAlgorithm = new GeneticAlgorithm(population, Fitness, selection, crossover, mutation);
+            geneticAlgorithm = new GeneticAlgorithm(population, fitness, selection, crossover, mutation);
             geneticAlgorithm.Termination = termination;
             geneticAlgorithm.GenerationRan += GenerationRan;
-            geneticAlgorithm.MutationProbability = 0.05f;
+            geneticAlgorithm.MutationProbability = 0.1f;
 
 
             return Task.Run<Schedule>(
@@ -61,14 +61,14 @@ namespace FinalExamScheduling.GeneticScheduling
                 {
                     Console.WriteLine("GA running...");
                     geneticAlgorithm.Start();
-                   
+
                     Console.WriteLine("Best solution found has {0} fitness.", geneticAlgorithm.BestChromosome.Fitness);
                     var bestChromosome = geneticAlgorithm.BestChromosome as SchedulingChromosome;
                     var best = bestChromosome.Schedule;
                     return best;
 
                 });
-           
+
         }
 
         internal void Cancel()
@@ -76,9 +76,25 @@ namespace FinalExamScheduling.GeneticScheduling
             termination.ShouldTerminate = true;
         }
 
+        private int d = 0;
+
         void GenerationRan(object sender, EventArgs e)
         {
+            geneticAlgorithm.MutationProbability -= 0.001f;
+            if (geneticAlgorithm.MutationProbability <= 0)
+            {
+                geneticAlgorithm.MutationProbability = 0.1f;
+            }
+            //if (d++ % 20 == 0)
+            //{
+            //    selection.ratio = (selection.ratio + 1) % 5 + 1;
+            //}
             var bestChromosome = geneticAlgorithm.BestChromosome as SchedulingChromosome;
+            foreach (var item in geneticAlgorithm.Population.CurrentGeneration.Chromosomes)
+            {
+                Console.WriteLine(item.Fitness);
+            }
+            Console.WriteLine("\t\t\t\t" + geneticAlgorithm.Population.CurrentGeneration.Chromosomes.Count);
             var bestFitness = bestChromosome.Fitness.Value;
 
             GenerationFitness.Add(geneticAlgorithm.GenerationsNumber, bestFitness);
@@ -88,15 +104,15 @@ namespace FinalExamScheduling.GeneticScheduling
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
             ctx.FillDetails = true;
-            
+
             sch.Details = Enumerable.Range(0, 100).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
-         
+
 
             //List<double> results = new List<double>
             //{
-                
+
             //    fitness.GetStudentDuplicatedScore(sch),
             //    fitness.GetPresidentNotAvailableScore(sch),
             //    fitness.GetSecretaryNotAvailableScore(sch),

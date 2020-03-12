@@ -21,7 +21,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
-            
+
 
             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
             {
@@ -37,7 +37,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
 
-            if (RandomizationProvider.Current.GetDouble() <= probability/2)
+            if (RandomizationProvider.Current.GetDouble() <= probability / 2)
             {
                 for (int i = 0; i < 100; i += 5)
                 {
@@ -75,14 +75,14 @@ namespace FinalExamScheduling.GeneticScheduling
 
                 }
             }
-            if (RandomizationProvider.Current.GetDouble() <= probability)
+            if (RandomizationProvider.Current.GetDouble() <= probability / 3)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
 
-                    if(finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President
                         && RandomizationProvider.Current.GetDouble() <= probability)
                     {
                         ((FinalExam)gene.Value).President = finalExam.Supervisor;
@@ -92,14 +92,14 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
 
-            if (RandomizationProvider.Current.GetDouble() <= probability)
+            if (RandomizationProvider.Current.GetDouble() <= probability / 4)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
 
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) 
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary)
                         && finalExam.Supervisor != finalExam.Secretary
                         && RandomizationProvider.Current.GetDouble() <= probability)
                     {
@@ -110,7 +110,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
 
-            if (RandomizationProvider.Current.GetDouble() <= probability/4)
+            if (RandomizationProvider.Current.GetDouble() <= probability / 3)
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -131,12 +131,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
                 }
-
             }
-            
-
-
-
         }
     }
 }

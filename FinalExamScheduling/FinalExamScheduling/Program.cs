@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FinalExamScheduling.LPScheduling;
 
 namespace FinalExamScheduling
 {
@@ -17,35 +16,12 @@ namespace FinalExamScheduling
     {
         static GeneticScheduler scheduler;
         static HeuristicScheduler heuristicScheduler;
-        static LPScheduler lpScheduler;
 
         static void Main(string[] args)
         {
-            //RunGenetic();
+            RunGenetic();
             //RunHeuristic();
-            RunLP();
 
-        }
-
-        private static void RunLP()
-        {
-            FileInfo existingFile = new FileInfo("Input.xlsx");
-
-            var context = ExcelHelper.Read(existingFile);
-
-            context.Init();
-            lpScheduler = new LPScheduler(context);
-            Schedule schedule = lpScheduler.Run();
-
-
-            context.FillDetails = true;
-            
-            SchedulingFitness evaluator = new SchedulingFitness(context);
-            double penaltyScore = evaluator.EvaluateAll(schedule);
-            Console.WriteLine("Penalty score: " + penaltyScore);
-
-            scheduler = new GeneticScheduler(context);
-            ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
 
         static void RunHeuristic()
@@ -87,7 +63,7 @@ namespace FinalExamScheduling
                 double penaltyScore = evaluator.EvaluateAll(resultSchedule);
                 Console.WriteLine("Penalty score: " + penaltyScore);
 
-                ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness), context);
+                ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.fitness), context);
 
             }
             );
