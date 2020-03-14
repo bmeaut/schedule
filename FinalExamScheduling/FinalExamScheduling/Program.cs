@@ -38,7 +38,7 @@ namespace FinalExamScheduling
             Schedule schedule = lpScheduler.Run();
 
 
-            context.FillDetails = true;
+            context.FillDetails = false;
             
             SchedulingFitness evaluator = new SchedulingFitness(context);
             double penaltyScore = evaluator.EvaluateAll(schedule);
@@ -46,6 +46,8 @@ namespace FinalExamScheduling
 
             scheduler = new GeneticScheduler(context);
             ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
+
+            Console.ReadLine();
         }
 
         static void RunHeuristic()

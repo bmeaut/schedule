@@ -87,7 +87,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
-            ctx.FillDetails = true;
+            ctx.FillDetails = false;
             
             sch.Details = Enumerable.Range(0, 100).Select(i => new FinalExamDetail()).ToArray();
 

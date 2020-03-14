@@ -14,8 +14,8 @@ namespace FinalExamScheduling.LPScheduling
         Context ctx;
 
         //tsCount == sessionCount * tssInSession
-        private int tsCount = 100; //Timeslot count
-        private int sessionCount = 20;
+        private int tsCount = 110; //Timeslot count
+        private int sessionCount = 22;
         private int tssInSession = 5; //Timeslots in a single session
 
         private int examCount => ctx.Students.Length;
@@ -299,22 +299,13 @@ namespace FinalExamScheduling.LPScheduling
                         }
                     }
 
-                    exam++;
-
-                }
-
-                var realSession = 0;
-                for (int session = 0; session < sessionCount; session++)
-                {
-                    if (varSkipSessions[session].X == 1.0)
-                        continue;
-
-
                     Instructor presindetInSession = new Instructor();
                     Instructor secretaryInSession = new Instructor();
+                    var varPresidents = GetPresidentsVars(varInstructors);
+                    var varSecretaries = GetSecretariesVars(varInstructors);
                     for (int president = 0; president < ctx.Presidents.Length; president++)
                     {
-                        if(varPresidentsSessions[president,session].X == 1)
+                        if (varPresidents[president, ts].X == 1)
                         {
                             presindetInSession = ctx.Presidents[president];
                         }
@@ -322,21 +313,21 @@ namespace FinalExamScheduling.LPScheduling
 
                     for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
                     {
-                        if (varSecretariesSessions[secretary, session].X == 1)
+                        if (varSecretaries[secretary, ts].X == 1)
                         {
                             secretaryInSession = ctx.Secretaries[secretary];
                         }
                     }
 
-                    for (int ts = realSession * tssInSession + 0; ts < (realSession+1) * tssInSession; ts++)
-                    {
-                        schedule.FinalExams[ts].President = presindetInSession;
-                        schedule.FinalExams[ts].Secretary = secretaryInSession;
-                    }
+                    schedule.FinalExams[exam].President = presindetInSession;
+                    schedule.FinalExams[exam].Secretary = secretaryInSession;
                     
-                    realSession++;
+
+                    exam++;
+
                 }
 
+             
                 Console.WriteLine("Obj: " + model.ObjVal);
                 Console.WriteLine("Gen constraints: " + model.GetGenConstrs().Length);
 
