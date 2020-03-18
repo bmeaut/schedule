@@ -62,7 +62,7 @@ namespace FinalExamScheduling.GeneticScheduling
             fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
             fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
             fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
+            fe.Examiner = fe.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse1.Instructors.Length)];
 
             return new Gene(fe);
         }

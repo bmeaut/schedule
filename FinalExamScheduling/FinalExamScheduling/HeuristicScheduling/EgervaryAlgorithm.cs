@@ -112,10 +112,6 @@ namespace Alairas.Common
                     return;
                 }
 
-                //if (CountCopulation(copulationVerticesY) == 0)
-                //{
-                //    return;
-                //}
 
                 var F1UF2 = new List<int>();
                 var L2 = new List<int>();

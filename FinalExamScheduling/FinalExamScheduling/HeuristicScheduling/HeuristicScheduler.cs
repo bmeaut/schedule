@@ -101,7 +101,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                         score -= Scores.SupervisorNotAvailable;
                     }
 
-                    foreach (Instructor instuctor in ctx.Students[student_id].ExamCourse.Instructors)
+                    foreach (Instructor instuctor in ctx.Students[student_id].ExamCourse1.Instructors)
                     {
                         if (!instuctor.Availability[ts])
                         {
@@ -112,7 +112,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                             score += Scores.ExaminerNotPresident;
                         }
                     }
-                    score += examScore / ctx.Students[student_id].ExamCourse.Instructors.Length;
+                    score += examScore / ctx.Students[student_id].ExamCourse1.Instructors.Length;
 
                     ctx.Heuristics[student_id].ScoreForTimeSlot[ts] = score;
                 }
@@ -360,7 +360,7 @@ namespace FinalExamScheduling.HeuristicScheduling
 
                 for (int i = 0; i < 100; i++)
                 {
-                    if (schedule.FinalExams[i].Student.ExamCourse == course)
+                    if (schedule.FinalExams[i].Student.ExamCourse1 == course)
                     {
                         numOfStudents++;
                         allStudents.Add(schedule.FinalExams[i].Student);

@@ -29,9 +29,9 @@ namespace FinalExamScheduling
 
         private static void RunLP()
         {
-            FileInfo existingFile = new FileInfo("Input.xlsx");
+            FileInfo existingFile = new FileInfo("Input2.xlsx");
 
-            var context = ExcelHelper.Read(existingFile);
+            var context = ExcelHelper.ReadFull(existingFile);
 
             context.Init();
             lpScheduler = new LPScheduler(context);

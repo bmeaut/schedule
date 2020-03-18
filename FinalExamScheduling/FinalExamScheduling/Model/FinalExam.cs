@@ -9,21 +9,15 @@ namespace FinalExamScheduling.Model
     public class FinalExam: Entity
     {
         public Student Student = null;
-
-
         public Instructor Supervisor = null;
-
-
         public Instructor President = null;
-
-
         public Instructor Secretary = null;
-
-
         public Instructor Member = null;
-
-
         public Instructor Examiner = null;
+        public bool IsBsc;
+        public Programme Programme;
+        public int RoomNr;
+        public int startTs;
 
     }
 }

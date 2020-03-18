@@ -112,7 +112,7 @@ namespace FinalExamScheduling.Model
                         Name = ws_students.Cells[iRow, 1].Text,
                         Neptun = ws_students.Cells[iRow, 2].Text,
                         Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 3].Text)),
-                        ExamCourse = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 5].Text)),
+                        ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 5].Text)),
 
                     });
 
@@ -131,6 +131,137 @@ namespace FinalExamScheduling.Model
 
 
         }
+
+        public static Context ReadFull(FileInfo existingFile)
+        {
+            var context = new Context();
+            using (ExcelPackage xlPackage = new ExcelPackage(existingFile))
+            {
+                Console.WriteLine("Reading of Excel was succesful");
+
+                ExcelWorksheet ws_students = xlPackage.Workbook.Worksheets[1];
+                ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets[2];
+                ExcelWorksheet ws_courses = xlPackage.Workbook.Worksheets[3];
+                ExcelWorksheet ws_presidents = xlPackage.Workbook.Worksheets[4];
+
+                List<Instructor> instructors = new List<Instructor>();
+                List<Student> students = new List<Student>();
+                List<Course> courses = new List<Course>();
+
+
+                var endStud = ws_students.Dimension.End;
+                var endInst = ws_instructors.Dimension.End;
+                var endCour = ws_courses.Dimension.End;
+
+                //Instructor
+                for (int iRow = 3; iRow <= endInst.Row; iRow++)
+                {
+                    Roles tempRoles = new Roles();
+                    Programme tempPrograms = new Programme();
+
+                    if (ws_instructors.Cells[iRow, 2].Text == "x")
+                    {
+                        tempRoles |= Roles.President;
+                    }
+
+                    if (ws_instructors.Cells[iRow, 3].Text == "x")
+                    {
+                        tempRoles |= Roles.Member;
+                    }
+
+                    if (ws_instructors.Cells[iRow, 4].Text == "x")
+                    {
+                        tempRoles |= Roles.Secretary;
+                    }
+
+                    if (ws_instructors.Cells[iRow, 5].Text == "x")
+                    {
+                        tempPrograms |= Programme.ComputerScience;
+                    }
+
+                    if (ws_instructors.Cells[iRow, 6].Text == "x")
+                    {
+                        tempPrograms |= Programme.ElectricalEngineering;
+                    }
+
+                    List<bool> tempAvailability = new List<bool>();
+                    for (int iCol = 7; iCol <= endInst.Column; iCol++)
+                    {
+                        if (ws_instructors.Cells[iRow, iCol].Text == "x")
+                        {
+                            tempAvailability.Add(true);
+                        }
+                        else
+                        {
+                            tempAvailability.Add(false);
+                        }
+                    }
+
+                    instructors.Add(new Instructor
+                    {
+                        Name = ws_instructors.Cells[iRow, 1].Text,
+                        Availability = tempAvailability.ToArray(),
+                        Roles = tempRoles,
+                        Programs = tempPrograms
+                    });
+
+                    //Console.WriteLine(context.instructors[iRow - 3].name + "\t " +  "\t " + context.instructors[iRow - 3].roles);
+
+                }
+
+
+                //Course
+                for (int iCol = 1; iCol <= endCour.Column; iCol++)
+                {
+                    List<Instructor> tempInstructors = new List<Instructor>();
+                    int iRow = 3;
+                    while (ws_courses.Cells[iRow, iCol].Value != null)
+                    {
+                        tempInstructors.Add(instructors.Find(item => item.Name.Equals(ws_courses.Cells[iRow, iCol].Text)));
+
+                        iRow++;
+                    }
+                    courses.Add(new Course
+                    {
+                        Name = ws_courses.Cells[2, iCol].Text,
+                        CourseCode = ws_courses.Cells[1, iCol].Text,
+                        Instructors = tempInstructors.ToArray()
+                    });
+
+                    //Console.WriteLine(context.courses[iCol - 1].name + "\t " + context.courses[iCol - 1].courseCode + "\t ");
+                }
+
+                //Student
+                for (int iRow = 2; iRow <= endStud.Row; iRow++)
+                {
+                    int index = iRow - 2;
+                    students.Add(new Student
+                    {
+                        Name = ws_students.Cells[iRow, 1].Text,
+                        Neptun = ws_students.Cells[iRow, 2].Text,
+                        IsBSc = ws_students.Cells[iRow, 3].Text == "BSc" ? true : false,
+                        Programme = ws_students.Cells[iRow, 4].Text == "mérnökinformatikus" ? Programme.ComputerScience : Programme.ElectricalEngineering,
+                        Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 5].Text)),
+                        ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 7].Text))
+                    });
+                    students[index].ExamCourse2 = students[index].IsBSc ? null : courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text));
+
+                    //Console.WriteLine(context.students[iRow - 2].name + "\t " + context.students[iRow - 2].neptun + "\t " 
+                    //    + context.students[iRow - 2].supervisor.name + "\t " + context.students[iRow - 2].examCourse.name);
+                }
+
+                context.Students = students.ToArray();
+                context.Instructors = instructors.ToArray();
+                context.Courses = courses.ToArray();
+            }
+
+
+            return context;
+
+
+
+        }
+
 
         public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness, double[] finalScores, Context context)
         {
@@ -226,7 +357,7 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(examinerScore), 0));
                     }
                     
-                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse.Name;
+                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse1.Name;
                     ws_scheduling.Cells[i, 8].Value = exam.Id;
                     
 
@@ -509,7 +640,7 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(examinerScore), 0));
                     }*/
 
-                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse.Name;
+                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse1.Name;
                     ws_scheduling.Cells[i, 8].Value = exam.Id;
 
 

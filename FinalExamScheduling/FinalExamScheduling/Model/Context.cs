@@ -9,6 +9,20 @@ namespace FinalExamScheduling.Model
     public class Context
     {
 
+        public Context()
+        {
+
+        }
+        public Context(Context context)
+        {
+            this.Students = context.Students;
+            this.Secretaries = context.Secretaries;
+            this.Presidents = context.Presidents;
+            this.Members = context.Members;
+            this.Courses = context.Courses;
+            this.Instructors = context.Instructors;
+        }
+
         public Student[] Students;
         public Instructor[] Instructors;
         public Course[] Courses;

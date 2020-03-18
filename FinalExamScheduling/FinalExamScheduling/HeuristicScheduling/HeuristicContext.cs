@@ -11,22 +11,11 @@ namespace FinalExamScheduling.HeuristicScheduling
     {
         public StudentHeuristics[] Heuristics;
 
-        public HeuristicContext(Context context)
+        public HeuristicContext(Context context) :base(context)
         {
-            this.Students = context.Students;
-            this.Secretaries = context.Secretaries;
-            this.Presidents = context.Presidents;
-            this.Members = context.Members;
-            this.Courses = context.Courses;
-            this.Instructors = context.Instructors;
-            
-
         }
 
-        /*public HeuristicContext() : base()
-        {
-
-        }*/
+        
 
     }
 }
