@@ -17,17 +17,17 @@ namespace FinalExamScheduling
     {
         static GeneticScheduler scheduler;
         static HeuristicScheduler heuristicScheduler;
-        static LPScheduler lpScheduler;
+        //static LPScheduler lpScheduler;
 
         static void Main(string[] args)
         {
             //RunGenetic();
-            //RunHeuristic();
-            RunLP();
-
+            RunHeuristic();
+            //RunLP();
+            Console.ReadKey();
         }
 
-        private static void RunLP()
+        /*private static void RunLP()
         {
             FileInfo existingFile = new FileInfo("Input.xlsx");
 
@@ -46,7 +46,7 @@ namespace FinalExamScheduling
 
             scheduler = new GeneticScheduler(context);
             ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
-        }
+        }*/
 
         static void RunHeuristic()
         {
@@ -64,7 +64,7 @@ namespace FinalExamScheduling
             Console.WriteLine("Penalty score: " + penaltyScore);
 
             scheduler = new GeneticScheduler(context);
-            ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
+            //ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
 
         static void RunGenetic()

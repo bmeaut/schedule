@@ -47,6 +47,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetStudents(Schedule schedule)
         {
+            Console.WriteLine("-----------------------------------------Hallgatók---------------------------------------------------------");
+
             double[,] scores = new double[100, 100];
             int[] studentIndexes = Enumerable.Range(0, 100).ToArray();
             int[] finalExamIndexes = Enumerable.Range(0, 100).ToArray();
@@ -61,6 +63,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
+            
 
             EgervaryAlgorithm.RunAlgorithm(scores, studentIndexes, finalExamIndexes);
             for (int f = 0; f < 100; f++)
@@ -73,6 +76,7 @@ namespace FinalExamScheduling.HeuristicScheduling
 
 
             }
+            
         }
 
         public void GetPointsStudents(Schedule schedule)
@@ -111,6 +115,10 @@ namespace FinalExamScheduling.HeuristicScheduling
                         {
                             score += Scores.ExaminerNotPresident;
                         }
+                        if (instuctor == schedule.FinalExams[ts].Secretary)
+                        {
+                            score += Scores.ExaminerNotSecretary;
+                        }
                     }
                     score += examScore / ctx.Students[student_id].ExamCourse.Instructors.Length;
 
@@ -144,9 +152,11 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetPresidents(Schedule schedule)
         {
-            int sectionNr = ctx.Students.Length / 5;
-            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2);
-            int presindetAll = presidentOne * ctx.Presidents.Length;
+            Console.WriteLine("-----------------------------------------Elnökök---------------------------------------------------------");
+
+            int sectionNr = ctx.Students.Length / 5; //hány darab blokk van
+            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2); //mennyivel többször legyenek felvéve az elnökök
+            int presindetAll = presidentOne * ctx.Presidents.Length; //összes elnök néhányszor
             Instructor[] allPresidents = new Instructor[presindetAll];
 
             for (int presidentNr = 0; presidentNr < ctx.Presidents.Length; presidentNr++)
@@ -183,6 +193,8 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
+            
+
             EgervaryAlgorithm.RunAlgorithm(scores, presidentIndexes, finalExamIndexes);
 
             for (int f = 0; f < finalExamIndexes.Length; f++)
@@ -202,6 +214,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetSecretaries(Schedule schedule)
         {
+            Console.WriteLine("-----------------------------------------Titkárok---------------------------------------------------------");
+
             int secretaryOne = (int)((20 / ctx.Secretaries.Length) * 1.5);
             int secretaryAll = secretaryOne * ctx.Secretaries.Length;
             Instructor[] allSecretaries = new Instructor[secretaryAll];
@@ -242,6 +256,8 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
+            
+
             EgervaryAlgorithm.RunAlgorithm(scores, secretaryIndexes, finalExamIndexes);
             for (int f = 0; f < finalExamIndexes.Length; f++)
             {
@@ -260,6 +276,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetMembers(Schedule schedule)
         {
+            Console.WriteLine("-----------------------------------------Belső tagok---------------------------------------------------------");
+
             List<int> remainingExams = Enumerable.Range(0, schedule.FinalExams.Length).ToList();
             int[] memberWorkloads = new int[ctx.Members.Length];
 
@@ -272,7 +290,9 @@ namespace FinalExamScheduling.HeuristicScheduling
                     memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
                     
                 }
-                if (schedule.FinalExams[i].President.Roles.HasFlag(Roles.Member))
+
+                //Nem lehet belső tag elnök vagy titkár
+                /*if (schedule.FinalExams[i].President.Roles.HasFlag(Roles.Member))
                 {
                     schedule.FinalExams[i].Member = schedule.FinalExams[i].President;
                     remainingExams.Remove(i);
@@ -283,7 +303,8 @@ namespace FinalExamScheduling.HeuristicScheduling
                     schedule.FinalExams[i].Member = schedule.FinalExams[i].Secretary;
                     remainingExams.Remove(i);
                     memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
-                }
+                }*/
+
                 if (schedule.FinalExams[i].Examiner.Roles.HasFlag(Roles.Member))
                 {
                     schedule.FinalExams[i].Member = schedule.FinalExams[i].Examiner;
@@ -325,6 +346,8 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
+            
+
             EgervaryAlgorithm.RunAlgorithm(scores, memberIndexes, finalExamIndexes);
             for (int f = 0; f < finalExamIndexes.Length; f++)
             {
@@ -338,6 +361,8 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetExaminers(Schedule schedule)
         {
+            Console.WriteLine("-----------------------------------------Vizsgáztatók---------------------------------------------------------");
+
             /*for (int i = 0; i < 100; i++)
             {
                 schedule.FinalExams[i].Examiner = ctx.Instructors[ctx.Rnd.Next(0, ctx.Instructors.Length)];
@@ -396,13 +421,21 @@ namespace FinalExamScheduling.HeuristicScheduling
                         {
                             scores[stud, instr] -= Scores.ExaminerNotAvailable;
                         }
+
                         if(allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].President)
                         {
                             scores[stud, instr] += Scores.ExaminerNotPresident;
                         }
 
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Secretary)
+                        {
+                            scores[stud, instr] += Scores.ExaminerNotSecretary;
+                        }
+
                     }
                 }
+
+                
 
                 EgervaryAlgorithm.RunAlgorithm(scores, instructorIndexes, studentIndexes);
                 for (int f = 0; f < studentIndexes.Length; f++)
