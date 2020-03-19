@@ -83,6 +83,7 @@
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
     <Compile Include="LPScheduling\LPScheduler.cs" />
+    <Compile Include="LPScheduling\LPSchedulerFull.cs" />
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />

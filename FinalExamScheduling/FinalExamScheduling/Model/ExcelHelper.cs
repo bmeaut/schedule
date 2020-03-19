@@ -148,10 +148,10 @@ namespace FinalExamScheduling.Model
                 List<Student> students = new List<Student>();
                 List<Course> courses = new List<Course>();
 
-
                 var endStud = ws_students.Dimension.End;
                 var endInst = ws_instructors.Dimension.End;
                 var endCour = ws_courses.Dimension.End;
+                var endPres = ws_presidents.Dimension.End;
 
                 //Instructor
                 for (int iRow = 3; iRow <= endInst.Row; iRow++)
@@ -204,9 +204,6 @@ namespace FinalExamScheduling.Model
                         Roles = tempRoles,
                         Programs = tempPrograms
                     });
-
-                    //Console.WriteLine(context.instructors[iRow - 3].name + "\t " +  "\t " + context.instructors[iRow - 3].roles);
-
                 }
 
 
@@ -227,8 +224,6 @@ namespace FinalExamScheduling.Model
                         CourseCode = ws_courses.Cells[1, iCol].Text,
                         Instructors = tempInstructors.ToArray()
                     });
-
-                    //Console.WriteLine(context.courses[iCol - 1].name + "\t " + context.courses[iCol - 1].courseCode + "\t ");
                 }
 
                 //Student
@@ -245,9 +240,6 @@ namespace FinalExamScheduling.Model
                         ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 7].Text))
                     });
                     students[index].ExamCourse2 = students[index].IsBSc ? null : courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text));
-
-                    //Console.WriteLine(context.students[iRow - 2].name + "\t " + context.students[iRow - 2].neptun + "\t " 
-                    //    + context.students[iRow - 2].supervisor.name + "\t " + context.students[iRow - 2].examCourse.name);
                 }
 
                 context.Students = students.ToArray();
@@ -255,13 +247,52 @@ namespace FinalExamScheduling.Model
                 context.Courses = courses.ToArray();
             }
 
-
             return context;
-
-
-
         }
 
+        public static void ReadPresidents(FileInfo existingFile, bool[,,] presidentsSchedule, bool[,] isCS, bool[,] isEE)
+        {
+            var context = new Context();
+            using (ExcelPackage xlPackage = new ExcelPackage(existingFile))
+            {
+                Console.WriteLine("Reading of Presidents was succesful");
+
+                ExcelWorksheet ws_presidents = xlPackage.Workbook.Worksheets[4];
+                var endPres = ws_presidents.Dimension.End;
+
+                for (int iCol = 2; iCol <= endPres.Column; iCol++)
+                {
+                    int tsNr = 0;
+                    int roomNr = 0;
+
+
+                    for (int iRow = 3; iRow <= endPres.Row; iRow++)
+                    {
+
+                        if (ws_presidents.Cells[iRow, iCol].Text == "CS")
+                        {
+                            for (int i = 0; i < 12; i++)
+                            {
+                                tsNr = (iCol - 2) * 12 + i;
+                                presidentsSchedule[iRow - 3, tsNr , roomNr] = true;
+                                isCS[tsNr, roomNr] = true;
+                            }
+                            roomNr++;
+                        }
+                        else if (ws_presidents.Cells[iRow, iCol].Text == "EE")
+                        {
+                            for (int i = 0; i < 12; i++)
+                            {
+                                tsNr = (iCol - 2) * 12 + i;
+                                presidentsSchedule[iRow - 3, tsNr, roomNr] = true;
+                                isEE[tsNr, roomNr] = true;
+                            }
+                            roomNr++;
+                        }
+                    }
+                }
+            }
+        }
 
         public static void Write(string p_strPath, Schedule sch, string elapsed, Dictionary<int, double> generationFitness, double[] finalScores, Context context)
         {
@@ -524,27 +555,12 @@ namespace FinalExamScheduling.Model
             }
         }
 
-
-
-
         public static int GetGreen(double score)
         {
-            //double green = -255.0f / 1000.0f * studentScore + 255.0f;
-            //double green = (-(255.0f / 3.0f) * Math.Log10(score)) + 255.0f;
             double green = (-(255.0f / 3.0f) * Math.Log10(score * 0.1f)) + 170.0f;
             if (green < 0) green = 0;
             return (int)green;
         }
-
-
-        /*private List<FieldInfo> GetConstants(Type type)
-        {
-            FieldInfo[] fieldInfos = type.GetFields(BindingFlags.Public |
-                 BindingFlags.Static | BindingFlags.FlattenHierarchy);
-
-            return fieldInfos.Where(fi => fi.IsLiteral && !fi.IsInitOnly).ToList();
-        }
-        */
 
         public static void Write(string p_strPath, Schedule sch, Context context, double[] finalScores)
         {
@@ -578,71 +594,13 @@ namespace FinalExamScheduling.Model
                 foreach (FinalExam exam in sch.FinalExams)
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.Student.Name;
-                    /*double studentScore = sch.Details[exam.Id].StudentScore;
-                    if (studentScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 1].AddComment(sch.Details[exam.Id].StudentComment, author);
-
-                        ws_scheduling.Cells[i, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(studentScore), 0));
-
-                    }*/
-
                     ws_scheduling.Cells[i, 2].Value = exam.Supervisor.Name;
-                    /*double supervisorScore = sch.Details[exam.Id].SupervisorScore;
-                    if (supervisorScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 2].AddComment(sch.Details[exam.Id].SupervisorComment, author);
-
-                        ws_scheduling.Cells[i, 2].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 2].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(supervisorScore), 0));
-
-                    }*/
-
                     ws_scheduling.Cells[i, 3].Value = exam.President.Name;
-                    /*double presidentScore = sch.Details[exam.Id].PresidentScore;
-                    if (presidentScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 3].AddComment(sch.Details[exam.Id].PresidentComment, author);
-
-                        ws_scheduling.Cells[i, 3].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 3].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(presidentScore), 0));
-                    }*/
-
-
                     ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
-                    /*double secretaryScore = sch.Details[exam.Id].SecretaryScore;
-                    if (secretaryScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 4].AddComment(sch.Details[exam.Id].SecretaryComment, author);
-
-                        ws_scheduling.Cells[i, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(secretaryScore), 0));
-                    }*/
-
                     ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
-                    /*double memberScore = sch.Details[exam.Id].MemberScore;
-                    if (memberScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 5].AddComment(sch.Details[exam.Id].MemberComment, author);
-
-                        ws_scheduling.Cells[i, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(memberScore), 0));
-                    }
-                    */
                     ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
-                    /*double examinerScore = sch.Details[exam.Id].ExaminerScore;
-                    if (examinerScore > 0)
-                    {
-                        ws_scheduling.Cells[i, 6].AddComment(sch.Details[exam.Id].ExaminerComment, author);
-
-                        ws_scheduling.Cells[i, 6].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                        ws_scheduling.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(examinerScore), 0));
-                    }*/
-
                     ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse1.Name;
                     ws_scheduling.Cells[i, 8].Value = exam.Id;
-
 
                     if (i % 10 == 1)
                     {
@@ -690,7 +648,6 @@ namespace FinalExamScheduling.Model
 
                 ws_info.Cells.AutoFitColumns();
                 #endregion
-
 
                 #region Workload
 
@@ -743,7 +700,6 @@ namespace FinalExamScheduling.Model
 
                 #endregion
 
-
                 if (File.Exists(p_strPath))
                     File.Delete(p_strPath);
 
@@ -752,17 +708,7 @@ namespace FinalExamScheduling.Model
                 objFileStrm.Close();
 
                 File.WriteAllBytes(p_strPath, xlPackage_new.GetAsByteArray());
-
-
-
-
-
-
             }
         }
-
     }
-
-
-
 }

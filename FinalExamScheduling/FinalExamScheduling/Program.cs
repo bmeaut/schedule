@@ -18,20 +18,42 @@ namespace FinalExamScheduling
         static GeneticScheduler scheduler;
         static HeuristicScheduler heuristicScheduler;
         static LPScheduler lpScheduler;
+        static LPSchedulerFull lpSchedulerFull;
 
         static void Main(string[] args)
         {
             //RunGenetic();
             //RunHeuristic();
-            RunLP();
+            //RunLP();
+            RunLPFull();
 
         }
 
-        private static void RunLP()
+        private static void RunLPFull()
         {
             FileInfo existingFile = new FileInfo("Input2.xlsx");
 
             var context = ExcelHelper.ReadFull(existingFile);
+
+            context.Init();
+            lpSchedulerFull = new LPSchedulerFull(context);
+            Schedule schedule = lpSchedulerFull.Run(existingFile);
+
+            //context.FillDetails = true;
+
+            SchedulingFitness evaluator = new SchedulingFitness(context);
+            //double penaltyScore = evaluator.EvaluateAll(schedule);
+            //Console.WriteLine("Penalty score: " + penaltyScore);
+
+            scheduler = new GeneticScheduler(context);
+            ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
+        }
+
+        private static void RunLP()
+        {
+            FileInfo existingFile = new FileInfo("Input.xlsx");
+
+            var context = ExcelHelper.Read(existingFile);
 
             context.Init();
             lpScheduler = new LPScheduler(context);
