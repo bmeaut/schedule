@@ -22,14 +22,12 @@ namespace FinalExamScheduling.LPScheduling
             finalExamCount = ctx.Students.Length;
         }
 
-
         public Schedule Run(FileInfo existingFile)
         {
             Schedule schedule = new Schedule(finalExamCount);
 
             try
             {
-
                 GRBEnv env = new GRBEnv(true);
                 env.Set("LogFile", "mip1.log");
                 env.Start();
@@ -39,13 +37,12 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,,] varInstructors = new GRBVar[ctx.Instructors.Length, tsCount, Constants.roomCount];
                 GRBVar[,,] varStudents = new GRBVar[ctx.Students.Length, tsCount, Constants.roomCount];
 
-
                 GRBVar[,] varBSc = new GRBVar[tsCount, Constants.roomCount];
                 GRBVar[,] varMSc = new GRBVar[tsCount, Constants.roomCount];
                 GRBVar[,] varSkipped = new GRBVar[tsCount, Constants.roomCount];
+                GRBVar[,] varLunch = new GRBVar[tsCount, Constants.roomCount];
 
-
-                // Get constants
+                // Create constants
                 bool[,,] presidentsSchedule = new bool[ctx.Presidents.Length, tsCount, Constants.roomCount];
 
                 bool[,] isCS = new bool[tsCount, Constants.roomCount];
@@ -69,6 +66,7 @@ namespace FinalExamScheduling.LPScheduling
                         varBSc[ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"BSc_{ts}_{room}");
                         varMSc[ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"MSc_{ts}_{room}");
                         varSkipped[ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Skipped_{ts}_{room}");
+                        varLunch[ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Lunch_{ts}_{room}");
 
                         isCS[ts, room] = false;
                         isEE[ts, room] = false;
@@ -79,8 +77,23 @@ namespace FinalExamScheduling.LPScheduling
                     }
                 }
                 ExcelHelper.ReadPresidents(existingFile, presidentsSchedule, isCS, isEE);
-                
 
+                // Constraints
+
+                // Presidents default scheduling
+                for (int ts = 0; ts < tsCount; ts++)
+                {
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        for (int p = 0; p < ctx.Presidents.Length; p++)
+                        {
+                            if (presidentsSchedule[p, ts, room])
+                            {
+                                model.AddConstr(GetPresidentsVars(varInstructors)[p, ts, room] == 1.0, $"Presidentscheduled_{ctx.Presidents[p].Name}_{ts}_{room}");
+                            }
+                        }
+                    }
+                }
 
 
 
@@ -102,6 +115,28 @@ namespace FinalExamScheduling.LPScheduling
             }
 
             return schedule;
+        }
+
+
+        GRBVar[,,] GetPresidentsVars(GRBVar[,,] instructorVars)
+        {
+            GRBVar[,,] presidentsVars = new GRBVar[ctx.Presidents.Length, instructorVars.GetLength(1), instructorVars.GetLength(2)];
+            int index = 0;
+            for (int i = 0; i < instructorVars.GetLength(0); i++)
+            {
+                if (ctx.Instructors[i].Roles.HasFlag(Roles.President))
+                {
+                    for (int ts = 0; ts < instructorVars.GetLength(1); ts++)
+                    {
+                        for (int room = 0; room < instructorVars.GetLength(2); room++)
+                        {
+                            presidentsVars[index, ts, room] = instructorVars[i, ts, room];
+                        }
+                    }
+                    index++;
+                }
+            }
+            return presidentsVars;
         }
 
         // availabilities of instructors
@@ -152,24 +187,7 @@ namespace FinalExamScheduling.LPScheduling
             return sums;
         }
 
-        GRBVar[,] GetPresidentsVars(GRBVar[,] instructorVars)
-        {
-            //nr of presidents x nr of ts
-            GRBVar[,] presidentsVars = new GRBVar[ctx.Presidents.Length, instructorVars.GetLength(1)];
-            int index = 0;
-            for (int i = 0; i < instructorVars.GetLength(0); i++)
-            {
-                if (ctx.Instructors[i].Roles.HasFlag(Roles.President))
-                {
-                    for (int ts = 0; ts < instructorVars.GetLength(1); ts++)
-                    {
-                        presidentsVars[index, ts] = instructorVars[i, ts];
-                    }
-                    index++;
-                }
-            }
-            return presidentsVars;
-        }
+        
 
         GRBVar[,] GetSecretariesVars(GRBVar[,] instructorVars)
         {
