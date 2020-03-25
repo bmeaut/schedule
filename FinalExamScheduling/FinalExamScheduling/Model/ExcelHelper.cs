@@ -245,13 +245,9 @@ namespace FinalExamScheduling.Model
                         DegreeLevel = ws_students.Cells[iRow, 3].Text == "BSc" ? DegreeLevel.BSc : DegreeLevel.MSc,
                         Programme = ws_students.Cells[iRow, 4].Text == "mérnökinformatikus" ? Programme.ComputerScience : Programme.ElectricalEngineering,
                         Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 5].Text)),
-                        ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 7].Text))
+                        ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 7].Text)),
+                        ExamCourse2 = (ws_students.Cells[iRow, 9].Text != "") ? courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text)) : null
                     });
-                    if (ws_students.Cells[iRow, 9].Text != "")
-                    {
-                        students[index].ExamCourse2 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text));
-                    }
-
                 }
 
                 context.Students = students.ToArray();

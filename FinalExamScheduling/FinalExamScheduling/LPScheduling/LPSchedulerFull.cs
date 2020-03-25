@@ -77,6 +77,9 @@ namespace FinalExamScheduling.LPScheduling
                 }
                 ExcelHelper.ReadPresidents(existingFile, presidentsSchedule, isCS, isEE);
 
+                // Set objective
+                model.SetObjective(Sum(varInstructors),GRB.MINIMIZE);
+
                 // Constraints
 
                 // Presidents default scheduling
@@ -102,6 +105,28 @@ namespace FinalExamScheduling.LPScheduling
                 {
                     Console.WriteLine("The model can't be optimal!");
                     return null;
+                }
+
+
+                // Build up the scheduling
+                for (int ts = 0; ts < tsCount; ts++)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine($"tsNr: {ts}");
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        Console.Write($"roomNr: {room}\t");
+                        List<Instructor> instructorsInTs = new List<Instructor>();
+                        for (int i = 0; i < ctx.Instructors.Length; i++)
+                        {
+                            if (varInstructors[i, ts, room].X == 1.0)
+                            {
+                                instructorsInTs.Add(ctx.Instructors[i]);
+                                Console.Write($"{ctx.Instructors[i].Name}\t");
+                            }
+                        }
+                        Console.WriteLine();
+                    }
                 }
 
                 // Dispose of model and env
@@ -138,37 +163,43 @@ namespace FinalExamScheduling.LPScheduling
             return presidentsVars;
         }
 
-        // availabilities of instructors
-        GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
-        {
-            GRBLinExpr result = 0.0;
-            for (int person = 0; person < vars.GetLength(0); person++)
-            {
-                for (int i = 0; i < vars.GetLength(1); i++)
-                {
-                    double coefficient = instructors[person].Availability[i] ? 0.0 : Scores.SupervisorNotAvailable;
-
-                    result.AddTerm(coefficient, vars[person, i]);
-                }
-            }
-            return result;
-        }
-
-        GRBLinExpr[] SumOfPersonVarsPerTs(GRBVar[,] vars)
+        //for every ts: P_(i0,ts0,r0) + P_(i1,ts0,r0) + P_(i2,ts0,r0) +...+ P_(i0,ts0,r1) + P_(i1,ts0,r1) + ...
+        GRBLinExpr[] SumOfPersonVarsPerTs(GRBVar[,,] vars)
         {
             GRBLinExpr[] sums = new GRBLinExpr[vars.GetLength(1)];
-
+            
             for (int ts = 0; ts < vars.GetLength(1); ts++)
             {
                 sums[ts] = 0.0;
-                for (int person = 0; person < vars.GetLength(0); person++)
+                for (int room = 0; room < vars.GetLength(2); room++)
                 {
-                    sums[ts].AddTerm(1.0, vars[person, ts]);
+                    for (int person = 0; person < vars.GetLength(0); person++)
+                    {
+                        sums[ts].AddTerm(1.0, vars[person, ts, room]);
+                    }
                 }
             }
-
             return sums;
         }
+
+        GRBLinExpr Sum(GRBVar[,,] vars)
+        {
+            GRBLinExpr sum = 0.0;
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int ts = 0; ts < vars.GetLength(1); ts++)
+                {
+                    for (int room = 0; room < vars.GetLength(2); room++)
+                    {
+                        sum.AddTerm(1, vars[person, ts, room]);
+
+                    }
+                }
+            }
+            return sum;
+        }
+
+
 
         GRBLinExpr[] SumOfPersonVarsPerPerson(GRBVar[,] vars)
         {
@@ -185,6 +216,26 @@ namespace FinalExamScheduling.LPScheduling
 
             return sums;
         }
+
+        // availabilities of instructors
+        GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
+        {
+            GRBLinExpr result = 0.0;
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int i = 0; i < vars.GetLength(1); i++)
+                {
+                    double coefficient = instructors[person].Availability[i] ? 0.0 : Scores.SupervisorNotAvailable;
+
+                    result.AddTerm(coefficient, vars[person, i]);
+                }
+            }
+            return result;
+        }
+
+
+
+
 
         
 
@@ -245,18 +296,7 @@ namespace FinalExamScheduling.LPScheduling
             return examinersVars;
         }
 
-        GRBLinExpr SumOfAllVars(GRBVar[,] vars)
-        {
-            GRBLinExpr sum = 0.0;
-            for (int person = 0; person < vars.GetLength(0); person++)
-            {
-                for (int i = 0; i < vars.GetLength(1); i++)
-                {
-                    sum.AddTerm(1, vars[person, i]);
-                }
-            }
-            return sum;
-        }
+
 
         double[] NrArray(double number)
         {
