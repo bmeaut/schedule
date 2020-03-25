@@ -11,6 +11,7 @@ namespace FinalExamScheduling.Model
         public string Name;
         public string CourseCode;
         public Instructor[] Instructors;
-
+        public Instructor[] InstructorsSecondary;
+        public int count = 0;
     }
 }

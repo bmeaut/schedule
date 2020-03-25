@@ -211,10 +211,17 @@ namespace FinalExamScheduling.Model
                 for (int iCol = 1; iCol <= endCour.Column; iCol++)
                 {
                     List<Instructor> tempInstructors = new List<Instructor>();
+                    List<Instructor> tempInstructorsSecondary = new List<Instructor>();
                     int iRow = 3;
                     while (ws_courses.Cells[iRow, iCol].Value != null)
                     {
-                        tempInstructors.Add(instructors.Find(item => item.Name.Equals(ws_courses.Cells[iRow, iCol].Text)));
+                        if(ws_courses.Cells[iRow, iCol].Text.Contains("M-")){
+                            var name = ws_courses.Cells[iRow, iCol].Text.Remove(0, 2);
+                            tempInstructorsSecondary.Add(instructors.Find(item => item.Name.Equals(name)));
+                        } else
+                        {
+                            tempInstructors.Add(instructors.Find(item => item.Name.Equals(ws_courses.Cells[iRow, iCol].Text)));
+                        }
 
                         iRow++;
                     }
@@ -222,7 +229,8 @@ namespace FinalExamScheduling.Model
                     {
                         Name = ws_courses.Cells[2, iCol].Text,
                         CourseCode = ws_courses.Cells[1, iCol].Text,
-                        Instructors = tempInstructors.ToArray()
+                        Instructors = tempInstructors.ToArray(),
+                        InstructorsSecondary = tempInstructorsSecondary.ToArray()
                     });
                 }
 
@@ -234,12 +242,16 @@ namespace FinalExamScheduling.Model
                     {
                         Name = ws_students.Cells[iRow, 1].Text,
                         Neptun = ws_students.Cells[iRow, 2].Text,
-                        IsBSc = ws_students.Cells[iRow, 3].Text == "BSc" ? true : false,
+                        DegreeLevel = ws_students.Cells[iRow, 3].Text == "BSc" ? DegreeLevel.BSc : DegreeLevel.MSc,
                         Programme = ws_students.Cells[iRow, 4].Text == "mérnökinformatikus" ? Programme.ComputerScience : Programme.ElectricalEngineering,
                         Supervisor = instructors.Find(item => item.Name.Equals(ws_students.Cells[iRow, 5].Text)),
                         ExamCourse1 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 7].Text))
                     });
-                    students[index].ExamCourse2 = students[index].IsBSc ? null : courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text));
+                    if (ws_students.Cells[iRow, 9].Text != "")
+                    {
+                        students[index].ExamCourse2 = courses.Find(item => item.CourseCode.Equals(ws_students.Cells[iRow, 9].Text));
+                    }
+
                 }
 
                 context.Students = students.ToArray();

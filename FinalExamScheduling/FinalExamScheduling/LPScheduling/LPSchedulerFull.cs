@@ -1,5 +1,4 @@
-﻿using FinalExamScheduling.GeneticScheduling;
-using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.Model;
 using Gurobi;
 using System;
 using System.Collections.Generic;

@@ -10,10 +10,10 @@ namespace FinalExamScheduling.Model
     {
         public string Name;
         public string Neptun;
-        public bool IsBSc;
+        public DegreeLevel DegreeLevel;
         public Programme Programme;
         public Instructor Supervisor;
         public Course ExamCourse1;
-        public Course ExamCourse2;
+        public Course ExamCourse2 = null;
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
     <Compile Include="Model\FinalExam.cs" />
     <Compile Include="Model\Entity.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="GeneticScheduling\SchedulingFitness.cs" />
     <Compile Include="GeneticScheduling\SchedulingMutation.cs" />
     <Compile Include="GeneticScheduling\SchedulingTermination.cs" />
-    <Compile Include="GeneticScheduling\Scores.cs" />
+    <Compile Include="Model\Scores.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

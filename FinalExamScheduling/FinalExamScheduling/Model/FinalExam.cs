@@ -14,7 +14,7 @@ namespace FinalExamScheduling.Model
         public Instructor Secretary = null;
         public Instructor Member = null;
         public Instructor Examiner = null;
-        public bool IsBsc;
+        public DegreeLevel DegreeLevel;
         public Programme Programme;
         public int RoomNr;
         public int startTs;
