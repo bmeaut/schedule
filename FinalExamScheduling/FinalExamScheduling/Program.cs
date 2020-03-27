@@ -15,7 +15,7 @@ namespace FinalExamScheduling
     public class Program
     {
         static GeneticScheduler scheduler;
-        static HeuristicScheduler heuristicScheduler;
+        //static HeuristicScheduler heuristicScheduler;
 
         static void Main(string[] args)
         {
@@ -25,6 +25,7 @@ namespace FinalExamScheduling
 
         }
 
+        /*
         static void RunHeuristic()
         {
             FileInfo existingFile = new FileInfo("Input.xlsx");
@@ -43,6 +44,7 @@ namespace FinalExamScheduling
             scheduler = new GeneticScheduler(context);
             ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
+        */
 
         static void RunGenetic()
         {

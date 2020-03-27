@@ -366,12 +366,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor pres in ctx.Presidents)
             {
 
-                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.7 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.7 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] >= optimalWorkload * 0.5)
                 {
                     score += Scores.PresidentWorkloadWorse;
                 }
 
-                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.5)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.3 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] <= optimalWorkload * 1.5)
                 {
                     score += Scores.PresidentWorkloadWorse;
                 }
@@ -399,12 +399,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor pres in ctx.Presidents)
             {
 
-                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.9 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 0.3)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 0.9 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] >= optimalWorkload * 0.7)
                 {
                     score += Scores.PresidentWorkloadBad;
                 }
 
-                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] < optimalWorkload * 1.3)
+                if (presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] > optimalWorkload * 1.1 && presidentWorkloads[Array.IndexOf(ctx.Presidents, pres)] <= optimalWorkload * 1.3)
                 {
                     score += Scores.PresidentWorkloadBad;
                 }
@@ -512,12 +512,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor secr in ctx.Secretaries)
             {
 
-                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.7 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 0.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.7 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] >= optimalWorkload * 0.5)
                 {
                     score += Scores.SecretaryWorkloadWorse;
                 }
 
-                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.3 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 1.5)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.3 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] <= optimalWorkload * 1.5)
                 {
                     score += Scores.SecretaryWorkloadWorse;
                 }
@@ -545,12 +545,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor secr in ctx.Secretaries)
             {
 
-                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.9 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 0.3)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 0.9 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] >= optimalWorkload * 0.7)
                 {
                     score += Scores.SecretaryWorkloadBad;
                 }
 
-                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.1 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] < optimalWorkload * 1.3)
+                if (secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] > optimalWorkload * 1.1 && secretaryWorkloads[Array.IndexOf(ctx.Secretaries, secr)] <= optimalWorkload * 1.3)
                 {
                     score += Scores.SecretaryWorkloadBad;
                 }
@@ -656,12 +656,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor memb in ctx.Members)
             {
 
-                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.7 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 0.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.7 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] >= optimalWorkload * 0.5)
                 {
                     score += Scores.MemberWorkloadWorse;
                 }
 
-                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.3 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 1.5)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.3 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] <= optimalWorkload * 1.5)
                 {
                     score += Scores.MemberWorkloadWorse;
                 }
@@ -689,12 +689,12 @@ namespace FinalExamScheduling.GeneticScheduling
             foreach (Instructor memb in ctx.Members)
             {
 
-                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.9 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 0.3)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 0.9 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] >= optimalWorkload * 0.7)
                 {
                     score += Scores.MemberWorkloadBad;
                 }
 
-                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.1 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] < optimalWorkload * 1.3)
+                if (memberWorkloads[Array.IndexOf(ctx.Members, memb)] > optimalWorkload * 1.1 && memberWorkloads[Array.IndexOf(ctx.Members, memb)] <= optimalWorkload * 1.3)
                 {
                     score += Scores.MemberWorkloadBad;
                 }

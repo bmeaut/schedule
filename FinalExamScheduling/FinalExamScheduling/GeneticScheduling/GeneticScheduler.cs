@@ -82,7 +82,9 @@ namespace FinalExamScheduling.GeneticScheduling
             var bestFitness = bestChromosome.Fitness.Value;
 
             GenerationFitness.Add(geneticAlgorithm.GenerationsNumber, bestFitness);
-            Console.WriteLine("Generation {0}: {1:N0}", geneticAlgorithm.GenerationsNumber, bestFitness);
+
+//////////////////////////////////////////////////////////////////////beszúrtam a penalty-t
+            Console.WriteLine("Generation {0}: {1:N0},   Penalty: {2}", geneticAlgorithm.GenerationsNumber, bestFitness, Fitness.Evaluate(bestChromosome));
         }
 
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
