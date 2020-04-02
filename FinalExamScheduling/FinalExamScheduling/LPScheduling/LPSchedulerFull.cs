@@ -83,30 +83,90 @@ namespace FinalExamScheduling.LPScheduling
                 // Constraints
 
                 // Presidents default scheduling
+                bool isExam = false;
                 for (int ts = 0; ts < tsCount; ts++)
                 {
                     for (int room = 0; room < Constants.roomCount; room++)
                     {
+                        isExam = false;
+
                         for (int p = 0; p < ctx.Presidents.Length; p++)
                         {
+
                             if (presidentsSchedule[p, ts, room])
                             {
                                 model.AddConstr(GetPresidentsVars(varInstructors)[p, ts, room] == 1.0, $"Presidentscheduled_{ctx.Presidents[p].Name}_{ts}_{room}");
+                                isExam = true;
                             }
                         }
+                        if (!isExam) model.AddConstr(varSkipped[ts, room] == 1.0, $"Skipped_noPresident_{ts}_{room}");
+
                     }
                 }
 
+                for (int ts = 0; ts < tsCount; ts++)
+                {
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        // BSc + MSc + Skip = 1
+                        model.AddConstr(varBSc[ts, room] + varMSc[ts, room] + varSkipped[ts, room] == 1.0, $"MSc+BSc+Skip_{ts}_{room}");
+                        // Sum(Sturdents) + Skip = 1
+                        model.AddConstr(SumOfPersonVarsPerTsPerRoom(varStudents)[ts, room] + varSkipped[ts, room] == 1.0, $"SumStudents+Skip_{ts}_{room}");
+
+                        for (int s = 0; s < ctx.Students.Length; s++)
+                        {
+                            if (ctx.Students[s].DegreeLevel.HasFlag(DegreeLevel.BSc))
+                            {
+                                // BSc students in BSc ts-s
+                                model.AddConstr(varStudents[s, ts, room] - varBSc[ts, room] <= 0.0, $"Student_BSc_{ctx.Students[s].Name}_{ts}_{room}");
+                            }
+                            if (ctx.Students[s].DegreeLevel.HasFlag(DegreeLevel.MSc))
+                            {
+                                //MSC students in MSc ts-s
+                                model.AddConstr(varStudents[s, ts, room] - varMSc[ts, room] <= 0.0, $"Student_MSc_{ctx.Students[s].Name}_{ts}_{room}");
+                            }
+                            if (!isCS[ts, room] && ctx.Students[s].Programme.HasFlag(Programme.ComputerScience))
+                            {
+                                //CS students not in non-CS ts-s
+                                model.AddConstr(varStudents[s, ts, room] == 0.0, $"Student_CS_{ctx.Students[s].Name}_{ts}_{room}");
+                            }
+                            if (!isEE[ts, room] && ctx.Students[s].Programme.HasFlag(Programme.ElectricalEngineering))
+                            {
+                                //EE students not in non-EE ts-s
+                                model.AddConstr(varStudents[s, ts, room] == 0.0, $"Student_EE_{ctx.Students[s].Name}_{ts}_{room}");
+                            }
+                        }
+                    }
+
+                }
+                // students in as many ts-s as they should
+                for (int s = 0; s < ctx.Students.Length; s++)
+                {
+                    double nrOfTs = (ctx.Students[s].ExamCourse2 == null) ? 8.0 : 9.0;
+                    model.AddConstr(SumOfPersonVarsPerPerson(varStudents)[s] == nrOfTs, $"Student_Ts_{ctx.Students[s].Name}");
+                }
 
 
                 // Optimize model
                 model.Optimize();
-                if (model.Status != GRB.Status.OPTIMAL)
+               /* model.ComputeIIS();
+                // Print the names of all of the constraints in the IIS set.
+                foreach (var c in model.GetConstrs())
                 {
-                    Console.WriteLine("The model can't be optimal!");
-                    return null;
+                    if (c.Get(GRB.IntAttr.IISConstr) > 0)
+                    {
+                        Console.WriteLine(c.Get(GRB.StringAttr.ConstrName));
+                    }
                 }
 
+                // Print the names of all of the variables in the IIS set.
+                foreach (var v in model.GetVars())
+                {
+                    if (v.Get(GRB.IntAttr.IISLB) > 0 || v.Get(GRB.IntAttr.IISUB) > 0)
+                    {
+                        Console.WriteLine(v.Get(GRB.StringAttr.VarName));
+                    }
+                }*/
 
                 // Build up the scheduling
                 for (int ts = 0; ts < tsCount; ts++)
@@ -116,13 +176,27 @@ namespace FinalExamScheduling.LPScheduling
                     for (int room = 0; room < Constants.roomCount; room++)
                     {
                         Console.Write($"roomNr: {room}\t");
+                        if (varSkipped[ts, room].X == 1.0) Console.Write($"Skip\t");
+                        if (varBSc[ts, room].X == 1.0) Console.Write($"BSc\t");
+                        if (varMSc[ts, room].X == 1.0) Console.Write($"MSc\t");
+                        if (isCS[ts,room]) Console.Write($"CS\t");
+                        if (isEE[ts, room]) Console.Write($"EE\t");
+
                         List<Instructor> instructorsInTs = new List<Instructor>();
                         for (int i = 0; i < ctx.Instructors.Length; i++)
                         {
+                            
                             if (varInstructors[i, ts, room].X == 1.0)
                             {
                                 instructorsInTs.Add(ctx.Instructors[i]);
                                 Console.Write($"{ctx.Instructors[i].Name}\t");
+                            }
+                        }
+                        for (int i = 0; i < ctx.Students.Length; i++)
+                        {
+                            if (varStudents[i, ts, room].X == 1.0)
+                            {
+                                Console.Write($"St:{ctx.Students[i].Name}\t");
                             }
                         }
                         Console.WriteLine();
@@ -182,6 +256,64 @@ namespace FinalExamScheduling.LPScheduling
             return sums;
         }
 
+        GRBLinExpr[] SumOfPersonVarsPerPerson(GRBVar[,,] vars)
+        {
+            GRBLinExpr[] sums = new GRBLinExpr[vars.GetLength(0)];
+
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                sums[person] = 0.0;
+                for (int room = 0; room < vars.GetLength(2); room++)
+                {
+                    for (int ts = 0; ts < vars.GetLength(1); ts++)
+                    {
+                        sums[person].AddTerm(1.0, vars[person, ts, room]);
+                        //Console.Write($"{ctx.Students[person].Name}_{ts}_{room} + ");
+                    }
+                }
+            }
+            return sums;
+        }
+
+        GRBLinExpr[,] SumOfPersonVarsPerTsPerRoom(GRBVar[,,] vars)
+        {
+            GRBLinExpr[,] sums = new GRBLinExpr[vars.GetLength(1),vars.GetLength(2)];
+
+            for (int ts = 0; ts < vars.GetLength(1); ts++)
+            {
+                for (int room = 0; room < vars.GetLength(2); room++)
+                {
+                    sums[ts,room] = 0.0;
+
+                    for (int person = 0; person < vars.GetLength(0); person++)
+                    {
+                        sums[ts,room].AddTerm(1.0, vars[person, ts, room]);
+                    }
+                }
+            }
+            return sums;
+        }
+
+        GRBLinExpr[,] SumOf3DimVarsPer2Dim(GRBVar[,,] vars, int dim1, int dim2)
+        {
+            GRBLinExpr[,] sums = new GRBLinExpr[vars.GetLength(dim1), vars.GetLength(dim2)];
+            int[] allDim = { 0, 1, 2 };
+            var dim3 = allDim.Except(new int[] { dim1, dim2 }).ToArray();
+            for (int j = 0; j < vars.GetLength(dim1); j++)
+            {
+                for (int k = 0; k < vars.GetLength(dim2); k++)
+                {
+                    sums[j, k] = 0.0;
+
+                    for (int i = 0; i < vars.GetLength(dim3[0]); i++)
+                    {
+                        sums[j, k].AddTerm(1.0, vars[i, j, k]);
+                    }
+                }
+            }
+            return sums;
+        }
+
         GRBLinExpr Sum(GRBVar[,,] vars)
         {
             GRBLinExpr sum = 0.0;
@@ -197,24 +329,6 @@ namespace FinalExamScheduling.LPScheduling
                 }
             }
             return sum;
-        }
-
-
-
-        GRBLinExpr[] SumOfPersonVarsPerPerson(GRBVar[,] vars)
-        {
-            GRBLinExpr[] sums = new GRBLinExpr[vars.GetLength(0)];
-
-            for (int person = 0; person < vars.GetLength(0); person++)
-            {
-                sums[person] = 0.0;
-                for (int ts = 0; ts < vars.GetLength(1); ts++)
-                {
-                    sums[person].AddTerm(1.0, vars[person, ts]);
-                }
-            }
-
-            return sums;
         }
 
         // availabilities of instructors
