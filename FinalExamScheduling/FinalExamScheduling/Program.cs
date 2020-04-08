@@ -58,7 +58,7 @@ namespace FinalExamScheduling
             heuristicScheduler = new HeuristicScheduler(context);
             Schedule schedule = heuristicScheduler.Run();
 
-            context.FillDetails = true;
+            context.FillDetails = false;
             SchedulingFitness evaluator = new SchedulingFitness(context);
             double penaltyScore = evaluator.EvaluateAll(schedule);
             Console.WriteLine("Penalty score: " + penaltyScore);

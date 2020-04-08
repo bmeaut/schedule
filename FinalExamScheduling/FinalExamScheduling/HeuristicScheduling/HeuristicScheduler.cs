@@ -40,14 +40,14 @@ namespace FinalExamScheduling.HeuristicScheduling
 
             //ctx.Heuristics[student.Id].ScoreForTimeSlot = GetStudentPoints();
             //Dictionary<Student, int[]> studentPoints = GetStudentPoints();
-
+            
 
             return schedule;
         }
 
         public void GetStudents(Schedule schedule)
         {
-            Console.WriteLine("-----------------------------------------Hallgatók---------------------------------------------------------");
+            //Console.WriteLine("-----------------------------------------Hallgatók---------------------------------------------------------");
 
             double[,] scores = new double[100, 100];
             int[] studentIndexes = Enumerable.Range(0, 100).ToArray();
@@ -113,11 +113,11 @@ namespace FinalExamScheduling.HeuristicScheduling
                         }
                         if(instuctor == schedule.FinalExams[ts].President)
                         {
-                            score += Scores.ExaminerNotPresident;
+                            score += Scores.ExaminerNotPresident; //ExaminerPresident
                         }
                         if (instuctor == schedule.FinalExams[ts].Secretary)
                         {
-                            score += Scores.ExaminerNotSecretary;
+                            score += Scores.ExaminerSecretary;
                         }
                     }
                     score += examScore / ctx.Students[student_id].ExamCourse.Instructors.Length;
@@ -152,11 +152,11 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetPresidents(Schedule schedule)
         {
-            Console.WriteLine("-----------------------------------------Elnökök---------------------------------------------------------");
+            //Console.WriteLine("-----------------------------------------Elnökök---------------------------------------------------------");
 
-            int sectionNr = ctx.Students.Length / 5; //hány darab blokk van
-            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2); //mennyivel többször legyenek felvéve az elnökök
-            int presindetAll = presidentOne * ctx.Presidents.Length; //összes elnök néhányszor
+            int sectionNr = ctx.Students.Length / 5; //hány darab blokk van (20)
+            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2); //mennyivel többször legyenek felvéve az elnökök (6)
+            int presindetAll = presidentOne * ctx.Presidents.Length; //összes elnök néhányszor (24)
             Instructor[] allPresidents = new Instructor[presindetAll];
 
             for (int presidentNr = 0; presidentNr < ctx.Presidents.Length; presidentNr++)
@@ -164,26 +164,43 @@ namespace FinalExamScheduling.HeuristicScheduling
                 for (int i = presidentNr * presidentOne; i < presidentOne * (presidentNr + 1); i++)
                 {
                     allPresidents[i] = ctx.Presidents[presidentNr];
+                    
                 }
 
             }
+            
             double[,] scores = new double[presindetAll, 20];
             int[] presidentIndexes = Enumerable.Range(0, presindetAll).ToArray();
             int[] finalExamIndexes = Enumerable.Range(0, sectionNr).ToArray();
 
-            for (int p = 0; p < presindetAll; p++)
+
+            for (int p = 0; p < presindetAll; p++) //vegigmegy az osszes elnokon 6*4 0->23
             {
-                
-                int j = 0;
-                for (int f = 0; f < 100; f += 5)
+                int j = 0; //blokkok száma 0->20
+                for (int f = 0; f < 100; f += 5) //vizsgak blokkok szerint 
                 {
                     int countMinus = 0;
-                    for (int i = f; i < f + 5; i++)
+                    for (int i = f; i < f + 5; i++) //blokkon belül
                     {
                         if (allPresidents[p].Availability[i] == false)
                         {
                             countMinus++;
                         }
+
+                        List<Student> presidentStudents = GetInstructorStudents(allPresidents[p]);
+                        if (presidentStudents.Count > 0)
+                        {
+                            foreach ( var presStud in presidentStudents) {
+                                foreach (Instructor instuctor in presStud.ExamCourse.Instructors)
+                                {
+                                    if (!instuctor.Availability[i])
+                                    {
+                                        scores[p, j] -= Scores.ExaminerAvailable; // not available
+                                    }
+                                }
+                            }
+                        }
+
                     }
                     if (countMinus > 0)
                     {
@@ -193,6 +210,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
+            
             
 
             EgervaryAlgorithm.RunAlgorithm(scores, presidentIndexes, finalExamIndexes);
@@ -212,9 +230,10 @@ namespace FinalExamScheduling.HeuristicScheduling
             }
         }
 
+
         public void GetSecretaries(Schedule schedule)
         {
-            Console.WriteLine("-----------------------------------------Titkárok---------------------------------------------------------");
+            //Console.WriteLine("-----------------------------------------Titkárok---------------------------------------------------------");
 
             int secretaryOne = (int)((20 / ctx.Secretaries.Length) * 1.5);
             int secretaryAll = secretaryOne * ctx.Secretaries.Length;
@@ -245,6 +264,22 @@ namespace FinalExamScheduling.HeuristicScheduling
                             countMinus++;
 
                         }
+
+                        List<Student> secretaryStudents = GetInstructorStudents(allSecretaries[p]);
+                        if (secretaryStudents.Count > 0)
+                        {
+                            foreach (var secStud in secretaryStudents)
+                            {
+                                foreach (Instructor instuctor in secStud.ExamCourse.Instructors)
+                                {
+                                    if (!instuctor.Availability[i])
+                                    {
+                                        scores[p, j] -= Scores.ExaminerAvailable; // not available
+                                    }
+                                }
+                            }
+                        }
+
                     }
                     if (countMinus > 0)
                     {
@@ -276,7 +311,7 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetMembers(Schedule schedule)
         {
-            Console.WriteLine("-----------------------------------------Belső tagok---------------------------------------------------------");
+            //Console.WriteLine("-----------------------------------------Belső tagok---------------------------------------------------------");
 
             List<int> remainingExams = Enumerable.Range(0, schedule.FinalExams.Length).ToList();
             int[] memberWorkloads = new int[ctx.Members.Length];
@@ -290,21 +325,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                     memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
                     
                 }
-
-                //Nem lehet belső tag elnök vagy titkár
-                /*if (schedule.FinalExams[i].President.Roles.HasFlag(Roles.Member))
-                {
-                    schedule.FinalExams[i].Member = schedule.FinalExams[i].President;
-                    remainingExams.Remove(i);
-                    memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
-                }
-                if (schedule.FinalExams[i].Secretary.Roles.HasFlag(Roles.Member))
-                {
-                    schedule.FinalExams[i].Member = schedule.FinalExams[i].Secretary;
-                    remainingExams.Remove(i);
-                    memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
-                }*/
-
+      
                 if (schedule.FinalExams[i].Examiner.Roles.HasFlag(Roles.Member))
                 {
                     schedule.FinalExams[i].Member = schedule.FinalExams[i].Examiner;
@@ -361,7 +382,7 @@ namespace FinalExamScheduling.HeuristicScheduling
 
         public void GetExaminers(Schedule schedule)
         {
-            Console.WriteLine("-----------------------------------------Vizsgáztatók---------------------------------------------------------");
+            //Console.WriteLine("-----------------------------------------Vizsgáztatók---------------------------------------------------------");
 
             /*for (int i = 0; i < 100; i++)
             {
@@ -422,14 +443,19 @@ namespace FinalExamScheduling.HeuristicScheduling
                             scores[stud, instr] -= Scores.ExaminerNotAvailable;
                         }
 
-                        if(allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].President)
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].President)
                         {
-                            scores[stud, instr] += Scores.ExaminerNotPresident;
+                            scores[stud, instr] += Scores.ExaminerNotPresident; //ExaminerPresident
                         }
 
                         if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Secretary)
                         {
-                            scores[stud, instr] += Scores.ExaminerNotSecretary;
+                            scores[stud, instr] += Scores.ExaminerSecretary;
+                        }
+
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Member)
+                        {
+                            scores[stud, instr] += Scores.ExaminerMember;
                         }
 
                     }
@@ -450,6 +476,50 @@ namespace FinalExamScheduling.HeuristicScheduling
                 
             }
         }
+
+        public List<Student> GetInstructorStudents(Instructor instructor)
+        {
+            List<Student> instructorStudents = new List<Student>();
+            for (int student_id = 0; student_id < ctx.Students.Length; student_id++)
+            {
+                if (ctx.Students[student_id].Supervisor == instructor)
+                {
+                    instructorStudents.Add(ctx.Students[student_id]);
+                }
+            }
+            return instructorStudents;
+        }
+
+        /*
+        public Dictionary<Instructor, List<Student>> GetPresidentsStudents()
+        {
+            Dictionary<Instructor, List<Student>> presidentsStudents = new Dictionary<Instructor, List<Student>>();
+            List<Student> presStudents = new List<Student>();
+
+            for (int president_id = 0; president_id < ctx.Presidents.Length; president_id++)
+            {
+                for (int student_id = 0; student_id < ctx.Students.Length; student_id++)
+                {
+                    if (ctx.Students[student_id].Supervisor == ctx.Presidents[president_id])
+                    {
+                        presStudents.Add(ctx.Students[student_id]);
+                    }
+                }
+                presidentsStudents.Add(ctx.Presidents[president_id], presStudents);
+            }
+
+            foreach (var contents in presidentsStudents.Keys)
+            {
+                foreach (var listMember in presidentsStudents[contents])
+                {
+                    Console.WriteLine("Key: " + contents.Name + " member: " + listMember.Name);
+                }
+            }
+
+                return presidentsStudents;
+        }
+        */
+
 
     }
 }

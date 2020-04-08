@@ -34,8 +34,11 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public const double PresidentSelfStudent = 2;
         public const double SecretarySelfStudent = 1;
-        public const double ExaminerNotPresident = 1;
 
-        public const double ExaminerNotSecretary = 1;
+        public const double ExaminerNotPresident = 1; //ExaminerPresident
+        public const double ExaminerSecretary = 1;
+        public const double ExaminerMember = 1;
+
+        public const double ExaminerAvailable = 1;
     }
 }
