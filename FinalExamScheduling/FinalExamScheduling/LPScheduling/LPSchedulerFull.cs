@@ -13,7 +13,7 @@ namespace FinalExamScheduling.LPScheduling
     {
         Context ctx;
         private int finalExamCount;
-        private int tsCount = Constants.days * 120;
+        private int tsCount = Constants.days * Constants.tssInOneDay;
 
         public LPSchedulerFull(Context context)
         {
@@ -35,6 +35,8 @@ namespace FinalExamScheduling.LPScheduling
                 // Create variables
                 GRBVar[,,] varInstructors = new GRBVar[ctx.Instructors.Length, tsCount, Constants.roomCount];
                 GRBVar[,,] varStudents = new GRBVar[ctx.Students.Length, tsCount, Constants.roomCount];
+
+                GRBVar[,] varStrudentsBlocks = new GRBVar[ctx.Students.Length, tsCount * Constants.roomCount - 1];
 
                 GRBVar[,] varBSc = new GRBVar[tsCount, Constants.roomCount];
                 GRBVar[,] varMSc = new GRBVar[tsCount, Constants.roomCount];
@@ -60,6 +62,11 @@ namespace FinalExamScheduling.LPScheduling
                         for (int s = 0; s < ctx.Students.Length; s++)
                         {
                             varStudents[s, ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"{ctx.Students[s].Name}_{ts}_{room}");
+
+                            if (!(room == Constants.roomCount - 1 && ts == tsCount - 1))
+                            {
+                                varStrudentsBlocks[s, room * tsCount + ts] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Student_blocks_{ctx.Students[s].Name}_{ts}_{room}");
+                            }
                         }
 
                         varBSc[ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"BSc_{ts}_{room}");
@@ -146,10 +153,34 @@ namespace FinalExamScheduling.LPScheduling
                     model.AddConstr(SumOfPersonVarsPerPerson(varStudents)[s] == nrOfTs, $"Student_Ts_{ctx.Students[s].Name}");
                 }
 
+                // students in blocks
+                //GRBVar[,] varsDistance = new GRBVar[vars.GetLength(0), vars.GetLength(1) - 1];
+                GRBVar[,] varStudentsReducedDim = ReduceVarsDim(varStudents);
+                for (int student = 0; student < ctx.Students.Length; student++)
+                {
+                    for (int i = 0; i < varStrudentsBlocks.GetLength(1); i++)
+                    {
+                        model.AddConstr(varStrudentsBlocks[student, i] <= varStudentsReducedDim[student, i] + varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_1");
+                        model.AddConstr(varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_2");
+                        model.AddConstr(varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i + 1] - varStudentsReducedDim[student, i], $"StudentBlock_{student}_{i}_3");
+                        model.AddConstr(varStrudentsBlocks[student, i] <= 2.0 - varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_4");
+
+                    }
+                    for (int ts_reduced = Constants.tssInOneDay -1 ; ts_reduced < varStudentsReducedDim.GetLength(1) - 1; ts_reduced+=Constants.tssInOneDay)
+                    {
+                        model.AddConstr(varStudentsReducedDim[student, ts_reduced] + varStudentsReducedDim[student, ts_reduced + 1] <= 1, $"StudentDayEnd_{student}_{ts_reduced}");
+                    }
+
+                }
+
+                // students' blocks change less than 2 times 
+                string[] nameOfStudentInBlocks = Enumerable.Range(0, ctx.Students.Length).Select(x => "StudentsBlocksSum" + x).ToArray();
+                model.AddConstrs(SumOfPersonVarsPerPerson(varStrudentsBlocks), TArray(GRB.LESS_EQUAL, ctx.Students.Length), TArray(2.0, ctx.Students.Length), nameOfStudentInBlocks);
+
 
                 // Optimize model
                 model.Optimize();
-               /* model.ComputeIIS();
+                /*model.ComputeIIS();
                 // Print the names of all of the constraints in the IIS set.
                 foreach (var c in model.GetConstrs())
                 {
@@ -237,6 +268,22 @@ namespace FinalExamScheduling.LPScheduling
             return presidentsVars;
         }
 
+        GRBLinExpr[] SumOfPersonVarsPerPerson(GRBVar[,] vars)
+        {
+            GRBLinExpr[] sums = new GRBLinExpr[vars.GetLength(0)];
+
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                sums[person] = 0.0;
+                for (int ts = 0; ts < vars.GetLength(1); ts++)
+                {
+                    sums[person].AddTerm(1.0, vars[person, ts]);
+                }
+            }
+
+            return sums;
+        }
+
         //for every ts: P_(i0,ts0,r0) + P_(i1,ts0,r0) + P_(i2,ts0,r0) +...+ P_(i0,ts0,r1) + P_(i1,ts0,r1) + ...
         GRBLinExpr[] SumOfPersonVarsPerTs(GRBVar[,,] vars)
         {
@@ -294,26 +341,6 @@ namespace FinalExamScheduling.LPScheduling
             return sums;
         }
 
-        GRBLinExpr[,] SumOf3DimVarsPer2Dim(GRBVar[,,] vars, int dim1, int dim2)
-        {
-            GRBLinExpr[,] sums = new GRBLinExpr[vars.GetLength(dim1), vars.GetLength(dim2)];
-            int[] allDim = { 0, 1, 2 };
-            var dim3 = allDim.Except(new int[] { dim1, dim2 }).ToArray();
-            for (int j = 0; j < vars.GetLength(dim1); j++)
-            {
-                for (int k = 0; k < vars.GetLength(dim2); k++)
-                {
-                    sums[j, k] = 0.0;
-
-                    for (int i = 0; i < vars.GetLength(dim3[0]); i++)
-                    {
-                        sums[j, k].AddTerm(1.0, vars[i, j, k]);
-                    }
-                }
-            }
-            return sums;
-        }
-
         GRBLinExpr Sum(GRBVar[,,] vars)
         {
             GRBLinExpr sum = 0.0;
@@ -331,6 +358,49 @@ namespace FinalExamScheduling.LPScheduling
             return sum;
         }
 
+        GRBLinExpr Sum(GRBVar[] vars)
+        {
+            GRBLinExpr sum = 0.0;
+            for (int i = 0; i < vars.GetLength(0); i++)
+            {
+                sum.AddTerm(1, vars[i]);
+            }
+            return sum;
+        }
+
+        GRBVar[,] ReduceVarsDim(GRBVar[,,] vars)
+        {
+            GRBVar[,] varsReduced = new GRBVar[vars.GetLength(0), vars.GetLength(1) * vars.GetLength(2)];
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int room = 0; room < vars.GetLength(2); room++)
+                {
+                    for (int ts = 0; ts < vars.GetLength(1); ts++)
+                    {
+                        varsReduced[person, room * vars.GetLength(1) + ts] = vars[person, ts, room];
+                    }
+                }
+            }
+
+            return varsReduced;
+        }
+
+        /*GRBVar[,] DistanceOfVarsPairs(GRBVar[,] vars, GRBModel model)
+        {
+            GRBVar[,] varsDistance = new GRBVar[vars.GetLength(0), vars.GetLength(1)-1];
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int i = 0; i < varsDistance.GetLength(1); i++)
+                {
+                    model.AddGenConstrAbs(varsDistance[person,i],)
+
+                    //varsDistance[person,i] = 
+                }
+            }
+
+            return varsDistance;
+        }*/
+
         // availabilities of instructors
         GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
         {
@@ -346,12 +416,6 @@ namespace FinalExamScheduling.LPScheduling
             }
             return result;
         }
-
-
-
-
-
-        
 
         GRBVar[,] GetSecretariesVars(GRBVar[,] instructorVars)
         {
@@ -415,6 +479,12 @@ namespace FinalExamScheduling.LPScheduling
         double[] NrArray(double number)
         {
             return Enumerable.Range(0, finalExamCount).Select(x => number).ToArray();
+        }
+
+        static T[] TArray<T>(T variable, int count)
+        {
+            return Enumerable.Range(0, count).Select(x => variable).ToArray();
+
         }
 
         GRBLinExpr SumOfVars(GRBVar[] vars)

@@ -12,6 +12,6 @@ namespace FinalExamScheduling.Model
         public const int daysCS = 8;
         public const int daysEE = 5;
         public const int roomCount = 2;
-        
+        public const int tssInOneDay = 120;
     }
 }
