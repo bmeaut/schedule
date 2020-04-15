@@ -54,7 +54,7 @@ namespace FinalExamScheduling.GeneticScheduling
             geneticAlgorithm.Termination = termination;
             geneticAlgorithm.GenerationRan += GenerationRan;
             geneticAlgorithm.MutationProbability = 0.05f;
-
+            geneticAlgorithm.Reinsertion = new SchedulingElitistReinsertion();
 
             return Task.Run<Schedule>(
                 () =>

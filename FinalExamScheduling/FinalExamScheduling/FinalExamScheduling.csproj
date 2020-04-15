@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneticScheduling\SchedulingElitistReinsertion.cs" />
     <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />

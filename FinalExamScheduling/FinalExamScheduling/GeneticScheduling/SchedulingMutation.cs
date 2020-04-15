@@ -22,8 +22,8 @@ namespace FinalExamScheduling.GeneticScheduling
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
             
-
-            if (RandomizationProvider.Current.GetDouble() <= probability * 10)
+            //swaps 2 genes(?)
+            if (RandomizationProvider.Current.GetDouble() <= probability*5)
             {
                 var indexes = RandomizationProvider.Current.GetUniqueInts(2, 0, chromosome.Length);
                 var firstIndex = indexes[0];
@@ -35,8 +35,8 @@ namespace FinalExamScheduling.GeneticScheduling
                 chromosome.ReplaceGene(secondIndex, firstGene);
             }
 
-
-
+            /*
+            //change president and secretary in blocks for the most common in that block
             if (RandomizationProvider.Current.GetDouble() <= probability/2)
             {
                 for (int i = 0; i < 100; i += 5)
@@ -75,7 +75,10 @@ namespace FinalExamScheduling.GeneticScheduling
 
                 }
             }
-            if (RandomizationProvider.Current.GetDouble() <= probability)
+            */
+
+            //if supervisor can be president, let be president
+            if (RandomizationProvider.Current.GetDouble() <= probability*5)
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -87,12 +90,12 @@ namespace FinalExamScheduling.GeneticScheduling
                     {
                         ((FinalExam)gene.Value).President = finalExam.Supervisor;
                         chromosome.ReplaceGene(i, gene);
-
                     }
                 }
             }
 
-            if (RandomizationProvider.Current.GetDouble() <= probability)
+            //if supervisor can be secretary, let be secretary
+            if (RandomizationProvider.Current.GetDouble() <= probability*5)
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -105,12 +108,12 @@ namespace FinalExamScheduling.GeneticScheduling
                     {
                         ((FinalExam)gene.Value).Secretary = finalExam.Supervisor;
                         chromosome.ReplaceGene(i, gene);
-
                     }
                 }
             }
 
-            if (RandomizationProvider.Current.GetDouble() <= probability/4)
+            //if president or secretary not available, change them
+            if (RandomizationProvider.Current.GetDouble() <= probability*10)
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -128,12 +131,78 @@ namespace FinalExamScheduling.GeneticScheduling
                         ((FinalExam)gene.Value).Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
                         chromosome.ReplaceGene(i, gene);
                     }
-
-
                 }
-
             }
-            
+
+            //if president or secretary available for entire block, set them
+            if (RandomizationProvider.Current.GetDouble() <= probability)
+            {
+                for (int i = 0; i < 100; i += 5)
+                {
+                    List<Gene> genes = new List<Gene>();
+                    List<FinalExam> finalExams = new List<FinalExam>();
+                    List<Instructor> presidents = new List<Instructor>();
+                    List<Instructor> secretaries = new List<Instructor>();
+
+                    for (int j = 0; j < 5; j++)
+                    {
+                        genes.Add(chromosome.GetGene(i+j));
+                        finalExams.Add((FinalExam)genes[j].Value);
+
+                        if (finalExams[j].President.Availability[i + j])
+                        {
+                            presidents.Add(finalExams[j].President);
+                        }
+
+                        if (finalExams[j].Secretary.Availability[i + j])
+                        {
+                            secretaries.Add(finalExams[j].Secretary);
+                        }
+                    }
+
+                    if (presidents.Any())
+                    {
+                        var mostPresident = presidents.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                        for (int l = 0; l < 5; l++)
+                        {
+                            if (finalExams[l].President != mostPresident)
+                            {
+                                ((FinalExam)genes[l].Value).President = mostPresident;
+                                chromosome.ReplaceGene(i, genes[l]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int l = 0; l < 5; l++)
+                        {
+                            ((FinalExam)genes[l].Value).President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
+                            chromosome.ReplaceGene(i, genes[l]);
+                        }
+                    }
+
+                    if (secretaries.Any())
+                    {
+                        var mostSecretary = secretaries.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                        for (int l = 0; l < 5; l++)
+                        {
+                            if (finalExams[l].Secretary != mostSecretary)
+                            {
+                                ((FinalExam)genes[l].Value).Secretary = mostSecretary;
+                                chromosome.ReplaceGene(i, genes[l]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int l = 0; l < 5; l++)
+                        {
+                            ((FinalExam)genes[l].Value).Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+                            chromosome.ReplaceGene(i, genes[l]);
+                        }
+                    }
+                }
+            }
 
 
 
