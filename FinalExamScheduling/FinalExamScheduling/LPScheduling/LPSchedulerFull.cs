@@ -106,7 +106,7 @@ namespace FinalExamScheduling.LPScheduling
                                 isExam = true;
                             }
                         }
-                        if (!isExam) model.AddConstr(varSkipped[ts, room] == 1.0, $"Skipped_noPresident_{ts}_{room}");
+                        if (!isExam) model.AddConstr(varSkipped[ts, room] + varLunch[ts,room] == 1.0, $"Skipped_noPresident_{ts}_{room}");
 
                     }
                 }
@@ -115,10 +115,10 @@ namespace FinalExamScheduling.LPScheduling
                 {
                     for (int room = 0; room < Constants.roomCount; room++)
                     {
-                        // BSc + MSc + Skip = 1
-                        model.AddConstr(varBSc[ts, room] + varMSc[ts, room] + varSkipped[ts, room] == 1.0, $"MSc+BSc+Skip_{ts}_{room}");
-                        // Sum(Sturdents) + Skip = 1
-                        model.AddConstr(SumOfPersonVarsPerTsPerRoom(varStudents)[ts, room] + varSkipped[ts, room] == 1.0, $"SumStudents+Skip_{ts}_{room}");
+                        // BSc + MSc + Skip + Lunch = 1
+                        model.AddConstr(varBSc[ts, room] + varMSc[ts, room] + varSkipped[ts, room] + varLunch[ts, room] == 1.0, $"MSc+BSc+Skip+Lunch_{ts}_{room}");
+                        // Sum(Sturdents) + Skip + Lunch = 1
+                        model.AddConstr(SumOfPersonVarsPerTsPerRoom(varStudents)[ts, room] + varSkipped[ts, room] + varLunch[ts,room] == 1.0, $"SumStudents+Skip_{ts}_{room}");
 
                         for (int s = 0; s < ctx.Students.Length; s++)
                         {
@@ -177,6 +177,22 @@ namespace FinalExamScheduling.LPScheduling
                 string[] nameOfStudentInBlocks = Enumerable.Range(0, ctx.Students.Length).Select(x => "StudentsBlocksSum" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerPerson(varStrudentsBlocks), TArray(GRB.LESS_EQUAL, ctx.Students.Length), TArray(2.0, ctx.Students.Length), nameOfStudentInBlocks);
 
+                // lunchbreak in every day
+                for (int room = 0; room < Constants.roomCount; room++)
+                {
+                    for (int ts = 0; ts < tsCount; ts+=Constants.tssInOneDay)
+                    {
+                        GRBLinExpr linExprLunchOneDay = 0.0;
+                        for (int tsInSession = 0; tsInSession < Constants.tssInOneDay; tsInSession++)
+                        {
+                            linExprLunchOneDay.AddTerm(1.0, varLunch[ts + tsInSession, room]);
+                            //Console.WriteLine(ts+tsInSession + "\t" + room);
+                        }
+                        model.AddConstr(linExprLunchOneDay >= 8, $"Lunchbreak_{ts}_{room}");
+                        //Console.WriteLine("AddConstr");
+
+                    }
+                }
 
                 // Optimize model
                 model.Optimize();
@@ -208,6 +224,7 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         Console.Write($"roomNr: {room}\t");
                         if (varSkipped[ts, room].X == 1.0) Console.Write($"Skip\t");
+                        if (varLunch[ts, room].X == 1.0) Console.Write($"Lunch\t");
                         if (varBSc[ts, room].X == 1.0) Console.Write($"BSc\t");
                         if (varMSc[ts, room].X == 1.0) Console.Write($"MSc\t");
                         if (isCS[ts,room]) Console.Write($"CS\t");
@@ -472,13 +489,6 @@ namespace FinalExamScheduling.LPScheduling
                 }
             }
             return examinersVars;
-        }
-
-
-
-        double[] NrArray(double number)
-        {
-            return Enumerable.Range(0, finalExamCount).Select(x => number).ToArray();
         }
 
         static T[] TArray<T>(T variable, int count)
