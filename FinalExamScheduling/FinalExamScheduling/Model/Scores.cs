@@ -41,6 +41,9 @@
         public const double SecretarySelfStudent = 1;
         public const double ExaminerNotPresident = 1;
 
+        public const double LunchStartsSoon = 40;
+        public const double LunchEndsLate = 40;
+        public const double LunchNotOptimalLenght = 0.5;
 
     }
 }
