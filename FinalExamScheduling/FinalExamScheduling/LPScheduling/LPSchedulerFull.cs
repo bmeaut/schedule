@@ -43,6 +43,19 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,] varSkipped = new GRBVar[tsCount, Constants.roomCount];
                 GRBVar[,] varLunch = new GRBVar[tsCount, Constants.roomCount];
 
+                GRBVar[,,] varLunchBlocks = new GRBVar[Constants.days, Constants.tssInOneDay - 1 , Constants.roomCount];
+
+
+                // Variables for objective function
+                GRBVar[,] lunchTooSoon = new GRBVar[Constants.days, Constants.roomCount];
+                GRBVar[,] lunchTooLate = new GRBVar[Constants.days, Constants.roomCount];
+
+                GRBVar[] varsAM = new GRBVar[42]; // tss before 11:30
+                GRBVar[] varsPM = new GRBVar[52]; // tss after 13:40
+
+                GRBVar[,] lunchOptimalLess = new GRBVar[Constants.days, Constants.roomCount];
+                GRBVar[,] lunchOptimalMore = new GRBVar[Constants.days, Constants.roomCount];
+
                 // Create constants
                 bool[,,] presidentsSchedule = new bool[ctx.Presidents.Length, tsCount, Constants.roomCount];
 
@@ -81,11 +94,44 @@ namespace FinalExamScheduling.LPScheduling
                             presidentsSchedule[p, ts, room] = false;
                         }
                     }
+
+                    for (int day = 0; day < Constants.days; day++)
+                    {
+                        lunchTooSoon[day, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"LunchTooSoon_{day}_{room}");
+                        lunchTooLate[day, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"LunchTooLate_{day}_{room}");
+
+                        lunchOptimalLess[day, room] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, $"LunchLessThanOptimal_{day}_{room}");
+                        lunchOptimalMore[day, room] = model.AddVar(0.0, GRB.INFINITY, 0.0, GRB.INTEGER, $"LunchMoreThanOptimal_{day}_{room}");
+
+                        for (int tsInDay = 0; tsInDay < Constants.tssInOneDay - 1; tsInDay++)
+                        {
+                            varLunchBlocks[day,tsInDay,room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"LunchBlocks_{day}_{tsInDay}_{room}");
+                        }
+                    }
                 }
+
                 ExcelHelper.ReadPresidents(existingFile, presidentsSchedule, isCS, isEE);
 
                 // Set objective
-                model.SetObjective(Sum(varInstructors),GRB.MINIMIZE);
+               
+                for (int room = 0; room < Constants.roomCount; room++)
+                {
+                    for (int day = 0; day < Constants.days; day++)
+                    {
+                        for (int ts = 0; ts < varsAM.Length; ts++)
+                        {
+                            varsAM[ts] = varLunch[day * Constants.tssInOneDay + ts, room];
+                        }
+                        model.AddGenConstrMax(lunchTooSoon[day,room], varsAM, 0.0, $"LunchTooSoon_{day}_{room}");
+                        for (int ts = 0; ts < varsPM.Length; ts++)
+                        {
+                            varsPM[ts] = varLunch[day * Constants.tssInOneDay + ts + Constants.tssInOneDay - varsPM.Length, room];
+                        }
+                        model.AddGenConstrMax(lunchTooLate[day,room], varsPM, 0.0, $"LunchTooLate_{day}_{room}");
+                    }
+                }
+                model.SetObjective(Sum(lunchTooSoon) * Scores.LunchStartsSoon + Sum(lunchTooLate) * Scores.LunchEndsLate + 
+                    Sum(lunchOptimalLess) * Scores.LunchNotOptimalLenght + Sum(lunchOptimalMore) * Scores.LunchNotOptimalLenght, GRB.MINIMIZE);
 
                 // Constraints
 
@@ -172,25 +218,46 @@ namespace FinalExamScheduling.LPScheduling
                     }
 
                 }
-
                 // students' blocks change less than 2 times 
                 string[] nameOfStudentInBlocks = Enumerable.Range(0, ctx.Students.Length).Select(x => "StudentsBlocksSum" + x).ToArray();
                 model.AddConstrs(SumOfPersonVarsPerPerson(varStrudentsBlocks), TArray(GRB.LESS_EQUAL, ctx.Students.Length), TArray(2.0, ctx.Students.Length), nameOfStudentInBlocks);
 
+                // lunch in blocks
+                //GRBVar[,] varStudentsReducedDim = ReduceVarsDim(varStudents);
+                for (int day = 0; day < Constants.days; day++)
+                {
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        for (int tsInDay = 0; tsInDay < Constants.tssInOneDay-1; tsInDay++)
+                        {
+                            var lunchTs = varLunch[day * Constants.tssInOneDay + tsInDay, room];
+                            var lunchTsNext = varLunch[day * Constants.tssInOneDay + tsInDay + 1, room];
+                            model.AddConstr(varLunchBlocks[day,tsInDay,room] <= lunchTs + lunchTsNext, $"LunchBlock_{day}_{tsInDay}_{room}_1");
+                            model.AddConstr(varLunchBlocks[day, tsInDay, room] >= lunchTs - lunchTsNext, $"LunchBlock_{day}_{tsInDay}_{room}_2");
+                            model.AddConstr(varLunchBlocks[day, tsInDay, room] >= lunchTsNext - lunchTs, $"LunchBlock_{day}_{tsInDay}_{room}_3");
+                            model.AddConstr(varLunchBlocks[day, tsInDay, room] <= 2.0 - lunchTs - lunchTsNext, $"LunchBlock_{day}_{tsInDay}_{room}_4");
+
+                        }
+                        model.AddConstr(SumOfPersonVarsPerPersonPerRoom(varLunchBlocks)[day, room] <= 2, $"LunchBlockSum_{day}_{room}");
+                    }
+                }
+   
                 // lunchbreak in every day
                 for (int room = 0; room < Constants.roomCount; room++)
                 {
+                    int day = 0;
                     for (int ts = 0; ts < tsCount; ts+=Constants.tssInOneDay)
                     {
                         GRBLinExpr linExprLunchOneDay = 0.0;
                         for (int tsInSession = 0; tsInSession < Constants.tssInOneDay; tsInSession++)
                         {
                             linExprLunchOneDay.AddTerm(1.0, varLunch[ts + tsInSession, room]);
-                            //Console.WriteLine(ts+tsInSession + "\t" + room);
                         }
-                        model.AddConstr(linExprLunchOneDay >= 8, $"Lunchbreak_{ts}_{room}");
-                        //Console.WriteLine("AddConstr");
+                        model.AddConstr(linExprLunchOneDay >= 8, $"LunchbreakMin_{ts}_{room}");
+                        model.AddConstr(linExprLunchOneDay <= 16, $"LunchbreakMax_{ts}_{room}");
+                        model.AddConstr(lunchOptimalMore[day,room] - lunchOptimalLess[day,room] == linExprLunchOneDay - 12.0, $"OptimalLunchLength_{day}_{room}");
 
+                        day++;
                     }
                 }
 
@@ -358,18 +425,50 @@ namespace FinalExamScheduling.LPScheduling
             return sums;
         }
 
+        GRBLinExpr[,] SumOfPersonVarsPerPersonPerRoom(GRBVar[,,] vars)
+        {
+            GRBLinExpr[,] sums = new GRBLinExpr[vars.GetLength(0), vars.GetLength(2)];
+
+            for (int person = 0; person < vars.GetLength(0); person++)
+            {
+                for (int room = 0; room < vars.GetLength(2); room++)
+                {
+                    sums[person, room] = 0.0;
+
+                    for (int ts = 0; ts < vars.GetLength(1); ts++)
+                    {
+                        sums[person, room].AddTerm(1.0, vars[person, ts, room]);
+                    }
+                }
+            }
+            return sums;
+        }
+
         GRBLinExpr Sum(GRBVar[,,] vars)
         {
             GRBLinExpr sum = 0.0;
-            for (int person = 0; person < vars.GetLength(0); person++)
+            for (int i = 0; i < vars.GetLength(0); i++)
             {
-                for (int ts = 0; ts < vars.GetLength(1); ts++)
+                for (int j = 0; j < vars.GetLength(1); j++)
                 {
-                    for (int room = 0; room < vars.GetLength(2); room++)
+                    for (int k = 0; k < vars.GetLength(2); k++)
                     {
-                        sum.AddTerm(1, vars[person, ts, room]);
+                        sum.AddTerm(1, vars[i, j, k]);
 
                     }
+                }
+            }
+            return sum;
+        }
+
+        GRBLinExpr Sum(GRBVar[,] vars)
+        {
+            GRBLinExpr sum = 0.0;
+            for (int i = 0; i < vars.GetLength(0); i++)
+            {
+                for (int j = 0; j < vars.GetLength(1); j++)
+                {
+                    sum.AddTerm(1, vars[i, j]);
                 }
             }
             return sum;
@@ -384,6 +483,7 @@ namespace FinalExamScheduling.LPScheduling
             }
             return sum;
         }
+
 
         GRBVar[,] ReduceVarsDim(GRBVar[,,] vars)
         {
@@ -497,14 +597,6 @@ namespace FinalExamScheduling.LPScheduling
 
         }
 
-        GRBLinExpr SumOfVars(GRBVar[] vars)
-        {
-            GRBLinExpr sum = 0.0;
-            for (int person = 0; person < vars.Length; person++)
-            {
-                sum.AddTerm(1, vars[person]);
-            }
-            return sum;
-        }
+
     }
 }
