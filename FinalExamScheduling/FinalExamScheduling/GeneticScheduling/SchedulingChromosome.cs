@@ -11,26 +11,21 @@ namespace FinalExamScheduling.GeneticScheduling
     public class SchedulingChromosome : ChromosomeBase
     {
         private Context ctx;
-        //public int presidentNr, secretaryNr, memberNr;
-
-        //private Student[] randStudents;
 
         public SchedulingChromosome(Context context) : base(100)
         {
             this.ctx = context;
-            //randStudents = context.Students.OrderBy(x => context.Rnd.Next()).ToArray();
             for (int i = 0; i < 100; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
             }
-            
         }
 
         public Schedule Schedule
         {
-            get {
+            get
+            {
                 Schedule schedule = new Schedule(100);
-                //schedule.FinalExams = new FinalExam[100];
                 for (int i = 0; i < 100; i++)
                 {
                     schedule.FinalExams[i] = (FinalExam)GetGene(i).Value;
@@ -47,25 +42,15 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public override Gene GenerateGene(int geneIndex)
         {
-            FinalExam fe = new FinalExam();
-            fe.Id = geneIndex;
-           
-            //ctx.Students.ToList().Sort((x, y) => random.Next(-1, 1));
-            
-           
-
-
-            //fe.Student = ctx.Students[ctx.Rnd.Next(0, ctx.Students.Length)];
-
-            fe.Student = ctx.RandStudents[geneIndex];
-            fe.Supervisor = fe.Student.Supervisor;
-            fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
-            fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
-            fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
-
-            return new Gene(fe);
+            return new Gene(new FinalExam
+            {
+                Student = ctx.RandStudents[geneIndex],
+                Supervisor = ctx.RandStudents[geneIndex].Supervisor,
+                President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)],
+                Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)],
+                Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)],
+                Examiner = ctx.RandStudents[geneIndex].ExamCourse.Instructors[ctx.Rnd.Next(0, ctx.RandStudents[geneIndex].ExamCourse.Instructors.Length)],
+            });
         }
-
     }
 }

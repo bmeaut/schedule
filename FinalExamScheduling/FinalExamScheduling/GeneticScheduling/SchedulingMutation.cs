@@ -1,4 +1,5 @@
 ﻿using FinalExamScheduling.Model;
+using GeneticSharp.Domain;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Randomizations;
@@ -21,22 +22,16 @@ namespace FinalExamScheduling.GeneticScheduling
 
         protected override void PerformMutate(IChromosome chromosome, float probability)
         {
-
-
             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
             {
                 var indexes = RandomizationProvider.Current.GetUniqueInts(2, 0, chromosome.Length);
                 var firstIndex = indexes[0];
                 var secondIndex = indexes[1];
-                var firstGene = chromosome.GetGene(firstIndex);
-                var secondGene = chromosome.GetGene(secondIndex);
-
-                chromosome.ReplaceGene(firstIndex, secondGene);
-                chromosome.ReplaceGene(secondIndex, firstGene);
+                var firstGene = ((FinalExam)chromosome.GetGene(firstIndex).Value).Clone();
+                var secondGene = ((FinalExam)chromosome.GetGene(secondIndex).Value).Clone();
+                chromosome.ReplaceGene(firstIndex, new Gene(secondGene));
+                chromosome.ReplaceGene(secondIndex, new Gene(firstGene));
             }
-
-
-
             if (RandomizationProvider.Current.GetDouble() <= probability / 2)
             {
                 for (int i = 0; i < 100; i += 5)
@@ -48,31 +43,23 @@ namespace FinalExamScheduling.GeneticScheduling
                     for (int j = 0; j < 5; j++)
                     {
                         genes.Add(chromosome.GetGene(j + i));
-                        finalExams.Add((FinalExam)genes[j].Value);
+                        finalExams.Add(((FinalExam)genes[j].Value));
                         presidents.Add(finalExams[j].President);
                         secretaries.Add(finalExams[j].Secretary);
                     }
-
                     var mostPresident = presidents.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-
                     var mostSecretary = secretaries.GroupBy(k => k).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
-
                     for (int l = 0; l < 5; l++)
                     {
                         if (finalExams[l].President != mostPresident && RandomizationProvider.Current.GetDouble() <= probability / 2)
                         {
-                            ((FinalExam)genes[l].Value).President = mostPresident;
-                            chromosome.ReplaceGene(i, genes[l]);
-
+                            finalExams[l].President = mostPresident;
                         }
-
                         if (finalExams[l].Secretary != mostSecretary && RandomizationProvider.Current.GetDouble() <= probability / 2)
                         {
-                            ((FinalExam)genes[l].Value).Secretary = mostSecretary;
-                            chromosome.ReplaceGene(i, genes[l]);
+                            finalExams[l].Secretary = mostSecretary;
                         }
                     }
-
                 }
             }
             if (RandomizationProvider.Current.GetDouble() <= probability / 3)
@@ -81,55 +68,38 @@ namespace FinalExamScheduling.GeneticScheduling
                 {
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
-
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President
-                        && RandomizationProvider.Current.GetDouble() <= probability)
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President && RandomizationProvider.Current.GetDouble() <= probability)
                     {
-                        ((FinalExam)gene.Value).President = finalExam.Supervisor;
-                        chromosome.ReplaceGene(i, gene);
-
+                        finalExam.President = finalExam.Supervisor;
                     }
                 }
             }
-
             if (RandomizationProvider.Current.GetDouble() <= probability / 4)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
-
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary)
-                        && finalExam.Supervisor != finalExam.Secretary
-                        && RandomizationProvider.Current.GetDouble() <= probability)
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) && finalExam.Supervisor != finalExam.Secretary && RandomizationProvider.Current.GetDouble() <= probability)
                     {
-                        ((FinalExam)gene.Value).Secretary = finalExam.Supervisor;
-                        chromosome.ReplaceGene(i, gene);
-
+                        finalExam.Secretary = finalExam.Supervisor;
                     }
                 }
             }
-
             if (RandomizationProvider.Current.GetDouble() <= probability / 3)
             {
                 for (int i = 0; i < 100; i++)
                 {
                     Gene gene = chromosome.GetGene(i);
                     FinalExam finalExam = (FinalExam)gene.Value;
-
                     if (finalExam.President.Availability[i] == false)
                     {
-                        ((FinalExam)gene.Value).President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
-                        chromosome.ReplaceGene(i, gene);
+                        finalExam.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
                     }
-
                     if (finalExam.Secretary.Availability[i] == false)
                     {
-                        ((FinalExam)gene.Value).Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
-                        chromosome.ReplaceGene(i, gene);
+                        finalExam.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
                     }
-
-
                 }
             }
         }

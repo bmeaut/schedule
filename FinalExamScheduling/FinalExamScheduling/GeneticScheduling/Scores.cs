@@ -8,7 +8,7 @@ namespace FinalExamScheduling.GeneticScheduling
 {
     static class Scores
     {
-        public const double StudentDuplicated = 10000;      
+        public const double StudentDuplicated = 10000;
 
         public const double PresidentNotAvailable = 1000;
         public const double SecretaryNotAvailable = 1000;
@@ -35,7 +35,5 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double PresidentSelfStudent = 2;
         public const double SecretarySelfStudent = 1;
         public const double ExaminerNotPresident = 1;
-
-
     }
 }

@@ -11,12 +11,12 @@ namespace FinalExamScheduling.GeneticScheduling
     class SchedulingTermination : ITermination
     {
         ITermination fitnessStagnation = new FitnessStagnationTermination(Parameters.StagnationTermination);
+
         public bool ShouldTerminate { get; set; } = false;
+
         public bool HasReached(IGeneticAlgorithm geneticAlgorithm)
         {
-            if (ShouldTerminate) return true;
-
-            return fitnessStagnation.HasReached(geneticAlgorithm);
+            return ShouldTerminate || fitnessStagnation.HasReached(geneticAlgorithm);
         }
     }
 }

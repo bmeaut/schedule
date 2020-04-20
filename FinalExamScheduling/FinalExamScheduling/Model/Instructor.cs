@@ -15,12 +15,10 @@ namespace FinalExamScheduling.Model
         Secretary = 4
     }
 
-    public class Instructor: Entity
+    public class Instructor
     {
         public string Name;
-
         public bool[] Availability;
         public Roles Roles;
-     
     }
 }

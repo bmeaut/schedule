@@ -74,17 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GeneticScheduling\SchedulingCrossover.cs" />
+    <Compile Include="GeneticScheduling\SchedulingReinsertion.cs" />
     <Compile Include="GeneticScheduling\SchedulingSelection.cs" />
-    <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
-    <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
-    <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
-    <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
-    <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
     <Compile Include="Model\FinalExam.cs" />
-    <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\FinalExamDetail.cs" />
     <Compile Include="Model\Instructor.cs" />
     <Compile Include="Model\Schedule.cs" />

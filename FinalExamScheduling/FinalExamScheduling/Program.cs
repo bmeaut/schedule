@@ -1,5 +1,4 @@
-﻿using FinalExamScheduling.HeuristicScheduling;
-using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.Model;
 using FinalExamScheduling.GeneticScheduling;
 
 using System;
@@ -15,35 +14,8 @@ namespace FinalExamScheduling
     public class Program
     {
         static GeneticScheduler scheduler;
-        static HeuristicScheduler heuristicScheduler;
 
         static void Main(string[] args)
-        {
-            RunGenetic();
-            //RunHeuristic();
-
-        }
-
-        static void RunHeuristic()
-        {
-            FileInfo existingFile = new FileInfo("Input.xlsx");
-
-            var context = ExcelHelper.Read(existingFile);
-
-            context.Init();
-            heuristicScheduler = new HeuristicScheduler(context);
-            Schedule schedule = heuristicScheduler.Run();
-
-            context.FillDetails = true;
-            SchedulingFitness evaluator = new SchedulingFitness(context);
-            double penaltyScore = evaluator.EvaluateAll(schedule);
-            Console.WriteLine("Penalty score: " + penaltyScore);
-
-            scheduler = new GeneticScheduler(context);
-            ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
-        }
-
-        static void RunGenetic()
         {
             var watch = Stopwatch.StartNew();
 
@@ -55,25 +27,19 @@ namespace FinalExamScheduling
 
             var task = scheduler.RunAsync().ContinueWith(scheduleTask =>
             {
-                Schedule resultSchedule = scheduleTask.Result;   
-
-                string elapsed = watch.Elapsed.ToString();
+                Schedule resultSchedule = scheduleTask.Result;
 
                 SchedulingFitness evaluator = new SchedulingFitness(context);
                 double penaltyScore = evaluator.EvaluateAll(resultSchedule);
                 Console.WriteLine("Penalty score: " + penaltyScore);
 
-                ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.fitness), context);
-
-            }
-            );
-
+                ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + "_" + penaltyScore + ".xlsx", scheduleTask.Result, watch.Elapsed.ToString(), scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.fitness), context);
+            });
             while (true)
             {
                 if (task.IsCompleted)
                     break;
-                var ch = Console.ReadKey();
-                if (ch.Key == ConsoleKey.A)
+                if (Console.ReadKey().Key == ConsoleKey.A)
                 {
                     scheduler.Cancel();
                 }
@@ -81,7 +47,5 @@ namespace FinalExamScheduling
             }
             Console.WriteLine();
         }
-
-
     }
 }

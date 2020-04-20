@@ -8,7 +8,6 @@ namespace FinalExamScheduling.Model
 {
     public class Context
     {
-
         public Student[] Students;
         public Instructor[] Instructors;
         public Course[] Courses;
@@ -26,26 +25,18 @@ namespace FinalExamScheduling.Model
         public void Init()
         {
             FillIDs(Students);
-            FillIDs(Instructors);
-            FillIDs(Courses);
-            //FillIDs(Presidents);
-            //FillIDs(Secretaries);
-            //FillIDs(Members);
             Presidents = Instructors.Where(i => i.Roles.HasFlag(Roles.President)).ToArray();
             Secretaries = Instructors.Where(i => i.Roles.HasFlag(Roles.Secretary)).ToArray();
             Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
             RandStudents = Students.OrderBy(x => this.Rnd.Next()).ToArray();
-
-
-
         }
 
-        private void FillIDs(IEnumerable<Entity> entities)
+        private void FillIDs(IEnumerable<Student> students)
         {
             int id = 0;
-            foreach (var e in entities)
+            foreach (var s in students)
             {
-                e.Id = id;
+                s.Id = id;
                 id++;
             }
         }

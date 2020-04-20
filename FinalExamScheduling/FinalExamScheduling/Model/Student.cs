@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.Model
 {
-    public class Student: Entity
+    public class Student
     {
+        public int Id;
         public string Name;
         public string Neptun;
         public Instructor Supervisor;
