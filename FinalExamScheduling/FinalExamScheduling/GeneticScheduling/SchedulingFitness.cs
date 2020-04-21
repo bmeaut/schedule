@@ -157,7 +157,7 @@ namespace FinalExamScheduling.GeneticScheduling
             double score = 0;
             foreach (var fi in sch.FinalExams)
             {
-                if (fi.Examiner.Availability[fi.Id] == false)
+                if (fi.Examiner1.Availability[fi.Id] == false)
                 {
                     score += Scores.ExaminerNotAvailable;
                     if (ctx.FillDetails)
@@ -832,7 +832,7 @@ namespace FinalExamScheduling.GeneticScheduling
             double score = 0;
             foreach (var fi in sch.FinalExams)
             {
-                if ((fi.Examiner.Roles & Roles.President) == Roles.President && fi.Examiner != fi.President)
+                if ((fi.Examiner1.Roles & Roles.President) == Roles.President && fi.Examiner1 != fi.President)
                 {
                     score += Scores.ExaminerNotPresident;
                     if (ctx.FillDetails)

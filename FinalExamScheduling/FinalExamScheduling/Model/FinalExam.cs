@@ -13,7 +13,8 @@ namespace FinalExamScheduling.Model
         public Instructor President = null;
         public Instructor Secretary = null;
         public Instructor Member = null;
-        public Instructor Examiner = null;
+        public Instructor Examiner1 = null;
+        public Instructor Examiner2 = null;
         public DegreeLevel DegreeLevel;
         public Programme Programme;
         public int RoomNr;

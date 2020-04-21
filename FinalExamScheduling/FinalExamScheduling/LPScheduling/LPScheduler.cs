@@ -282,7 +282,7 @@ namespace FinalExamScheduling.LPScheduling
                     {
                         if (instructorsTS.Contains(courseOfStudent.Instructors[i]))
                         {
-                            schedule.FinalExams[ts].Examiner = courseOfStudent.Instructors[i];
+                            schedule.FinalExams[ts].Examiner1 = courseOfStudent.Instructors[i];
                         }
                     }
 

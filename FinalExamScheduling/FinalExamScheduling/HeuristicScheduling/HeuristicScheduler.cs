@@ -284,9 +284,9 @@ namespace FinalExamScheduling.HeuristicScheduling
                     remainingExams.Remove(i);
                     memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
                 }
-                if (schedule.FinalExams[i].Examiner.Roles.HasFlag(Roles.Member))
+                if (schedule.FinalExams[i].Examiner1.Roles.HasFlag(Roles.Member))
                 {
-                    schedule.FinalExams[i].Member = schedule.FinalExams[i].Examiner;
+                    schedule.FinalExams[i].Member = schedule.FinalExams[i].Examiner1;
                     remainingExams.Remove(i);
                     memberWorkloads[Array.IndexOf(ctx.Members, schedule.FinalExams[i].Member)]++;
                 }
@@ -407,7 +407,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 EgervaryAlgorithm.RunAlgorithm(scores, instructorIndexes, studentIndexes);
                 for (int f = 0; f < studentIndexes.Length; f++)
                 {
-                    schedule.FinalExams[studentFEIndexes[f]].Examiner = allExaminer[studentIndexes[f]];
+                    schedule.FinalExams[studentFEIndexes[f]].Examiner1 = allExaminer[studentIndexes[f]];
 
                     //schedule.FinalExams[f].Member = allMembers[finalExamIndexes[f]];
                     Console.WriteLine($"A {studentFEIndexes[f]}. záróvizsgán {allExaminer[studentIndexes[f]].Name} a vizsgáztató, {scores[studentIndexes[f], f]} súllyal");
