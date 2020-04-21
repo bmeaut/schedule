@@ -39,12 +39,7 @@ namespace FinalExamScheduling
             lpSchedulerFull = new LPSchedulerFull(context);
             Schedule schedule = lpSchedulerFull.Run(existingFile);
 
-            SchedulingFitness evaluator = new SchedulingFitness(context);
-            //double penaltyScore = evaluator.EvaluateAll(schedule);
-            //Console.WriteLine("Penalty score: " + penaltyScore);
-
-            scheduler = new GeneticScheduler(context);
-            //ExcelHelper.Write(@"..\..\Results\Done_LP_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
+            ExcelHelper.Write(@"..\..\Results\Done_LPFull_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule);
         }
 
         private static void RunLP()

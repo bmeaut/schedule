@@ -187,13 +187,10 @@ namespace FinalExamScheduling.Model
                     List<bool> tempAvailability = new List<bool>();
                     for (int iCol = 7; iCol <= endInst.Column; iCol++)
                     {
-                        if (ws_instructors.Cells[iRow, iCol].Text == "x")
+                        for (int i = 0; i < 12; i++)
                         {
-                            tempAvailability.Add(true);
-                        }
-                        else
-                        {
-                            tempAvailability.Add(false);
+                            if (ws_instructors.Cells[iRow, iCol].Text == "x") tempAvailability.Add(true);
+                            else tempAvailability.Add(false);
                         }
                     }
 
@@ -386,7 +383,7 @@ namespace FinalExamScheduling.Model
                         ws_scheduling.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(memberScore), 0));
                     }
                     
-                    ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    ws_scheduling.Cells[i, 6].Value = exam.Examiner1.Name;
                     double examinerScore = sch.Details[exam.Id].ExaminerScore;
                     if (examinerScore > 0)
                     {
@@ -606,7 +603,7 @@ namespace FinalExamScheduling.Model
                     ws_scheduling.Cells[i, 3].Value = exam.President.Name;
                     ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
                     ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
-                    ws_scheduling.Cells[i, 6].Value = exam.Examiner.Name;
+                    ws_scheduling.Cells[i, 6].Value = exam.Examiner1.Name;
                     ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse1.Name;
                     ws_scheduling.Cells[i, 8].Value = exam.Id;
 
@@ -711,6 +708,70 @@ namespace FinalExamScheduling.Model
                 if (File.Exists(p_strPath))
                     File.Delete(p_strPath);
 
+
+                FileStream objFileStrm = File.Create(p_strPath);
+                objFileStrm.Close();
+
+                File.WriteAllBytes(p_strPath, xlPackage_new.GetAsByteArray());
+            }
+        }
+
+        public static void Write(string p_strPath, Schedule sch)
+        {
+            using (ExcelPackage xlPackage_new = new ExcelPackage())
+            {
+                ExcelWorksheet ws_scheduling = xlPackage_new.Workbook.Worksheets.Add("Scheduling");
+
+                #region Scheduling
+
+                ws_scheduling.Cells[1, 1].Value = "Day";
+                ws_scheduling.Cells[1, 2].Value = "Room";
+                ws_scheduling.Cells[1, 3].Value = "Starts";
+                ws_scheduling.Cells[1, 4].Value = "Program";
+                ws_scheduling.Cells[1, 5].Value = "Degree";
+                ws_scheduling.Cells[1, 6].Value = "Student";
+                ws_scheduling.Cells[1, 7].Value = "Supervisor";
+                ws_scheduling.Cells[1, 8].Value = "Course(s)";
+                ws_scheduling.Cells[1, 9].Value = "Examiner(s)";
+                ws_scheduling.Cells[1, 10].Value = "President";
+                ws_scheduling.Cells[1, 11].Value = "Member";
+                ws_scheduling.Cells[1, 12].Value = "Secretary";
+                for (int j = 1; j <= 12; j++)
+                {
+                    var cell = ws_scheduling.Cells[1, j];
+                    cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
+                    cell.Style.Font.Bold = true;
+                    cell.Style.Font.Size = 14;
+                }
+
+                int row = 2;
+                foreach (FinalExam fe in sch.FinalExams)
+                {
+                    ws_scheduling.Cells[row, 1].Value = fe.startTs / Constants.tssInOneDay;
+                    ws_scheduling.Cells[row, 2].Value = fe.RoomNr;
+                    ws_scheduling.Cells[row, 3].Value = fe.startTs % Constants.tssInOneDay;
+                    ws_scheduling.Cells[row, 4].Value = fe.Programme;
+                    ws_scheduling.Cells[row, 5].Value = fe.DegreeLevel;
+                    ws_scheduling.Cells[row, 6].Value = fe.Student.Name;
+                    ws_scheduling.Cells[row, 7].Value = (fe.Supervisor != null) ? fe.Supervisor.Name : "";
+                    string course = ((fe.Student.ExamCourse1 != null) ? fe.Student.ExamCourse1.Name : "") 
+                                  + ((fe.Student.ExamCourse2 != null) ? "\n" + fe.Student.ExamCourse2.Name : "");
+                    string examiner = ((fe.Examiner1 != null) ? fe.Examiner1.Name : "")
+                                    + ((fe.Examiner2 != null) ? "\n" + fe.Examiner2.Name : "");
+                    ws_scheduling.Cells[row, 8].Value = course;
+                    ws_scheduling.Cells[row, 9].Value = examiner;
+                    ws_scheduling.Cells[row, 10].Value = fe.President.Name;
+                    ws_scheduling.Cells[row, 11].Value = (fe.Member != null) ? fe.Member.Name : "";
+                    ws_scheduling.Cells[row, 12].Value = (fe.Secretary != null) ? fe.Secretary.Name : "";
+
+                    row++;
+                }
+
+                ws_scheduling.Cells.AutoFitColumns();
+
+                #endregion
+
+                if (File.Exists(p_strPath)) File.Delete(p_strPath);
 
                 FileStream objFileStrm = File.Create(p_strPath);
                 objFileStrm.Close();
