@@ -37,10 +37,9 @@ namespace FinalExamScheduling
 
             context.Init();
             lpSchedulerFull = new LPSchedulerFull(context);
-            string[,] objective = null;
-            Schedule schedule = lpSchedulerFull.Run(existingFile, objective);
+            Schedule schedule = lpSchedulerFull.Run(existingFile);
 
-            ExcelHelper.Write(@"..\..\Results\Done_LPFull_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, objective);
+            ExcelHelper.Write(@"..\..\Results\Done_LPFull_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule);
         }
 
         private static void RunLP()

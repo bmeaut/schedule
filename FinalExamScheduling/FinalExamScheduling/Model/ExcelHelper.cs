@@ -717,7 +717,7 @@ namespace FinalExamScheduling.Model
             }
         }
 
-        public static void Write(string p_strPath, Schedule sch, string[,] objectiveValues)
+        public static void Write(string p_strPath, Schedule sch)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
@@ -745,13 +745,17 @@ namespace FinalExamScheduling.Model
                     cell.Style.Font.Bold = true;
                     cell.Style.Font.Size = 14;
                 }
-
+                DateTime dt = new DateTime(2019, 6, 17, 8, 0, 0);
                 int row = 2;
                 foreach (FinalExam fe in sch.FinalExams)
                 {
                     ws_scheduling.Cells[row, 1].Value = fe.startTs / Constants.tssInOneDay;
                     ws_scheduling.Cells[row, 2].Value = fe.RoomNr;
-                    ws_scheduling.Cells[row, 3].Value = fe.startTs % Constants.tssInOneDay;
+
+                    int tsStart = fe.startTs % Constants.tssInOneDay;
+                    var dateTime = dt.AddMinutes(5 * tsStart);
+                    ws_scheduling.Cells[row, 3].Value = dateTime.ToString("HH:mm");
+
                     ws_scheduling.Cells[row, 4].Value = fe.Programme;
                     ws_scheduling.Cells[row, 5].Value = fe.DegreeLevel;
                     ws_scheduling.Cells[row, 6].Value = fe.Student.Name;
@@ -774,17 +778,21 @@ namespace FinalExamScheduling.Model
 
                 #endregion
 
-                #region Scores
-                for (int i = 0; i < objectiveValues.GetLength(0); i++)
+                if (sch.objectiveValues != null)
                 {
-                    for (int j = 0; j < objectiveValues.GetLength(1); j++)
+                    #region Scores
+                    for (int i = 0; i < sch.objectiveValues.GetLength(0); i++)
                     {
-                        ws_objective.Cells[i + 1, j + 1].Value = objectiveValues[i, j];
+                        for (int j = 0; j < sch.objectiveValues.GetLength(1); j++)
+                        {
+                            ws_objective.Cells[i + 1, j + 1].Value = sch.objectiveValues[i, j];
+                        }
                     }
-                }
-                ws_objective.Cells.AutoFitColumns();
+                    ws_objective.Cells.AutoFitColumns();
 
-                #endregion
+                    #endregion
+
+                }
 
                 if (File.Exists(p_strPath)) File.Delete(p_strPath);
 

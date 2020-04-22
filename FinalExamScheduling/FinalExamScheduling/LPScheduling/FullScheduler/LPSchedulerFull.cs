@@ -19,7 +19,7 @@ namespace FinalExamScheduling.LPScheduling
             finalExamCount = ctx.Students.Length;
         }
 
-        public Schedule Run(FileInfo existingFile, string[,] objectiveValues)
+        public Schedule Run(FileInfo existingFile)
         {
             Schedule schedule = new Schedule(finalExamCount);
 
@@ -54,7 +54,7 @@ namespace FinalExamScheduling.LPScheduling
                 GRBVar[,] lunchOptimalLess = new GRBVar[Constants.days, Constants.roomCount];
                 GRBVar[,] lunchOptimalMore = new GRBVar[Constants.days, Constants.roomCount];
 
-                //GRBVar[,,] supervisorAvailable = new GRBVar[ctx.Students.Length, tsCount, Constants.roomCount];
+                GRBVar[,,] supervisorAndStudent = new GRBVar[ctx.Students.Length, tsCount, Constants.roomCount];
 
                 // Create constants
                 bool[,,] presidentsSchedule = new bool[ctx.Presidents.Length, tsCount, Constants.roomCount];
@@ -75,7 +75,7 @@ namespace FinalExamScheduling.LPScheduling
                         for (int s = 0; s < ctx.Students.Length; s++)
                         {
                             varStudents[s, ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"{ctx.Students[s].Name}_{ts}_{room}");
-                            //supervisorAvailable[s,ts,room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SupervisorAvailable_{s}");
+                            supervisorAndStudent[s, ts, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SupervisorAndStudentScheduled_{s}_{ts}_{room}");
 
                             if (!(room == Constants.roomCount - 1 && ts == tsCount - 1))
                             {
@@ -155,7 +155,9 @@ namespace FinalExamScheduling.LPScheduling
                             for (int room = 0; room < Constants.roomCount; room++)
                             {
                                 int presidentIndex = Array.IndexOf(ctx.Presidents, ctx.Students[student].Supervisor);
-                                if (!presidentsSchedule[presidentIndex, ts, room])
+                                bool isStudentCS = ctx.Students[student].Programme.HasFlag(Programme.ComputerScience);
+                                bool isStudentEE = ctx.Students[student].Programme.HasFlag(Programme.ElectricalEngineering);
+                                if ((!presidentsSchedule[presidentIndex, ts, room]) && (isEE[ts,room] == isStudentEE) && (isCS[ts,room] == isStudentCS))
                                 {
                                     presidentsSelfStudent.AddTerm(1.0, varStudents[student, ts, room]);
                                 }
@@ -163,10 +165,29 @@ namespace FinalExamScheduling.LPScheduling
                         }
                     }
                 }
+                Instructor[] supervisors = new Instructor[ctx.Students.Length];
+                // supervisor available
+                for (int student = 0; student < ctx.Students.Length; student++)
+                {
+                    supervisors[student] = ctx.Students[student].Supervisor;
+                    for (int ts = 0; ts < tsCount; ts++)
+                    {
+                        for (int room = 0; room < Constants.roomCount; room++)
+                        {
+                            int indexOfSupervisor = Array.IndexOf(ctx.Instructors, supervisors[student]);
+                            GRBVar[] vars = new GRBVar[]
+                            {
+                                varInstructors[indexOfSupervisor, ts, room], varStudents[student,ts,room]
+                            };
+                            model.AddGenConstrMin(supervisorAndStudent[student, ts, room], vars, 1.0, $"Supervisor_and_Student_both_scheduled_{student}_{ts}_{room}");
+                        }
+                    }
+                }
 
                 model.SetObjective(Sum(lunchTooSoon) * Scores.LunchStartsSoon + Sum(lunchTooLate) * Scores.LunchEndsLate +
                     Sum(lunchOptimalLess) * Scores.LunchNotOptimalLenght + Sum(lunchOptimalMore) * Scores.LunchNotOptimalLenght +
-                    presidentsSelfStudent * Scores.PresidentSelfStudent, GRB.MINIMIZE);
+                    presidentsSelfStudent * Scores.PresidentSelfStudent + SumNonAvailabilities(supervisorAndStudent, supervisors) * Scores.SupervisorNotAvailable
+                    , GRB.MINIMIZE);
 
                 // Constraints
 
@@ -373,20 +394,16 @@ namespace FinalExamScheduling.LPScheduling
                         Console.WriteLine();
                     }
                 }
-                Console.WriteLine($"Lunch too soon: {(Sum(lunchTooSoon) * Scores.LunchStartsSoon).Value}");
-                Console.WriteLine($"Lunch too late: {(Sum(lunchTooLate) * Scores.LunchEndsLate).Value}");
-                Console.WriteLine($"Lunch not optimal (less): {(Sum(lunchOptimalLess) * Scores.LunchNotOptimalLenght).Value}");
-                Console.WriteLine($"Lunch not optimal (more): {(Sum(lunchOptimalMore) * Scores.LunchNotOptimalLenght).Value}");
-                Console.WriteLine($"President self student: {(presidentsSelfStudent * Scores.PresidentSelfStudent).Value}");
-                objectiveValues = new string[,]
+
+                schedule.objectiveValues = new string[,]
                 {
                     {"Objective value", model.ObjVal.ToString()},
                     {"Lunch too soon", (Sum(lunchTooSoon) * Scores.LunchStartsSoon).Value.ToString()},
                     {"Lunch too late", (Sum(lunchTooLate) * Scores.LunchEndsLate).Value.ToString()},
                     {"Lunch not optimal (less)", (Sum(lunchOptimalLess) * Scores.LunchNotOptimalLenght).Value.ToString()},
                     {"Lunch not optimal (more)", (Sum(lunchOptimalMore) * Scores.LunchNotOptimalLenght).Value.ToString()},
-                    {"President self student", (presidentsSelfStudent * Scores.PresidentSelfStudent).Value.ToString()}
-
+                    {"President self student", (presidentsSelfStudent * Scores.PresidentSelfStudent).Value.ToString()},
+                    {"Supervisor not available", (SumNonAvailabilities(supervisorAndStudent, supervisors) * Scores.SupervisorNotAvailable).Value.ToString()}
                 };               
                 Console.WriteLine(model.ObjVal);
 

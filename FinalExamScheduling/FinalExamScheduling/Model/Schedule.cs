@@ -13,6 +13,7 @@ namespace FinalExamScheduling.Model
         //public Dictionary<int, List<FinalExam>> FinalExams;
         public FinalExam[] FinalExams;
         public FinalExamDetail[] Details;
+        public string[,] objectiveValues = null;
         public Schedule(int examCount)
         {
             //FinalExams = new Dictionary<int, List<FinalExam>>();
