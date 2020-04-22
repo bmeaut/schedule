@@ -578,7 +578,6 @@ namespace FinalExamScheduling.Model
                 #region Scheduling
 
                 ws_scheduling.Cells[1, 1].Value = "Student";
-
                 ws_scheduling.Cells[1, 2].Value = "Supervisor";
                 ws_scheduling.Cells[1, 3].Value = "President";
                 ws_scheduling.Cells[1, 4].Value = "Secretary";
@@ -628,6 +627,8 @@ namespace FinalExamScheduling.Model
                 }
 
                 ws_scheduling.Cells.AutoFitColumns();
+                ws_scheduling.Cells.Style.WrapText = true;
+
 
                 #endregion
 
@@ -716,11 +717,12 @@ namespace FinalExamScheduling.Model
             }
         }
 
-        public static void Write(string p_strPath, Schedule sch)
+        public static void Write(string p_strPath, Schedule sch, string[,] objectiveValues)
         {
             using (ExcelPackage xlPackage_new = new ExcelPackage())
             {
                 ExcelWorksheet ws_scheduling = xlPackage_new.Workbook.Worksheets.Add("Scheduling");
+                ExcelWorksheet ws_objective = xlPackage_new.Workbook.Worksheets.Add("Scores");
 
                 #region Scheduling
 
@@ -768,6 +770,19 @@ namespace FinalExamScheduling.Model
                 }
 
                 ws_scheduling.Cells.AutoFitColumns();
+                ws_scheduling.Cells.Style.WrapText = true;
+
+                #endregion
+
+                #region Scores
+                for (int i = 0; i < objectiveValues.GetLength(0); i++)
+                {
+                    for (int j = 0; j < objectiveValues.GetLength(1); j++)
+                    {
+                        ws_objective.Cells[i + 1, j + 1].Value = objectiveValues[i, j];
+                    }
+                }
+                ws_objective.Cells.AutoFitColumns();
 
                 #endregion
 
