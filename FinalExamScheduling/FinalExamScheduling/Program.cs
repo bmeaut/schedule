@@ -56,7 +56,7 @@ namespace FinalExamScheduling
 
             context.Init();
             heuristicScheduler = new HeuristicScheduler(context);
-            Schedule schedule = heuristicScheduler.Run();
+            Schedule schedule = heuristicScheduler.Run3();
 
             context.FillDetails = false;
             SchedulingFitness evaluator = new SchedulingFitness(context);
