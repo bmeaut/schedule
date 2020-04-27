@@ -137,6 +137,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
 
                     // no instructors when skip or lunch
                     model.AddGenConstrIndicator(vars.varSkipped[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] <= 1.0, $"WhenSkippedNoExam_{ts}_{room}");
+                    model.AddGenConstrIndicator(vars.varLunch[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] <= 1.0, $"WhenLunchNoExam_{ts}_{room}");
+
                 }
 
             }

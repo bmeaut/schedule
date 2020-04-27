@@ -30,7 +30,7 @@ namespace FinalExamScheduling.LPScheduling
             try
             {
                 GRBEnv env = new GRBEnv(true);
-                env.Set("LogFile", "mip1.log");
+                env.Set("LogFile", @"..\..\Logs\FELog_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".log");
                 env.Start();
                 GRBModel model = new GRBModel(env);
 
