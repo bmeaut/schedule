@@ -30,6 +30,7 @@ namespace FinalExamScheduling.Model
         public Instructor[] Presidents;
         public Instructor[] Secretaries;
         public Instructor[] Members;
+        public Instructor[] Supervisors;
 
         public Random Rnd = new Random();
 
@@ -50,7 +51,11 @@ namespace FinalExamScheduling.Model
             Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
             RandStudents = Students.OrderBy(x => this.Rnd.Next()).ToArray();
 
-
+            Supervisors = new Instructor[Students.Length];
+            for (int student = 0; student < Students.Length; student++)
+            {
+                Supervisors[student] = Students[student].Supervisor;
+            }
 
         }
 
@@ -63,5 +68,6 @@ namespace FinalExamScheduling.Model
                 id++;
             }
         }
+
     }
 }

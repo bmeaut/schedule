@@ -15,7 +15,7 @@ namespace FinalExamScheduling.LPScheduling
 
         public LPScheduler(Context context)
         {
-            this.ctx = new Context(context);
+            this.ctx = context;
             finalExamCount = ctx.Students.Length;
         }
 
