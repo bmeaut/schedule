@@ -47,6 +47,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
             var population = new Population(Parameters.MinPopulationSize, Parameters.MaxPopulationSize, chromosome);
+            //population.GenerationStrategy = new PerformanceGenerationStrategy(); //nem vált be
 
             termination = new SchedulingTermination();
 
@@ -62,8 +63,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     Console.WriteLine("GA running...");
                     geneticAlgorithm.Start();
                    
-                    Console.WriteLine("Best solution found has {0} fitness.", geneticAlgorithm.BestChromosome.Fitness);
                     var bestChromosome = geneticAlgorithm.BestChromosome as SchedulingChromosome;
+                    Console.WriteLine("Best solution found has {0} fitness.", bestChromosome.Fitness.Value);
                     var best = bestChromosome.Schedule;
                     return best;
 
