@@ -17,10 +17,7 @@ namespace FinalExamScheduling.Model
 
     public class Instructor: Entity
     {
-        public string Name;
-
         public bool[] Availability;
         public Roles Roles;
-     
     }
 }
