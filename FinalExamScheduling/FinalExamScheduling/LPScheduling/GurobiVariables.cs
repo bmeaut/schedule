@@ -1,4 +1,5 @@
 ﻿using FinalExamScheduling.Model;
+using FinalExamScheduling.Model.Exams;
 using Gurobi;
 
 namespace FinalExamScheduling.LPScheduling
@@ -17,34 +18,34 @@ namespace FinalExamScheduling.LPScheduling
         public GRBVar[] MembersTempP;
         public GRBVar[] MembersTempQ;
 
-        public GurobiVariables(Context ctx)
+        public GurobiVariables(Cluster cl, FinalExam fe)
         {
-            Instructors = new GRBVar[ctx.Instructors.Length, 100];
-            Students = new GRBVar[ctx.Students.Length, 100];
+            Instructors = new GRBVar[cl.Instructors.Count, 100];
+            Students = new GRBVar[fe.Exam.Count, 100];
 
-            PresidentsSessions = new GRBVar[ctx.Presidents.Length, 20];
-            SecretariesSessions = new GRBVar[ctx.Secretaries.Length, 20];
+            PresidentsSessions = new GRBVar[cl.Get(Role.President).Count, 20];
+            SecretariesSessions = new GRBVar[cl.Get(Role.Secretary).Count, 20];
 
-            PresidentsTempP = new GRBVar[ctx.Presidents.Length];
-            PresidentsTempQ = new GRBVar[ctx.Presidents.Length];
+            PresidentsTempP = new GRBVar[cl.Get(Role.President).Count];
+            PresidentsTempQ = new GRBVar[cl.Get(Role.President).Count];
 
-            SecretariesTempP = new GRBVar[ctx.Secretaries.Length];
-            SecretariesTempQ = new GRBVar[ctx.Secretaries.Length];
+            SecretariesTempP = new GRBVar[cl.Get(Role.Secretary).Count];
+            SecretariesTempQ = new GRBVar[cl.Get(Role.Secretary).Count];
 
-            MembersTempP = new GRBVar[ctx.Members.Length];
-            MembersTempQ = new GRBVar[ctx.Members.Length];
+            MembersTempP = new GRBVar[cl.Get(Role.Member).Count];
+            MembersTempQ = new GRBVar[cl.Get(Role.Member).Count];
 
-            InitGC(ctx);
+            InitGC(cl, fe);
         }
 
-        private void InitGC(Context ctx)
+        private void InitGC(Cluster cl, FinalExam fe)
         {
-            GurobiController.Instance.DualDim(Instructors, ctx.Instructors, Students, ctx.Students, 100);
-            GurobiController.Instance.DualDim(PresidentsSessions, ctx.Presidents, SecretariesSessions, ctx.Secretaries, 20);
+            GurobiController.Instance.DualDim(Instructors, cl.Instructors, Students, fe.Exam, 100);
+            GurobiController.Instance.DualDim(PresidentsSessions, cl.Get(Role.President), SecretariesSessions, cl.Get(Role.Secretary), 20);
 
-            GurobiController.Instance.SingleDim(PresidentsTempP, PresidentsTempQ, ctx.Presidents);
-            GurobiController.Instance.SingleDim(SecretariesTempP, SecretariesTempQ, ctx.Secretaries);
-            GurobiController.Instance.SingleDim(MembersTempP, MembersTempQ, ctx.Members);
+            GurobiController.Instance.SingleDim(PresidentsTempP, PresidentsTempQ, cl.Get(Role.President));
+            GurobiController.Instance.SingleDim(SecretariesTempP, SecretariesTempQ, cl.Get(Role.Secretary));
+            GurobiController.Instance.SingleDim(MembersTempP, MembersTempQ, cl.Get(Role.Member));
         }
     }
 }

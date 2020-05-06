@@ -1,4 +1,5 @@
 ﻿using FinalExamScheduling.Model;
+using FinalExamScheduling.Model.Exams;
 using Gurobi;
 using System.Linq;
 
@@ -10,19 +11,21 @@ namespace FinalExamScheduling.LPScheduling
     {
         public GurobiVariables var;
         private GurobiGet gg;
-        private Context ctx;
+        private Cluster cl;
+        private FinalExam fe;
 
-        public GurobiConstraints(Context ctx)
+        public GurobiConstraints(Cluster cl, FinalExam fe)
         {
-            var = new GurobiVariables(ctx);
-            gg = new GurobiGet(ctx, var.Instructors);
-            this.ctx = ctx;
+            var = new GurobiVariables(cl, fe);
+            gg = new GurobiGet(cl, var.Instructors);
+            this.cl = cl;
+            this.fe = fe;
         }
 
         public void Finalise()
         {
             Constraint();
-            GurobiController.Instance.Model.SetObjective(gg.SumProduct(var.Instructors, ctx.Instructors)
+            GurobiController.Instance.Model.SetObjective(gg.SumProduct(var.Instructors, cl.Instructors)
                 + gg.Linear(var.PresidentsTempP) + gg.Linear(var.PresidentsTempQ)
                 + gg.Linear(var.SecretariesTempP) + gg.Linear(var.SecretariesTempQ)
                 + gg.Linear(var.MembersTempP) + gg.Linear(var.MembersTempQ)
@@ -44,17 +47,17 @@ namespace FinalExamScheduling.LPScheduling
 
             //exactly one president in every timeslot
             string[] nameOfPresidentsConstrs = Enumerable.Range(0, 100).Select(x => "President" + x).ToArray();
-            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Roles.President), false), gg.equal, gg.NrArray(1.0), nameOfPresidentsConstrs);
+            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Role.President), false), gg.equal, gg.NrArray(1.0), nameOfPresidentsConstrs);
 
             //exactly one secretary in every timeslot
             string[] nameOfSecretariesConstrs = Enumerable.Range(0, 100).Select(x => "Secretary" + x).ToArray();
-            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Roles.Secretary), false), gg.equal, gg.NrArray(1.0), nameOfSecretariesConstrs);
+            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Role.Secretary), false), gg.equal, gg.NrArray(1.0), nameOfSecretariesConstrs);
 
             //exactly one member in every timeslot
             string[] nameOfMembersConstrs = Enumerable.Range(0, 100).Select(x => "Member" + x).ToArray();
-            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Roles.Member), false), gg.greater, gg.NrArray(1.0), nameOfMembersConstrs);
+            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Role.Member), false), gg.greater, gg.NrArray(1.0), nameOfMembersConstrs);
             string[] nameOfMembersMaxConstrs = Enumerable.Range(0, 100).Select(x => "MemberMax" + x).ToArray();
-            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Roles.Member), false), gg.smaller, gg.NrArray(2.0), nameOfMembersMaxConstrs);
+            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Role.Member), false), gg.smaller, gg.NrArray(2.0), nameOfMembersMaxConstrs);
 
             //exactly one student in every timeslot
             string[] nameOfStudentsPerTsConstrs = Enumerable.Range(0, 100).Select(x => "Student" + x).ToArray();
@@ -67,7 +70,7 @@ namespace FinalExamScheduling.LPScheduling
             {
                 for (int student = 0; student < var.Students.GetLength(0); student++)
                 {
-                    int idOfSupervisor = ctx.Students[student].Supervisor.Id;
+                    int idOfSupervisor = cl.Instructors.IndexOf(cl.Get(fe.Exam[student].Supervisor));
                     GurobiController.Instance.Model.AddConstr(var.Students[student, ts] - var.Instructors[idOfSupervisor, ts] <= 0.0, "Supervisor" + ts + "_" + student);
                 }
             }
@@ -75,7 +78,7 @@ namespace FinalExamScheduling.LPScheduling
             //an examiner must be present
             for (int student = 0; student < var.Students.GetLength(0); student++)
             {
-                GRBLinExpr[] sumOfExaminersVarsPerTs = gg.Sums(gg.GetExaminersVars(ctx.Students[student].ExamCourse), false);
+                GRBLinExpr[] sumOfExaminersVarsPerTs = gg.Sums(gg.Where(fe.Exam[student].Course), false);
                 for (int ts = 0; ts < var.Students.GetLength(1); ts++)
                 {
                     GurobiController.Instance.Model.AddConstr(var.Students[student, ts] - sumOfExaminersVarsPerTs[ts] <= 0.0, "Examiner" + ts + "_" + student);
@@ -83,10 +86,10 @@ namespace FinalExamScheduling.LPScheduling
             }
 
             //the president mustn't change
-            GRBVar[,] presidentsVars = gg.Where(Roles.President);
+            GRBVar[,] presidentsVars = gg.Where(Role.President);
             for (int session = 0; session < 20; session++)
             {
-                for (int president = 0; president < ctx.Presidents.Length; president++)
+                for (int president = 0; president < cl.Get(Role.President).Count; president++)
                 {
                     GRBVar[] presidentsVarsInSession = new GRBVar[]
                     {
@@ -103,10 +106,10 @@ namespace FinalExamScheduling.LPScheduling
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.PresidentsSessions, false), gg.equal, gg.NrArray(1.0), nameOfPresidentsSessionsConstraints);
 
             //the secretary mustn't change
-            GRBVar[,] secretariesVars = gg.Where(Roles.Secretary);
+            GRBVar[,] secretariesVars = gg.Where(Role.Secretary);
             for (int session = 0; session < 20; session++)
             {
-                for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                for (int secretary = 0; secretary < cl.Get(Role.Secretary).Count; secretary++)
                 {
                     GRBVar[] secretariesVarsInSession = new GRBVar[]
                     {
@@ -123,10 +126,10 @@ namespace FinalExamScheduling.LPScheduling
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.SecretariesSessions, false), gg.equal, gg.NrArray(1.0), nameOfSecretariesSessionsConstraints);
 
             //the president has to be available
-            GurobiController.Instance.Model.AddConstr(gg.SumProduct(gg.Where(Roles.President), ctx.Presidents) == 0.0, "PresindetsAvailable");
+            GurobiController.Instance.Model.AddConstr(gg.SumProduct(gg.Where(Role.President), cl.Get(Role.President)) == 0.0, "PresindetsAvailable");
 
             //the secretary has to be available
-            GurobiController.Instance.Model.AddConstr(gg.SumProduct(gg.Where(Roles.Secretary), ctx.Secretaries) == 0.0, "SecretariesAvailable");
+            GurobiController.Instance.Model.AddConstr(gg.SumProduct(gg.Where(Role.Secretary), cl.Get(Role.Secretary)) == 0.0, "SecretariesAvailable");
         }
         private void Workloads()
         {
@@ -135,7 +138,7 @@ namespace FinalExamScheduling.LPScheduling
             string[] nameOfPresidentWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "PresintWorkloadMax" + x).ToArray();
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.PresidentsSessions, true), gg.greater, gg.NrArray(3.0), nameOfPresidentWorkloadMinConstrs);
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.PresidentsSessions, true), gg.smaller, gg.NrArray(7.0), nameOfPresidentWorkloadMaxConstrs);
-            for (int president = 0; president < ctx.Presidents.Length; president++)
+            for (int president = 0; president < cl.Get(Role.President).Count; president++)
             {// for soft constraint:
                 GurobiController.Instance.Model.AddConstr(var.PresidentsTempP[president] - var.PresidentsTempQ[president] == gg.Sums(var.PresidentsSessions, true)[president] - 5.0, "workloadSoft" + president);
             }
@@ -145,7 +148,7 @@ namespace FinalExamScheduling.LPScheduling
             string[] nameOfSecretaryWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "SecretaryWorkloadMax" + x).ToArray();
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.SecretariesSessions, true), gg.greater, gg.NrArray(1.0), nameOfSecretaryWorkloadMinConstrs);
             GurobiController.Instance.Model.AddConstrs(gg.Sums(var.SecretariesSessions, true), gg.smaller, gg.NrArray(3.0), nameOfSecretaryWorkloadMaxConstrs);
-            for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+            for (int secretary = 0; secretary < cl.Get(Role.Secretary).Count; secretary++)
             {// for soft constraint:
                 GurobiController.Instance.Model.AddConstr(var.SecretariesTempP[secretary] - var.SecretariesTempQ[secretary] == gg.Sums(var.SecretariesSessions, true)[secretary] - 2.0, "workloadSoft" + secretary);
             }
@@ -153,11 +156,11 @@ namespace FinalExamScheduling.LPScheduling
             //members
             string[] nameOfMemberWorkloadMinConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMin" + x).ToArray();
             string[] nameOfMemberWorkloadMaxConstrs = Enumerable.Range(0, 100).Select(x => "MemberWorkloadMax" + x).ToArray();
-            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Roles.Member), true), gg.greater, gg.NrArray(7.0), nameOfMemberWorkloadMinConstrs);
+            GurobiController.Instance.Model.AddConstrs(gg.Sums(gg.Where(Role.Member), true), gg.greater, gg.NrArray(7.0), nameOfMemberWorkloadMinConstrs);
             //GurobiController.Instance.Model.AddConstrs(Sums(GetMembersVars(var.Instructors)), smaller, NrArray(12.0), nameOfMemberWorkloadMaxConstrs);
-            for (int member = 0; member < ctx.Members.Length; member++)
+            for (int member = 0; member < cl.Get(Role.Member).Count; member++)
             {// for soft constraint:
-                GurobiController.Instance.Model.AddConstr(var.MembersTempP[member] - var.MembersTempQ[member] == gg.Sums(gg.Where(Roles.Member), true)[member] - 10.0, "workloadSoft" + member);
+                GurobiController.Instance.Model.AddConstr(var.MembersTempP[member] - var.MembersTempQ[member] == gg.Sums(gg.Where(Role.Member), true)[member] - 10.0, "workloadSoft" + member);
             }
         }
     }

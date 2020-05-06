@@ -1,6 +1,6 @@
-﻿using FinalExamScheduling.GeneticScheduling;
-using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.Model;
 using Gurobi;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FinalExamScheduling.LPScheduling
@@ -8,11 +8,11 @@ namespace FinalExamScheduling.LPScheduling
     ///az osztály feladat segédfüüggvények tárolása az adatok formázásához
     public class GurobiGet
     {
-        Context ctx;
+        Cluster cl;
         GRBVar[,] ins;
-        public GurobiGet(Context ctx, GRBVar[,] instructors)
+        public GurobiGet(Cluster cl, GRBVar[,] instructors)
         {
-            this.ctx = ctx;
+            this.cl = cl;
             this.ins = instructors;
         }
 
@@ -20,7 +20,7 @@ namespace FinalExamScheduling.LPScheduling
         public char[] greater = Enumerable.Range(0, 100).Select(x => GRB.GREATER_EQUAL).ToArray();
         public char[] smaller = Enumerable.Range(0, 100).Select(x => GRB.LESS_EQUAL).ToArray();
 
-        public GRBLinExpr SumProduct(GRBVar[,] vars, Instructor[] instructors)
+        public GRBLinExpr SumProduct(GRBVar[,] vars, List<Instructor> instructors)
         {
             GRBLinExpr result = 0.0;
             for (int person = 0; person < vars.GetLength(0); person++)
@@ -28,7 +28,7 @@ namespace FinalExamScheduling.LPScheduling
                 for (int i = 0; i < vars.GetLength(1); i++)
                 {
                     double coefficient = 0.0;
-                    if (instructors[person].Availability[i] == false) coefficient = Scores.SupervisorNotAvailable;
+                    if (instructors[person].Present[i] == false) coefficient = 30; ///genetec scheduling is off atm
                     result.AddTerm(coefficient, vars[person, i]);
                 }
             }
@@ -52,16 +52,13 @@ namespace FinalExamScheduling.LPScheduling
             return sums;
         }
 
-        public GRBVar[,] Where(Roles R)
+        public GRBVar[,] Where(Role R)
         {
-            GRBVar[,] vars;
-            if (R == Roles.President) vars = new GRBVar[ctx.Presidents.Length, ins.GetLength(1)];
-            else { if (R == Roles.Secretary) vars = new GRBVar[ctx.Secretaries.Length, ins.GetLength(1)];
-                else { vars = new GRBVar[ctx.Members.Length, ins.GetLength(1)]; } } //R == Roles.Member
+            GRBVar[,] vars = new GRBVar[cl.Get(R).Count, ins.GetLength(1)];
             int index = 0;
             for (int i = 0; i < ins.GetLength(0); i++)
             {
-                if (ctx.Instructors[i].Roles.HasFlag(R))
+                if (cl.Instructors[i].Role.Contains(R))
                 {
                     for (int ts = 0; ts < ins.GetLength(1); ts++)
                     {
@@ -73,22 +70,30 @@ namespace FinalExamScheduling.LPScheduling
             return vars;
         }
 
-        public GRBVar[,] GetExaminersVars(Course course)
+        public GRBVar[,] Where(string course) ///Examiners
         {
-            GRBVar[,] examinersVars = new GRBVar[course.Instructors.Length, ins.GetLength(1)];
+            int temp = 0;
+            for (int i = 0; i < ins.GetLength(0); i++)
+            {
+                if (cl.Instructors[i].Role.Contains(Role.Examiner) && ((Examiner)cl.Instructors[i]).Courses.Contains(course))
+                {
+                    temp++;
+                }
+            }
+            GRBVar[,] vars = new GRBVar[temp, ins.GetLength(1)];
             int index = 0;
             for (int i = 0; i < ins.GetLength(0); i++)
             {
-                if (course.Instructors.Contains(ctx.Instructors[i]))
+                if (cl.Instructors[i].Role.Contains(Role.Examiner) && ((Examiner)cl.Instructors[i]).Courses.Contains(course))
                 {
                     for (int ts = 0; ts < ins.GetLength(1); ts++)
                     {
-                        examinersVars[index, ts] = ins[i, ts];
+                        vars[index, ts] = ins[i, ts];
                     }
                     index++;
                 }
             }
-            return examinersVars;
+            return vars;
         }
 
         public double[] NrArray(double number)

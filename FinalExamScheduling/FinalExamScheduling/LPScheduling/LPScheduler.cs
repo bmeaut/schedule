@@ -2,90 +2,85 @@
 using System;
 using System.Collections.Generic;
 using Gurobi;
+using FinalExamScheduling.Model.Exams;
+using FinalExamScheduling.Model.Xcel;
+using System.Linq;
 
 namespace FinalExamScheduling.LPScheduling
 {
     //Ennek az osztálynak az a feladata, hogy összefogja az optimalizáló adatait, és beosztást készítsen belőlük.
     public class LPScheduler
     {
-        public Schedule Run(Context ctx)
+        public void Run()
         {
-            Schedule schedule = new Schedule(100);
-            GurobiConstraints gecco = new GurobiConstraints(ctx);
+            XRead reader = new XRead();
+            Cluster cl = reader.GetCluster();
+            FinalExam fe = reader.GetFinalExam();
+            GurobiConstraints gecco = new GurobiConstraints(cl, fe);
             gecco.Finalise();
-                
-            FillInstructor(ctx, schedule, gecco.var.Instructors, gecco.var.Students);
-            FillSession(ctx, schedule, gecco.var.PresidentsSessions, gecco.var.SecretariesSessions);
+
+            fe = FillInstructor(cl, fe, gecco.var.Instructors, gecco.var.Students);
+            fe = FillSession(cl, fe, gecco.var.PresidentsSessions, gecco.var.SecretariesSessions);
 
             Console.WriteLine("Obj: " + GurobiController.Instance.Model.ObjVal);
             GurobiController.Instance.Dispose();
-            return schedule;
+
+            new XWrite(fe);
         }
 
-        private void FillInstructor(Context ctx, Schedule schedule, GRBVar[,] Instructors, GRBVar[,] Students)
+        private FinalExam FillInstructor(Cluster cl, FinalExam fe, GRBVar[,] Instructors, GRBVar[,] Students)
         {
             for (int ts = 0; ts < 100; ts++)
             {
-                List<Instructor> instructorsTS = new List<Instructor>();
-                for (int person = 0; person < ctx.Instructors.Length; person++)
+                List<Instructor> instructorsTS = new List<Instructor>(); ///ez veszélyes, ez felháborító
+                for (int person = 0; person < cl.Instructors.Count; person++)
                 {
                     if (Instructors[person, ts].X == 1.0)
                     {
-                        instructorsTS.Add(ctx.Instructors[person]);
+                        instructorsTS.Add(cl.Instructors[person]);
                     }
                 }
-                schedule.FinalExams[ts] = new FinalExam();
-                schedule.FinalExams[ts].Id = ts;
-                schedule.FinalExams[ts].Member = instructorsTS.Find(i => i.Roles.HasFlag(Roles.Member));
-                for (int i = 0; i < ctx.Students.Length; i++)
+                fe.Exam[ts].Member = instructorsTS.Find(i => i.Role.Contains(Role.Member)).Name;
+                for (int i = 0; i < fe.Exam.Count; i++)
                 {
                     if (Students[i, ts].X == 1.0)
                     {
-                        schedule.FinalExams[ts].Student = ctx.Students[i];
+                        fe.Exam[ts].Id = i;
                     }
                 }
-                if (instructorsTS.Contains(schedule.FinalExams[ts].Student.Supervisor))
-                {
-                    schedule.FinalExams[ts].Supervisor = schedule.FinalExams[ts].Student.Supervisor;
-                }
-                Course courseOfStudent = schedule.FinalExams[ts].Student.ExamCourse;
-                for (int i = 0; i < courseOfStudent.Instructors.Length; i++)
-                {
-                    if (instructorsTS.Contains(courseOfStudent.Instructors[i]))
-                    {
-                        schedule.FinalExams[ts].Examiner = courseOfStudent.Instructors[i];
-                    }
-                }
-
+                fe.Exam[ts].Examiner = instructorsTS.Find(i => i.Role.Contains(Role.Examiner)).Name;
             }
+            fe.Exam = fe.Exam.OrderBy(o => o.Id).ToList();
+            return fe;
         }
 
-        private void FillSession(Context ctx, Schedule schedule, GRBVar[,] PresidentsSessions, GRBVar[,] SecretariesSessions) 
+        private FinalExam FillSession(Cluster cl, FinalExam fe, GRBVar[,] PresidentsSessions, GRBVar[,] SecretariesSessions) 
         {
             for (int session = 0; session < 20; session++)
             {
-                Instructor presindetInSession = new Instructor();
-                Instructor secretaryInSession = new Instructor();
-                for (int president = 0; president < ctx.Presidents.Length; president++)
+                string presindetInSession = "";
+                string secretaryInSession = "";
+                for (int president = 0; president < cl.Get(Role.President).Count; president++)
                 {
                     if (PresidentsSessions[president, session].X == 1)
                     {
-                        presindetInSession = ctx.Presidents[president];
+                        presindetInSession = cl.Get(Role.President)[president].Name;
                     }
                 }
-                for (int secretary = 0; secretary < ctx.Secretaries.Length; secretary++)
+                for (int secretary = 0; secretary < cl.Get(Role.Secretary).Count; secretary++)
                 {
                     if (SecretariesSessions[secretary, session].X == 1)
                     {
-                        secretaryInSession = ctx.Secretaries[secretary];
+                        secretaryInSession = cl.Get(Role.Secretary)[secretary].Name;
                     }
                 }
                 for (int ts = session * 5 + 0; ts < session * 5 + 5; ts++)
                 {
-                    schedule.FinalExams[ts].President = presindetInSession;
-                    schedule.FinalExams[ts].Secretary = secretaryInSession;
+                    fe.Exam[ts].President = presindetInSession;
+                    fe.Exam[ts].Secretary = secretaryInSession;
                 }
             }
+            return fe;
         }
     }
 }
