@@ -32,10 +32,29 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EPPlus, Version=4.5.1.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\EPPlus.4.5.1\lib\net40\EPPlus.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="EPPlus, Version=5.0.4.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.0.4\lib\net45\EPPlus.dll</HintPath>
     </Reference>
     <Reference Include="GeneticSharp.Domain, Version=1.1.6601.1437, Culture=neutral, PublicKeyToken=d63d2a65268366c6, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\GeneticSharp.Domain.dll</HintPath>
@@ -49,18 +68,19 @@
     <Reference Include="GeneticSharp.Infrastructure.Threading, Version=1.1.6601.1439, Culture=neutral, PublicKeyToken=f24c5e2578f0ecff, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\GeneticSharp.Infrastructure.Threading.dll</HintPath>
     </Reference>
-    <Reference Include="Gurobi81.NET">
-      <HintPath>C:\gurobi811\win64\bin\Gurobi81.NET.dll</HintPath>
+    <Reference Include="Gurobi90.NET, Version=9.0.0.0, Culture=neutral, PublicKeyToken=21e2c4b1860157bc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\gurobi901\win64\bin\Gurobi90.NET.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    <Reference Include="MathNet.Numerics, Version=4.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.4.9.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="NCalc, Version=1.3.8.0, Culture=neutral, PublicKeyToken=973cde3f1cafed03, processorArchitecture=MSIL">
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\NCalc.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
-    <Reference Include="SmartThreadPool, Version=2.2.4.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
-      <HintPath>..\packages\SmartThreadPool.dll.2.2.4\lib\net45\SmartThreadPool.dll</HintPath>
+    <Reference Include="SmartThreadPool, Version=2.2.6.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <HintPath>..\packages\SmartThreadPool.dll.2.2.6\lib\net45\SmartThreadPool.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -69,6 +89,8 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,31 +99,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
-    <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
-    <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
-    <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
-    <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
-    <Compile Include="LPScheduling\LPContext.cs" />
-    <Compile Include="LPScheduling\LPScheduler.cs" />
-    <Compile Include="Model\Context.cs" />
-    <Compile Include="Model\Course.cs" />
-    <Compile Include="Model\ExcelHelper.cs" />
-    <Compile Include="Model\FinalExam.cs" />
-    <Compile Include="Model\Entity.cs" />
-    <Compile Include="Model\FinalExamDetail.cs" />
-    <Compile Include="Model\Instructor.cs" />
-    <Compile Include="Model\Schedule.cs" />
-    <Compile Include="Model\Student.cs" />
+    <Compile Include="LP\Services\Gurobi\Constraints.cs" />
+    <Compile Include="LP\Services\Gurobi\Converter.cs" />
+    <Compile Include="LP\Services\Gurobi\Realm.cs" />
+    <Compile Include="LP\LPScheduler.cs" />
+    <Compile Include="LP\Model\Exams\FinalExam.cs" />
+    <Compile Include="LP\Model\Exams\TimeSlot.cs" />
+    <Compile Include="LP\Model\Instructors\Cluster.cs" />
+    <Compile Include="LP\Model\Instructors\Examiner.cs" />
+    <Compile Include="LP\Model\Instructors\Instructor.cs" />
+    <Compile Include="LP\Model\Instructors\Role.cs" />
+    <Compile Include="LP\Services\Xcel\XRead.cs" />
+    <Compile Include="LP\Services\Xcel\XWrite.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GeneticScheduling\GeneticScheduler.cs" />
-    <Compile Include="GeneticScheduling\Parameters.cs" />
-    <Compile Include="GeneticScheduling\SchedulingChromosome.cs" />
-    <Compile Include="GeneticScheduling\SchedulingFitness.cs" />
-    <Compile Include="GeneticScheduling\SchedulingMutation.cs" />
-    <Compile Include="GeneticScheduling\SchedulingTermination.cs" />
-    <Compile Include="GeneticScheduling\Scores.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -110,7 +121,6 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,0 +1,1123 @@
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu Apr 23 14:25:48 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x921c0c84
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+00]
+  Objective range  [1e+00, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.44s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6378 iterations, 1.25 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8212 simplex iterations) in 3.16 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu Apr 23 14:37:20 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x921c0c84
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+00]
+  Objective range  [1e+00, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.29s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6378 iterations, 1.02 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    2s
+
+Explored 0 nodes (8212 simplex iterations) in 2.70 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu Apr 23 14:37:46 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x921c0c84
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+00]
+  Objective range  [1e+00, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.46s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6378 iterations, 1.08 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    2s
+
+Explored 0 nodes (8212 simplex iterations) in 2.93 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sat Apr 25 14:23:50 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x921c0c84
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 5e+00]
+  Objective range  [1e+00, 5e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.31s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6378 iterations, 1.55 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8212 simplex iterations) in 3.26 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:11:18 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:17:14 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:18:50 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:19:53 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:25:23 2020
+
+Academic license - for non-commercial use only
+Warning: Gurobi version mismatch between .NET 9.0.1 and C library 9.0.2
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:26:23 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:51:36 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 17:59:37 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:01:35 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:18:11 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 2.04s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.53 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:20:00 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.92s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 0.98 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.38 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:24:08 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.70s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.14 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.33 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:27:58 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.95s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.04 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.43 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:28:27 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.29s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.20 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    2s
+
+Explored 0 nodes (8229 simplex iterations) in 2.96 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:41:50 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.97s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.09 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.63 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:46:07 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.89s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 0.98 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.30 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:46:54 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.91s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 0.99 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    2s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.34 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 18:49:31 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.95s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.41 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Sun May  3 19:11:05 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 1.97s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 1.04 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    3s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    3s
+
+Explored 0 nodes (8229 simplex iterations) in 3.49 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Wed May  6 13:34:11 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 4.88s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0   -1.0600000e+02   4.730000e+02   0.000000e+00      5s
+    6152    3.4000000e+01   0.000000e+00   0.000000e+00      9s
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 3.81 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    9s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -   10s
+
+Explored 0 nodes (8229 simplex iterations) in 10.32 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Wed May  6 13:34:52 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 3.73s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+    4905    3.3000078e+01   8.830069e+02   0.000000e+00      5s
+    6152    3.4000000e+01   0.000000e+00   0.000000e+00      7s
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 2.81 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    6s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    7s
+
+Explored 0 nodes (8229 simplex iterations) in 7.61 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Wed May  6 13:42:48 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 3.93s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+    4060    3.3000073e+01   5.940489e+02   0.000000e+00      5s
+    6152    3.4000000e+01   0.000000e+00   0.000000e+00      7s
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 2.92 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    7s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    7s
+
+Explored 0 nodes (8229 simplex iterations) in 8.00 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Wed May  6 13:44:20 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 20801 rows, 15106 columns and 87831 nonzeros
+Model fingerprint: 0x7f3b943d
+Model has 260 general constraints
+Variable types: 0 continuous, 15106 integer (15060 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 3e+01]
+  Objective range  [1e+00, 3e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+01]
+Presolve removed 14099 rows and 3239 columns
+Presolve time: 3.97s
+Presolved: 6702 rows, 11867 columns, 57996 nonzeros
+Variable types: 0 continuous, 11867 integer (11837 binary)
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+    4484    3.3000075e+01   7.579368e+02   0.000000e+00      5s
+    6152    3.4000000e+01   0.000000e+00   0.000000e+00      7s
+
+Root relaxation: objective 3.400000e+01, 6152 iterations, 2.52 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+H    0     0                      34.0000000 -106.00000   412%     -    6s
+     0     0     cutoff    0        34.00000   34.00000  0.00%     -    7s
+
+Explored 0 nodes (8229 simplex iterations) in 7.71 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 34 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 3.400000000000e+01, best bound 3.400000000000e+01, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 15:56:20 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 15:57:31 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:00:53 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:01:58 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:02:41 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:18:18 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:20:34 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:22:48 2020
+
+Academic license - for non-commercial use only
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:24:07 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:28:45 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.02 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:29:58 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:30:35 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:36:18 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.00s
+
+Explored 0 nodes (0 simplex iterations) in 0.03 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:41:47 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.01s
+
+Explored 0 nodes (0 simplex iterations) in 0.04 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 16:54:37 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.03s
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:01:31 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1185 rows, 14800 columns and 30645 nonzeros
+Model fingerprint: 0x122a568d
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 5e+00]
+Presolve removed 477 rows and 1973 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.03 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:01:52 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 36 rows, 14800 columns and 3600 nonzeros
+Model fingerprint: 0x99ed96ab
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [5e+00, 4e+01]
+Found heuristic solution: objective 645.0000000
+Presolve removed 36 rows and 14800 columns
+Presolve time: 0.03s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.06 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 645 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.450000000000e+02, best bound 6.450000000000e+02, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:03:43 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:05:00 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1221 rows, 14800 columns and 34245 nonzeros
+Model fingerprint: 0xf3ea0151
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 496 rows and 2027 columns
+Presolve time: 0.02s
+
+Explored 0 nodes (0 simplex iterations) in 0.03 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:10:22 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 36 rows, 14800 columns and 3600 nonzeros
+Model fingerprint: 0x99ed96ab
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [5e+00, 4e+01]
+Found heuristic solution: objective 645.0000000
+Presolve removed 36 rows and 14800 columns
+Presolve time: 0.02s
+Presolve: All rows and columns removed
+
+Explored 0 nodes (0 simplex iterations) in 0.05 seconds
+Thread count was 1 (of 4 available processors)
+
+Solution count 1: 645 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.450000000000e+02, best bound 6.450000000000e+02, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:10:43 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 136 rows, 14800 columns and 18400 nonzeros
+Model fingerprint: 0xc19118bc
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [5e+00, 4e+01]
+Found heuristic solution: objective 645.0000000
+Presolve removed 13 rows and 12500 columns
+Presolve time: 0.03s
+Presolved: 123 rows, 2300 columns, 4600 nonzeros
+Variable types: 0 continuous, 2300 integer (2300 binary)
+
+Root relaxation: cutoff, 129 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0     cutoff    0       645.00000  645.00000  0.00%     -    0s
+
+Explored 0 nodes (129 simplex iterations) in 0.08 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 645 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.450000000000e+02, best bound 6.450000000000e+02, gap 0.0000%
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:11:01 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 236 rows, 14800 columns and 18800 nonzeros
+Model fingerprint: 0x3462097b
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 13 rows and 12500 columns
+Presolve time: 0.10s
+Presolved: 223 rows, 2300 columns, 4600 nonzeros
+Variable types: 0 continuous, 2300 integer (2300 binary)
+
+Root relaxation: infeasible, 281 iterations, 0.02 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 infeasible    0               - infeasible      -     -    0s
+
+Explored 0 nodes (281 simplex iterations) in 0.15 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:18:04 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 236 rows, 14800 columns and 19300 nonzeros
+Model fingerprint: 0x3383d89e
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Presolve removed 13 rows and 12500 columns
+Presolve time: 0.09s
+Presolved: 223 rows, 2300 columns, 4600 nonzeros
+Variable types: 0 continuous, 2300 integer (2300 binary)
+
+Root relaxation: infeasible, 281 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 infeasible    0               - infeasible      -     -    0s
+
+Explored 0 nodes (281 simplex iterations) in 0.12 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 0
+
+Model is infeasible
+Best objective -, best bound -, gap -
+
+Gurobi 9.0.2 (win64, .NET) logging started Thu May  7 17:18:41 2020
+
+Academic license - for non-commercial use only
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 236 rows, 14800 columns and 19400 nonzeros
+Model fingerprint: 0xde8c3440
+Variable types: 0 continuous, 14800 integer (14800 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+00]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 4e+01]
+Found heuristic solution: objective 675.0000000
+Presolve removed 123 rows and 13500 columns
+Presolve time: 0.05s
+Presolved: 113 rows, 1300 columns, 2600 nonzeros
+Variable types: 0 continuous, 1300 integer (1300 binary)
+
+Root relaxation: cutoff, 12 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0     cutoff    0       675.00000  675.00000  0.00%     -    0s
+
+Explored 0 nodes (12 simplex iterations) in 0.08 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 1: 675 
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 6.750000000000e+02, best bound 6.750000000000e+02, gap 0.0000%
