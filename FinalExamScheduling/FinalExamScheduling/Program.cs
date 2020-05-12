@@ -27,11 +27,12 @@ namespace FinalExamScheduling
             //RunLP();
             RunLPFull();
 
+            Console.ReadKey();
         }
 
         private static void RunLPFull()
         {
-            FileInfo existingFile = new FileInfo("Input3.xlsx");
+            FileInfo existingFile = new FileInfo("Input4.xlsx");
 
             var context = ExcelHelper.ReadFull(existingFile);
 

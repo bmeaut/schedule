@@ -14,6 +14,7 @@ namespace FinalExamScheduling.LPScheduling
         int finalExamCount;
         int tsCount = Constants.days * Constants.tssInOneDay;
         LPHelper lpHelper;
+        GRBHelper grbHelper;
         LPVariables vars;
 
         public LPSchedulerFull(Context context)
@@ -33,6 +34,16 @@ namespace FinalExamScheduling.LPScheduling
                 env.Set("LogFile", @"..\..\Logs\FELog_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".log");
                 env.Start();
                 GRBModel model = new GRBModel(env);
+                model.Parameters.DegenMoves = 1;
+                //model.Parameters.Symmetry = 2;
+                model.Parameters.CutPasses = 1;
+                model.Parameters.Presolve = 2;
+                model.Parameters.Heuristics = 0;
+                model.Parameters.AggFill = 10;
+                //model.Parameters.Method = 0;
+                
+
+                grbHelper = new GRBHelper(model);
 
                 vars = new LPVariables(ctx, tsCount, model);
 
@@ -40,27 +51,10 @@ namespace FinalExamScheduling.LPScheduling
 
                 LPConstraints lpConstraints = new LPConstraints(model, vars, lpHelper, ctx, tsCount);
 
-                // Optimize model
+                //grbHelper.TuneParameters();
                 model.Optimize();
-                /*model.ComputeIIS();
-                // Print the names of all of the constraints in the IIS set.
-                foreach (var c in model.GetConstrs())
-                {
-                    if (c.Get(GRB.IntAttr.IISConstr) > 0)
-                    {
-                        Console.WriteLine(c.Get(GRB.StringAttr.ConstrName));
-                    }
-                }
-
-                // Print the names of all of the variables in the IIS set.
-                foreach (var v in model.GetVars())
-                {
-                    if (v.Get(GRB.IntAttr.IISLB) > 0 || v.Get(GRB.IntAttr.IISUB) > 0)
-                    {
-                        Console.WriteLine(v.Get(GRB.StringAttr.VarName));
-                    }
-                }*/
-
+                //lpHelper.ComputeIIS();
+                
                 schedule.objectiveValues = new string[,]
                 {
                     {"Objective value", model.ObjVal.ToString()},
@@ -71,7 +65,7 @@ namespace FinalExamScheduling.LPScheduling
                     {"President self student", (vars.presidentsSelfStudent * Scores.PresidentSelfStudent).Value.ToString()},
                     {"Supervisor not available", (lpHelper.SumNonAvailabilities(vars.supervisorAndStudent, ctx.Supervisors) * Scores.SupervisorNotAvailable).Value.ToString()}
                 };
-
+                
                 schedule = lpHelper.LPToSchedule(vars, lpHelper, schedule);
 
                 // Dispose of model and env

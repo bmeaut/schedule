@@ -24,7 +24,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
         public GRBVar[,] varLunch;
 
         public GRBVar[,,] varLunchBlocks;
-
+        public GRBVar[,,] varPMSession;
+        //public GRBVar[,] secretariesToStudents;
 
         // Variables for objective function
         public GRBVar[,] lunchTooSoon;
@@ -61,6 +62,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
             varLunch = new GRBVar[tsCount, Constants.roomCount];
 
             varLunchBlocks = new GRBVar[Constants.days, Constants.tssInOneDay - 1, Constants.roomCount];
+            varPMSession = new GRBVar[Constants.days, Constants.tssInOneDay, Constants.roomCount];
+            //secretariesToStudents = new GRBVar[ctx.Students.Length, ctx.Secretaries.Length];
 
             // Variables for objective function
             lunchTooSoon = new GRBVar[Constants.days, Constants.roomCount];
@@ -127,9 +130,21 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                     {
                         varLunchBlocks[day, tsInDay, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"LunchBlocks_{day}_{tsInDay}_{room}");
                     }
+                    for (int tsInDay = 0; tsInDay < Constants.tssInOneDay; tsInDay++)
+                    {
+                        varPMSession[day, tsInDay, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"PMExams_{day}_{tsInDay}_{room}");
+                    }
                 }
 
             }
+
+            /*for (int student = 0; student < ctx.Students.Length; student++)
+            {
+                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                {
+                    secretariesToStudents[student, secr] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SecretariesToStudents_{student}_{secr}");
+                }
+            }*/
         }
 
 

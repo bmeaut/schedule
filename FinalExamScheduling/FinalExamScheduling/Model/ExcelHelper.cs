@@ -749,28 +749,32 @@ namespace FinalExamScheduling.Model
                 int row = 2;
                 foreach (FinalExam fe in sch.FinalExams)
                 {
-                    ws_scheduling.Cells[row, 1].Value = fe.startTs / Constants.tssInOneDay;
-                    ws_scheduling.Cells[row, 2].Value = fe.RoomNr;
+                    if (fe != null)
+                    {
+                        ws_scheduling.Cells[row, 1].Value = fe.startTs / Constants.tssInOneDay;
+                        ws_scheduling.Cells[row, 2].Value = fe.RoomNr;
 
-                    int tsStart = fe.startTs % Constants.tssInOneDay;
-                    var dateTime = dt.AddMinutes(5 * tsStart);
-                    ws_scheduling.Cells[row, 3].Value = dateTime.ToString("HH:mm");
+                        int tsStart = fe.startTs % Constants.tssInOneDay;
+                        var dateTime = dt.AddMinutes(5 * tsStart);
+                        ws_scheduling.Cells[row, 3].Value = dateTime.ToString("HH:mm");
 
-                    ws_scheduling.Cells[row, 4].Value = fe.Programme;
-                    ws_scheduling.Cells[row, 5].Value = fe.DegreeLevel;
-                    ws_scheduling.Cells[row, 6].Value = fe.Student.Name;
-                    ws_scheduling.Cells[row, 7].Value = (fe.Supervisor != null) ? fe.Supervisor.Name : "";
-                    string course = ((fe.Student.ExamCourse1 != null) ? fe.Student.ExamCourse1.Name : "") 
-                                  + ((fe.Student.ExamCourse2 != null) ? "\n" + fe.Student.ExamCourse2.Name : "");
-                    string examiner = ((fe.Examiner1 != null) ? fe.Examiner1.Name : "")
-                                    + ((fe.Examiner2 != null) ? "\n" + fe.Examiner2.Name : "");
-                    ws_scheduling.Cells[row, 8].Value = course;
-                    ws_scheduling.Cells[row, 9].Value = examiner;
-                    ws_scheduling.Cells[row, 10].Value = fe.President.Name;
-                    ws_scheduling.Cells[row, 11].Value = (fe.Member != null) ? fe.Member.Name : "";
-                    ws_scheduling.Cells[row, 12].Value = (fe.Secretary != null) ? fe.Secretary.Name : "";
+                        ws_scheduling.Cells[row, 4].Value = fe.Programme;
+                        ws_scheduling.Cells[row, 5].Value = fe.DegreeLevel;
+                        ws_scheduling.Cells[row, 6].Value = fe.Student.Name;
+                        ws_scheduling.Cells[row, 7].Value = (fe.Supervisor != null) ? fe.Supervisor.Name : "";
+                        string course = ((fe.Student.ExamCourse1 != null) ? fe.Student.ExamCourse1.Name : "")
+                                      + ((fe.Student.ExamCourse2 != null) ? "\n" + fe.Student.ExamCourse2.Name : "");
+                        string examiner = ((fe.Examiner1 != null) ? fe.Examiner1.Name : "")
+                                        + ((fe.Examiner2 != null) ? "\n" + fe.Examiner2.Name : "");
+                        ws_scheduling.Cells[row, 8].Value = course;
+                        ws_scheduling.Cells[row, 9].Value = examiner;
+                        ws_scheduling.Cells[row, 10].Value = fe.President.Name;
+                        ws_scheduling.Cells[row, 11].Value = (fe.Member != null) ? fe.Member.Name : "";
+                        ws_scheduling.Cells[row, 12].Value = (fe.Secretary != null) ? fe.Secretary.Name : "";
 
-                    row++;
+                        row++;
+                    }
+                    
                 }
 
                 ws_scheduling.Cells.AutoFitColumns();

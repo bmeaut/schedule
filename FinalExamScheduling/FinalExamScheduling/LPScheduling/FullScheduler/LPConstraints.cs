@@ -40,9 +40,7 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                         for (int room = 0; room < Constants.roomCount; room++)
                         {
                             int presidentIndex = Array.IndexOf(ctx.Presidents, ctx.Students[student].Supervisor);
-                            bool isStudentCS = ctx.Students[student].Programme.HasFlag(Programme.ComputerScience);
-                            bool isStudentEE = ctx.Students[student].Programme.HasFlag(Programme.ElectricalEngineering);
-                            if ((!vars.presidentsSchedule[presidentIndex, ts, room]) && (vars.isEE[ts, room] == isStudentEE) && (vars.isCS[ts, room] == isStudentCS))
+                            if (!vars.presidentsSchedule[presidentIndex, ts, room])
                             {
                                 vars.presidentsSelfStudent.AddTerm(1.0, vars.varStudents[student, ts, room]);
                             }
@@ -50,7 +48,7 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                     }
                 }
             }
-            //Instructor[] supervisors = new Instructor[ctx.Students.Length];
+            
             // supervisor available
             for (int student = 0; student < ctx.Students.Length; student++)
             {
@@ -64,14 +62,16 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                         {
                                 vars.varInstructors[indexOfSupervisor, ts, room], vars.varStudents[student,ts,room]
                         };
-                        model.AddGenConstrMin(vars.supervisorAndStudent[student, ts, room], variables, 1.0, $"Supervisor_and_Student_both_scheduled_{student}_{ts}_{room}");
+                        model.AddGenConstrMin(vars.supervisorAndStudent[student, ts, room], variables, 1.0, 
+                            $"Supervisor_and_Student_both_scheduled_{student}_{ts}_{room}");
                     }
                 }
             }
 
             model.SetObjective(lpHelper.Sum(vars.lunchTooSoon) * Scores.LunchStartsSoon + lpHelper.Sum(vars.lunchTooLate) * Scores.LunchEndsLate +
                 lpHelper.Sum(vars.lunchOptimalLess) * Scores.LunchNotOptimalLenght + lpHelper.Sum(vars.lunchOptimalMore) * Scores.LunchNotOptimalLenght +
-                vars.presidentsSelfStudent * Scores.PresidentSelfStudent + lpHelper.SumNonAvailabilities(vars.supervisorAndStudent, ctx.Supervisors) * Scores.SupervisorNotAvailable
+                vars.presidentsSelfStudent * Scores.PresidentSelfStudent + 
+                lpHelper.SumNonAvailabilities(vars.supervisorAndStudent, ctx.Supervisors) * Scores.SupervisorNotAvailable
                 , GRB.MINIMIZE);
 
             // Constraints
@@ -89,7 +89,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
 
                         if (vars.presidentsSchedule[p, ts, room] && ctx.Presidents[p].Availability[ts])
                         {
-                            model.AddConstr(lpHelper.GetPresidentsVars(vars.varInstructors)[p, ts, room] == 1.0, $"Presidentscheduled_{ctx.Presidents[p].Name}_{ts}_{room}");
+                            model.AddConstr(lpHelper.GetVarsByRoles(vars.varInstructors, Roles.President, ctx.Presidents.Length)[p, ts, room] == 1.0, 
+                                $"Presidentscheduled_{ctx.Presidents[p].Name}_{ts}_{room}");
                             isExam = true;
                         }
                     }
@@ -103,13 +104,19 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                 for (int room = 0; room < Constants.roomCount; room++)
                 {
                     // BSc + MSc + Skip + Lunch = 1
-                    model.AddConstr(vars.varBSc[ts, room] + vars.varMSc[ts, room] + vars.varSkipped[ts, room] + vars.varLunch[ts, room] == 1.0, $"MSc+BSc+Skip+Lunch_{ts}_{room}");
+                    model.AddConstr(vars.varBSc[ts, room] + vars.varMSc[ts, room] + vars.varSkipped[ts, room] + vars.varLunch[ts, room] == 1.0, 
+                        $"MSc+BSc+Skip+Lunch_{ts}_{room}");
 
-                    // Sum(Sturdents) + Skip + Lunch = 1
-                    model.AddConstr(lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varStudents)[ts, room] + vars.varSkipped[ts, room] + vars.varLunch[ts, room] == 1.0, $"SumStudents+Skip_{ts}_{room}");
+                    // Sum(Students) + Skip + Lunch = 1
+                    model.AddConstr(lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varStudents)[ts, room] + vars.varSkipped[ts, room] + vars.varLunch[ts, room] == 1.0, 
+                        $"SumStudents+Skip_{ts}_{room}");
 
                     // max 6 instructors
                     model.AddConstr(lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] <= 6.0, $"Max_6_instructors_{ts}_{room}");
+
+                    // min a secretary in every ts
+                    //model.AddConstr(lpHelper.SumOfPersonVarsPerTsPerRoom(lpHelper.GetVarsByRoles(vars.varInstructors, Roles.Secretary, ctx.Secretaries.Length))[ts, room] + vars.varSkipped[ts,room] + vars.varLunch[ts,room] >= 1.0, 
+                    //    $"Secretary_{ts}_{room}");
 
                     for (int s = 0; s < ctx.Students.Length; s++)
                     {
@@ -136,8 +143,10 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                     }
 
                     // no instructors when skip or lunch
-                    model.AddGenConstrIndicator(vars.varSkipped[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] <= 1.0, $"WhenSkippedNoExam_{ts}_{room}");
-                    model.AddGenConstrIndicator(vars.varLunch[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] <= 1.0, $"WhenLunchNoExam_{ts}_{room}");
+                    model.AddGenConstrIndicator(vars.varSkipped[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] == 1.0, 
+                        $"WhenSkippedNoExam_{ts}_{room}");
+                    model.AddGenConstrIndicator(vars.varLunch[ts, room], 1, lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varInstructors)[ts, room] == 1.0, 
+                        $"WhenLunchNoExam_{ts}_{room}");
 
                 }
 
@@ -156,21 +165,27 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
             {
                 for (int i = 0; i < vars.varStrudentsBlocks.GetLength(1); i++)
                 {
-                    model.AddConstr(vars.varStrudentsBlocks[student, i] <= varStudentsReducedDim[student, i] + varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_1");
-                    model.AddConstr(vars.varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_2");
-                    model.AddConstr(vars.varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i + 1] - varStudentsReducedDim[student, i], $"StudentBlock_{student}_{i}_3");
-                    model.AddConstr(vars.varStrudentsBlocks[student, i] <= 2.0 - varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], $"StudentBlock_{student}_{i}_4");
+                    model.AddConstr(vars.varStrudentsBlocks[student, i] <= varStudentsReducedDim[student, i] + varStudentsReducedDim[student, i + 1], 
+                        $"StudentBlock_{student}_{i}_1");
+                    model.AddConstr(vars.varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], 
+                        $"StudentBlock_{student}_{i}_2");
+                    model.AddConstr(vars.varStrudentsBlocks[student, i] >= varStudentsReducedDim[student, i + 1] - varStudentsReducedDim[student, i], 
+                        $"StudentBlock_{student}_{i}_3");
+                    model.AddConstr(vars.varStrudentsBlocks[student, i] <= 2.0 - varStudentsReducedDim[student, i] - varStudentsReducedDim[student, i + 1], 
+                        $"StudentBlock_{student}_{i}_4");
 
                 }
                 for (int ts_reduced = Constants.tssInOneDay - 1; ts_reduced < varStudentsReducedDim.GetLength(1) - 1; ts_reduced += Constants.tssInOneDay)
                 {
-                    model.AddConstr(varStudentsReducedDim[student, ts_reduced] + varStudentsReducedDim[student, ts_reduced + 1] <= 1, $"StudentDayEnd_{student}_{ts_reduced}");
+                    model.AddConstr(varStudentsReducedDim[student, ts_reduced] + varStudentsReducedDim[student, ts_reduced + 1] <= 1, 
+                        $"StudentDayEnd_{student}_{ts_reduced}");
                 }
 
             }
             // students' blocks change less than 2 times 
             string[] nameOfStudentInBlocks = Enumerable.Range(0, ctx.Students.Length).Select(x => "StudentsBlocksSum" + x).ToArray();
-            model.AddConstrs(lpHelper.SumOfPersonVarsPerPerson(vars.varStrudentsBlocks), lpHelper.TArray<char>(GRB.LESS_EQUAL, ctx.Students.Length), lpHelper.TArray(2.0, ctx.Students.Length), nameOfStudentInBlocks);
+            model.AddConstrs(lpHelper.SumOfPersonVarsPerPerson(vars.varStrudentsBlocks), lpHelper.TArray<char>(GRB.LESS_EQUAL, ctx.Students.Length), 
+                lpHelper.TArray(2.0, ctx.Students.Length), nameOfStudentInBlocks);
 
             // lunch in blocks
             for (int day = 0; day < Constants.days; day++)
@@ -187,7 +202,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                         model.AddConstr(vars.varLunchBlocks[day, tsInDay, room] <= 2.0 - lunchTs - lunchTsNext, $"LunchBlock_{day}_{tsInDay}_{room}_4");
 
                     }
-                    model.AddConstr(lpHelper.SumOfPersonVarsPerPersonPerRoom(vars.varLunchBlocks)[day, room] <= 2, $"LunchBlockSum_{day}_{room}");
+                    model.AddConstr(lpHelper.SumOfPersonVarsPerPersonPerRoom(vars.varLunchBlocks)[day, room] == 2, $"LunchBlockSum_{day}_{room}");
+
                 }
             }
 
@@ -210,18 +226,40 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                 }
             }
 
-            // Add constraint: be the supervisor of student there
+
+
+            //var secretariesVars = lpHelper.GetVarsByRoles(vars.varInstructors, Roles.Secretary, ctx.Secretaries.Length);
+
             for (int room = 0; room < Constants.roomCount; room++)
             {
                 for (int ts = 0; ts < tsCount; ts++)
                 {
                     for (int student = 0; student < ctx.Students.Length; student++)
                     {
+                        // Add constraint: be the supervisor of student there
                         int idOfSupervisor = ctx.Students[student].Supervisor.Id;
-                        model.AddConstr(vars.varStudents[student, ts, room] - vars.varInstructors[idOfSupervisor, ts, room] <= 0.0, $"SupervisorBeThere_{student}_{ts}_{room}");
+                        model.AddConstr(vars.varStudents[student, ts, room] - vars.varInstructors[idOfSupervisor, ts, room] <= 0.0, 
+                            $"SupervisorBeThere_{student}_{ts}_{room}");
+
+                        // secretaries scheduled
+                        /*for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                        {
+                            model.AddGenConstrIndicator(vars.varStudents[student, ts, room], 1, 
+                                secretariesVars[secr, ts, room] >= vars.secretariesToStudents[student, secr], $"SecretaryOfStudentScheduled_{student}_{secr}_{ts}_{room}");
+
+                        }*/
                     }
                 }
             }
+
+
+            // Secretaries to students
+            /*string[] nameOfSecretariesToStudents = Enumerable.Range(0, ctx.Students.Length).Select(x => "SecretariesToSturdents" + x).ToArray();
+            int stNr = ctx.Students.Length;
+            model.AddConstrs(lpHelper.SumOfPersonVarsPerPerson(vars.secretariesToStudents), lpHelper.TArray(GRB.EQUAL, stNr), lpHelper.TArray(1.0, stNr), 
+                nameOfSecretariesToStudents);
+*/
+            //model.AddConstr(lpHelper.SumNonAvailabilities(secretariesVars, ctx.Secretaries) == 0, $"SecretariesAvailable");
         }
 
         

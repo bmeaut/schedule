@@ -18,25 +18,25 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
             this.tsCount = tsCount;
         }
 
-        public GRBVar[,,] GetPresidentsVars(GRBVar[,,] instructorVars)
+        public GRBVar[,,] GetVarsByRoles(GRBVar[,,] instructorVars, Roles role, int personLenth)
         {
-            GRBVar[,,] presidentsVars = new GRBVar[ctx.Presidents.Length, instructorVars.GetLength(1), instructorVars.GetLength(2)];
+            GRBVar[,,] personVars = new GRBVar[personLenth, instructorVars.GetLength(1), instructorVars.GetLength(2)];
             int index = 0;
             for (int i = 0; i < instructorVars.GetLength(0); i++)
             {
-                if (ctx.Instructors[i].Roles.HasFlag(Roles.President))
+                if (ctx.Instructors[i].Roles.HasFlag(role))
                 {
                     for (int ts = 0; ts < instructorVars.GetLength(1); ts++)
                     {
                         for (int room = 0; room < instructorVars.GetLength(2); room++)
                         {
-                            presidentsVars[index, ts, room] = instructorVars[i, ts, room];
+                            personVars[index, ts, room] = instructorVars[i, ts, room];
                         }
                     }
                     index++;
                 }
             }
-            return presidentsVars;
+            return personVars;
         }
 
         public GRBLinExpr[] SumOfPersonVarsPerPerson(GRBVar[,] vars)
@@ -238,6 +238,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
             return presidents;
         }
 
+        
+
         public Schedule LPToSchedule(LPVariables vars, LPHelper lpHelper, Schedule schedule)
         {
             
@@ -312,6 +314,13 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                                 }
 
                                 schedule.FinalExams[feIndex].President = lpHelper.GetPresidentsArray(vars.presidentsSchedule)[ts, room];
+                                /*for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                                {
+                                    if(vars.secretariesToStudents[student,secr].X == 1.0)
+                                    {
+                                        schedule.FinalExams[feIndex].Secretary = ctx.Secretaries[secr];
+                                    }
+                                }*/
 
                                 if (instructorsInTs.Contains(schedule.FinalExams[feIndex].Student.Supervisor))
                                 {

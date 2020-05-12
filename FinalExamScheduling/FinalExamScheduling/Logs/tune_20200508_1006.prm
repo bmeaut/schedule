@@ -1,0 +1,7 @@
+DegenMoves  1
+Heuristics  0
+CutPasses  1
+AggFill  10
+Presolve  2
+TuneTimeLimit  50400
+TuneResults  1
