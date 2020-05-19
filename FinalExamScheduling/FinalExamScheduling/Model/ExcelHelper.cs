@@ -25,9 +25,9 @@ namespace FinalExamScheduling.Model
             {
                 Console.WriteLine("Reading of Excel was succesful");
 
-                ExcelWorksheet ws_students = xlPackage.Workbook.Worksheets[1];
-                ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets[2];
-                ExcelWorksheet ws_courses = xlPackage.Workbook.Worksheets[3];
+                ExcelWorksheet ws_students = xlPackage.Workbook.Worksheets["Students"];
+                ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets["Instructors"];
+                ExcelWorksheet ws_courses = xlPackage.Workbook.Worksheets["Courses"];
 
                 List<Instructor> instructors = new List<Instructor>();
                 List<Student> students = new List<Student>();

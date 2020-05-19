@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\GeneticScheduler.cs" Link="GeneticScheduling\GeneticScheduler.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\Parameters.cs" Link="GeneticScheduling\Parameters.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\SchedulingChromosome.cs" Link="GeneticScheduling\SchedulingChromosome.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\SchedulingFitness.cs" Link="GeneticScheduling\SchedulingFitness.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\SchedulingMutation.cs" Link="GeneticScheduling\SchedulingMutation.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\SchedulingTermination.cs" Link="GeneticScheduling\SchedulingTermination.cs" />
+    <Compile Include="..\FinalExamScheduling\GeneticScheduling\Scores.cs" Link="GeneticScheduling\Scores.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Context.cs" Link="Model\Context.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Course.cs" Link="Model\Course.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Entity.cs" Link="Model\Entity.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\ExcelHelper.cs" Link="Model\ExcelHelper.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\FinalExam.cs" Link="Model\FinalExam.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\FinalExamDetail.cs" Link="Model\FinalExamDetail.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Instructor.cs" Link="Model\Instructor.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Schedule.cs" Link="Model\Schedule.cs" />
+    <Compile Include="..\FinalExamScheduling\Model\Student.cs" Link="Model\Student.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Caliburn.Micro" Version="4.0.105-alpha" />
+    <PackageReference Include="Dragablz" Version="0.0.3.203" />
+    <PackageReference Include="EPPlus" Version="4.5.1" />
+    <PackageReference Include="GeneticSharp" Version="2.6.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+    <Folder Include="GeneticScheduling\" />
+  </ItemGroup>
+
+</Project>

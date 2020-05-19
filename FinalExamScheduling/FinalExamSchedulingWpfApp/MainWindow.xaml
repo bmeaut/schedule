@@ -1,0 +1,102 @@
+﻿<Window x:Class="FinalExamSchedulingWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FinalExamSchedulingWpfApp"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
+        xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+        xmlns:system="clr-namespace:System;assembly=System.Runtime"
+        xmlns:view="clr-namespace:FinalExamSchedulingWpfApp.View"
+        xmlns:viewModel="clr-namespace:FinalExamSchedulingWpfApp.ViewModel"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        Title="Final exam scheduling" Height="900" Width="1600" Loaded="WindowLoaded">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <system:String x:Key="Partition">MainWindow</system:String>
+            <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}" >
+                <view:StudentsView DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:InstructorsViewModel}" >
+                <view:InstructorsView DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:CoursesViewModel}" >
+                <view:CoursesView DataContext="{Binding}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </Window.Resources>
+    <dockablz:Layout Partition="{StaticResource Partition}">
+        <dragablz:TabablzControl TabStripPlacement="Top" ConsolidateOrphanedItems="True">
+            <dragablz:TabablzControl.InterTabController>
+                <dragablz:InterTabController Partition="{StaticResource Partition}" />
+            </dragablz:TabablzControl.InterTabController>
+            <TabItem Header="INPUT">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Button
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Grid.Column="0" Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Margin="0,8,0,8"
+                        Click="LoadInputFileClick" >
+                        LOAD INPUT FILE
+                    </Button>
+                    <ListBox Grid.Column="0" Grid.Row="1">
+                        <ListBoxItem
+                            x:Name="listBoxItemStudents"
+                            MouseLeftButtonUp="StudentsViewClicked">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Account" Margin="0,0,6,0" />
+                                <TextBlock Text="Students"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem
+                            x:Name="listBoxItemInstructors"
+                            MouseLeftButtonUp="InstructorsViewClicked">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Teach" Margin="0,0,6,0" />
+                                <TextBlock Text="Instructors"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem
+                            x:Name="listBoxItemCourses"
+                            MouseLeftButtonUp="CoursesViewClicked">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="BookOpen" Margin="0,0,6,0" />
+                                <TextBlock Text="Courses"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                    <ContentControl x:Name="contentControlInputPage"
+                                    Grid.Column="1"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="2"
+                                    Content="{Binding}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="CONFIGURE &amp; RUN">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Configuration and run</TextBlock>
+            </TabItem>
+            <TabItem Header="OUTPUT">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">View results</TextBlock>
+            </TabItem>
+        </dragablz:TabablzControl>
+
+    </dockablz:Layout>
+</Window>

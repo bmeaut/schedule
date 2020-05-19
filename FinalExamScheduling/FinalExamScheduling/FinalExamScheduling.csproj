@@ -50,7 +50,7 @@
       <HintPath>..\packages\GeneticSharp.1.2.0\lib\net35\GeneticSharp.Infrastructure.Threading.dll</HintPath>
     </Reference>
     <Reference Include="Gurobi81.NET">
-      <HintPath>C:\gurobi811\win64\bin\Gurobi81.NET.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\gurobi811\win64\bin\Gurobi81.NET.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=3.20.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.3.20.0\lib\net40\MathNet.Numerics.dll</HintPath>
