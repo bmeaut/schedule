@@ -20,6 +20,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <system:String x:Key="Partition">MainWindow</system:String>
             <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}" >
