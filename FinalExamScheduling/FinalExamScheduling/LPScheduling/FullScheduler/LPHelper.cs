@@ -284,6 +284,9 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
             {
                 for (int ts = 0; ts < tsCount; ts++)
                 {
+                    int day = ts / Constants.tssInOneDay;
+                    int tsInDay = ts % Constants.tssInOneDay;
+
                     for (int student = 0; student < ctx.Students.Length; student++)
                     {
                         if (vars.varStudents[student, ts, room].X == 1.0)
@@ -314,13 +317,13 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                                 }
 
                                 schedule.FinalExams[feIndex].President = lpHelper.GetPresidentsArray(vars.presidentsSchedule)[ts, room];
-                                /*for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
                                 {
-                                    if(vars.secretariesToStudents[student,secr].X == 1.0)
+                                    if (vars.varPMSession[day, tsInDay, room].X == 1 && vars.varSecretariesToSessions[secr, day * 2 + 1, room].X == 1)
                                     {
                                         schedule.FinalExams[feIndex].Secretary = ctx.Secretaries[secr];
                                     }
-                                }*/
+                                }
 
                                 if (instructorsInTs.Contains(schedule.FinalExams[feIndex].Student.Supervisor))
                                 {

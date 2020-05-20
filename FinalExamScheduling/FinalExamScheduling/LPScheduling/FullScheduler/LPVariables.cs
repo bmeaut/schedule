@@ -25,7 +25,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
 
         public GRBVar[,,] varLunchBlocks;
         public GRBVar[,,] varPMSession;
-        //public GRBVar[,] secretariesToStudents;
+        public GRBVar[,,] varY;
+        public GRBVar[,,] varSecretariesToSessions;
 
         // Variables for objective function
         public GRBVar[,] lunchTooSoon;
@@ -63,7 +64,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
 
             varLunchBlocks = new GRBVar[Constants.days, Constants.tssInOneDay - 1, Constants.roomCount];
             varPMSession = new GRBVar[Constants.days, Constants.tssInOneDay, Constants.roomCount];
-            //secretariesToStudents = new GRBVar[ctx.Students.Length, ctx.Secretaries.Length];
+            varY = new GRBVar[Constants.days, Constants.tssInOneDay - 1, Constants.roomCount];
+            varSecretariesToSessions = new GRBVar[ctx.Secretaries.Length, Constants.days * 2, Constants.roomCount];
 
             // Variables for objective function
             lunchTooSoon = new GRBVar[Constants.days, Constants.roomCount];
@@ -129,22 +131,29 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                     for (int tsInDay = 0; tsInDay < Constants.tssInOneDay - 1; tsInDay++)
                     {
                         varLunchBlocks[day, tsInDay, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"LunchBlocks_{day}_{tsInDay}_{room}");
+                        varY[day, tsInDay, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"PMExams_{day}_{tsInDay}_{room}");
+
                     }
                     for (int tsInDay = 0; tsInDay < Constants.tssInOneDay; tsInDay++)
                     {
                         varPMSession[day, tsInDay, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"PMExams_{day}_{tsInDay}_{room}");
+
                     }
                 }
 
             }
 
-            /*for (int student = 0; student < ctx.Students.Length; student++)
+            for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
             {
-                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                for (int session = 0; session < Constants.days*2; session++)
                 {
-                    secretariesToStudents[student, secr] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SecretariesToStudents_{student}_{secr}");
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        varSecretariesToSessions[secr,session,room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SecretariesToSessions_{secr}_{session}_{room}");
+                    }
+
                 }
-            }*/
+            }
         }
 
 

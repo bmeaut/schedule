@@ -34,12 +34,12 @@ namespace FinalExamScheduling.LPScheduling
                 env.Set("LogFile", @"..\..\Logs\FELog_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".log");
                 env.Start();
                 GRBModel model = new GRBModel(env);
-                model.Parameters.DegenMoves = 1;
+                //model.Parameters.DegenMoves = 1;
                 //model.Parameters.Symmetry = 2;
-                model.Parameters.CutPasses = 1;
-                model.Parameters.Presolve = 2;
-                model.Parameters.Heuristics = 0;
-                model.Parameters.AggFill = 10;
+                //model.Parameters.CutPasses = 1;
+                //.Parameters.Presolve = 2;
+                //model.Parameters.Heuristics = 0;
+                //model.Parameters.AggFill = 10;
                 //model.Parameters.Method = 0;
                 
 
@@ -53,7 +53,7 @@ namespace FinalExamScheduling.LPScheduling
 
                 //grbHelper.TuneParameters();
                 model.Optimize();
-                //lpHelper.ComputeIIS();
+                //lpHelper.ComputeIIS();t 
                 
                 schedule.objectiveValues = new string[,]
                 {

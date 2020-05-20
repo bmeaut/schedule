@@ -204,6 +204,14 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                     }
                     model.AddConstr(lpHelper.SumOfPersonVarsPerPersonPerRoom(vars.varLunchBlocks)[day, room] == 2, $"LunchBlockSum_{day}_{room}");
 
+                    GRBLinExpr sumOfLunchBlocks = 0.0;
+                    model.AddConstr(vars.varPMSession[day, 0, room] == 0.0, $"FirstTsIsNotPM_{day}_{room}");
+                    for (int tsInDay = 0; tsInDay < Constants.tssInOneDay - 1; tsInDay++)
+                    {
+                        sumOfLunchBlocks.AddTerm(1.0, vars.varLunchBlocks[day, tsInDay, room]);
+                        model.AddConstr(sumOfLunchBlocks <= 1.0 + 2.0 * vars.varY[day, tsInDay, room], $"PMSession_1_{day}_{tsInDay}_{room}");
+                        model.AddConstr(vars.varPMSession[day, tsInDay + 1, room] >= 1.0 - 2.0 * (1.0 - vars.varY[day, tsInDay, room]), $"PMSession_2_{day}_{tsInDay}_{room}");                     
+                    }
                 }
             }
 
@@ -228,7 +236,7 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
 
 
 
-            //var secretariesVars = lpHelper.GetVarsByRoles(vars.varInstructors, Roles.Secretary, ctx.Secretaries.Length);
+            var secretariesVars = lpHelper.GetVarsByRoles(vars.varInstructors, Roles.Secretary, ctx.Secretaries.Length);
 
             for (int room = 0; room < Constants.roomCount; room++)
             {
@@ -252,6 +260,31 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler
                 }
             }
 
+            for (int session = 0; session < Constants.days * 2; session++)
+            {
+                for (int room = 0; room < Constants.roomCount; room++)
+                {
+                    model.AddConstr(lpHelper.SumOfPersonVarsPerTsPerRoom(vars.varSecretariesToSessions)[session, room] == 1, $"SecretariesToSession_{session}_{room}");
+                    //varSecretariesToSessions[secr, session, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"SecretariesToSessions_{secr}_{session}_{room}");
+                    for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                    {
+                        int day = session / 2;
+                        if (session % 2 == 1)
+                        {
+                            for (int ts = 0; ts < Constants.tssInOneDay; ts++)
+                            {
+                                model.AddGenConstrIndicator(vars.varSecretariesToSessions[secr, session, room], 1,
+                                    secretariesVars[secr, (day) * Constants.tssInOneDay + ts, room] >= vars.varPMSession[day, ts,room], 
+                                    $"SecretariesToPM_{secr}_{day}_{ts}_{room}");
+
+                            }
+                        }
+                    }
+                }
+
+                
+
+            }
 
             // Secretaries to students
             /*string[] nameOfSecretariesToStudents = Enumerable.Range(0, ctx.Students.Length).Select(x => "SecretariesToSturdents" + x).ToArray();
