@@ -56,7 +56,7 @@ namespace FinalExamScheduling
 
             context.Init();
             heuristicScheduler = new HeuristicScheduler(context);
-            Schedule schedule = heuristicScheduler.Run3();
+            Schedule schedule = heuristicScheduler.Run();
 
             context.FillDetails = false;
             SchedulingFitness evaluator = new SchedulingFitness(context);
@@ -64,7 +64,7 @@ namespace FinalExamScheduling
             Console.WriteLine("Penalty score: " + penaltyScore);
 
             scheduler = new GeneticScheduler(context);
-            //ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
+            ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
         }
 
         static void RunGenetic()

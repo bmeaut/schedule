@@ -155,33 +155,11 @@ namespace FinalExamScheduling.HeuristicScheduling
             }
         }
 
-
-        /*public Dictionary<Student, int[]> GetStudentPoints()
-        {
-            Dictionary<Student, int[]> studentPoints = new Dictionary<Student, int[]>();
-            for (int i = 0; i < 100; i++)
-            {
-                //TODO
-                Random random = new Random();
-                int[] points = new int[100];
-                for (int j = 0; j < 100; j++)
-                {
-                    points[j] = random.Next(0, 5000);
-                    
-                }
-                ctx.Heuristics[i].ScoreForTimeSlot[i] = 5;
-                studentPoints.Add(ctx.Students[i], points);
-            }
-
-
-            return studentPoints;
-        }*/
-
         //-----------------------------------------Elnökök---------------------------------------------------------
         public void GetPresidents(Schedule schedule)
         {
             int sectionNr = ctx.Students.Length / 5; //hány darab blokk van (20)
-            int presidentOne = (int)((sectionNr / ctx.Presidents.Length) * 1.2); //mennyivel többször legyenek felvéve az elnökök (6)
+            int presidentOne = 5;//(int)((sectionNr / ctx.Presidents.Length) * 1.2); //mennyivel többször legyenek felvéve az elnökök (6)
             int presindetAll = presidentOne * ctx.Presidents.Length; //összes elnök néhányszor (24)
             Instructor[] allPresidents = new Instructor[presindetAll];
 
@@ -197,13 +175,13 @@ namespace FinalExamScheduling.HeuristicScheduling
             int[] presidentIndexes = Enumerable.Range(0, presindetAll).ToArray();
             int[] finalExamIndexes = Enumerable.Range(0, sectionNr).ToArray();
             
-            for (int p = 0; p < presindetAll; p++) //vegigmegy az osszes elnokon 6*4 0->23
+            for (int p = 0; p < presindetAll; p++)
             {
-                int j = 0; //blokkok száma 0->20
-                for (int f = 0; f < 100; f += 5) //vizsgak blokkok szerint 
+                int j = 0;
+                for (int f = 0; f < 100; f += 5)
                 {
                     int countMinus = 0;
-                    for (int i = f; i < f + 5; i++) //blokkon belül
+                    for (int i = f; i < f + 5; i++)
                     {
                         if (allPresidents[p].Availability[i] == false)
                         {
@@ -337,7 +315,7 @@ namespace FinalExamScheduling.HeuristicScheduling
                 }
             }
 
-            int memberOne = (int)((remainingExams.Count / ctx.Members.Length) * 3);
+            int memberOne = (int)((remainingExams.Count / ctx.Members.Length) * 2.5);
             int memberAll = memberOne * ctx.Members.Length;
             Instructor[] allMembers = new Instructor[memberAll];
 
@@ -479,7 +457,7 @@ namespace FinalExamScheduling.HeuristicScheduling
         //-----------------------------------------Belső tagok2---------------------------------------------------------
         public void GetMembers2(Schedule schedule)
         {
-            int memberOne = (int)((100 / ctx.Members.Length) * 2);
+            int memberOne = 10;//(int)((100 / ctx.Members.Length) * 2);
             int memberAll = memberOne * ctx.Members.Length;
             Instructor[] allMembers = new Instructor[memberAll];
 
@@ -530,7 +508,7 @@ namespace FinalExamScheduling.HeuristicScheduling
         //-----------------------------------------Belső tagok3---------------------------------------------------------
         public void GetMembers3(Schedule schedule)
         {
-            int memberOne = (int)((100 / ctx.Members.Length) * 2);
+            int memberOne = 10;// (int)((100 / ctx.Members.Length) * 2);
             int memberAll = memberOne * ctx.Members.Length;
             Instructor[] allMembers = new Instructor[memberAll];
 
