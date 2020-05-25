@@ -75,6 +75,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GeneticScheduling\SchedulingElitistReinsertion.cs" />
+    <Compile Include="GeneticScheduling\SchedulingElitistSelection.cs" />
+    <Compile Include="GeneticScheduling\SchedulingRouletteWheelSelection.cs" />
+    <Compile Include="GeneticScheduling\SchedulingMixedSelection.cs" />
+    <Compile Include="GeneticScheduling\SchedulingUniformCrossover.cs" />
     <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />

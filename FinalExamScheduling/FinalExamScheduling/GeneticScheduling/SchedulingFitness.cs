@@ -78,7 +78,7 @@ namespace FinalExamScheduling.GeneticScheduling
             sch.Details = new FinalExamDetail[100];
             for (int i = 0; i < 100; i++)
             {
-                sch.FinalExams[i]=(FinalExam)chromosome.GetGene(i).Value;
+                sch.FinalExams[i]=((FinalExam)chromosome.GetGene(i).Value)/*.Clone()*/;
             }
 
             var tasks = CostFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
@@ -107,7 +107,6 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += (count[i] - 1) * Scores.StudentDuplicated;
 
                 }
-
             }
             return score;
         }
@@ -115,41 +114,35 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetPresidentNotAvailableScore(Schedule sch)
         {
             double score = 0;
-            foreach (var fi in sch.FinalExams)
+            for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (fi.President.Availability[fi.Id] == false)
+                if (sch.FinalExams[i].President.Availability[i] == false)
                 {
                     score += Scores.PresidentNotAvailable;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].PresidentComment += $"President not available: {Scores.PresidentNotAvailable}\n";
-                        sch.Details[fi.Id].PresidentScore += Scores.PresidentNotAvailable;
+                        sch.Details[i].PresidentComment += $"President not available: {Scores.PresidentNotAvailable}\n";
+                        sch.Details[i].PresidentScore += Scores.PresidentNotAvailable;
                     }
-                    
                 }
-
-
             }
             return score;
-
         }
 
         public double GetSecretaryNotAvailableScore(Schedule sch)
         {
             double score = 0;
-            foreach (var fi in sch.FinalExams)
+            for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (fi.Secretary.Availability[fi.Id] == false)
+                if (sch.FinalExams[i].Secretary.Availability[i] == false)
                 {
                     score += Scores.SecretaryNotAvailable;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].SecretaryComment += $"Secretary not available: {Scores.SecretaryNotAvailable}\n";
-                        sch.Details[fi.Id].SecretaryScore += Scores.SecretaryNotAvailable;
+                        sch.Details[i].SecretaryComment += $"Secretary not available: {Scores.SecretaryNotAvailable}\n";
+                        sch.Details[i].SecretaryScore += Scores.SecretaryNotAvailable;
                     }
                 }
-
-
             }
             return score;
         }
@@ -157,16 +150,16 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetExaminerNotAvailableScore(Schedule sch)
         {
             double score = 0;
-            foreach (var fi in sch.FinalExams)
+            for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (fi.Examiner.Availability[fi.Id] == false)
+                if (sch.FinalExams[i].Examiner.Availability[i] == false)
                 {
                     score += Scores.ExaminerNotAvailable;
                     if (ctx.FillDetails)
                     {
                         //sch.Details[fi.Id].ExaminerComment...
-                        sch.Details[fi.Id].ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
-                        sch.Details[fi.Id].ExaminerScore += Scores.ExaminerNotAvailable;
+                        sch.Details[i].ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
+                        sch.Details[i].ExaminerScore += Scores.ExaminerNotAvailable;
                     }
                 }
 
@@ -178,15 +171,15 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetMemberNotAvailableScore(Schedule sch)
         {
             double score = 0;
-            foreach (var fi in sch.FinalExams)
+            for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (fi.Member.Availability[fi.Id] == false)
+                if (sch.FinalExams[i].Member.Availability[i] == false)
                 {
                     score += Scores.MemberNotAvailable;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].MemberComment += $"Member not available: {Scores.MemberNotAvailable}\n";
-                        sch.Details[fi.Id].MemberScore += Scores.MemberNotAvailable;
+                        sch.Details[i].MemberComment += $"Member not available: {Scores.MemberNotAvailable}\n";
+                        sch.Details[i].MemberScore += Scores.MemberNotAvailable;
                     }
                 }
 
@@ -199,15 +192,15 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetSupervisorNotAvailableScore(Schedule sch)
         {
             double score = 0;
-            foreach (var fi in sch.FinalExams)
+            for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (fi.Supervisor.Availability[fi.Id] == false)
+                if (sch.FinalExams[i].Supervisor.Availability[i] == false)
                 {
                     score += Scores.SupervisorNotAvailable;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].SupervisorComment += $"Supervisor not available: {Scores.SupervisorNotAvailable}\n";
-                        sch.Details[fi.Id].SupervisorScore += Scores.SupervisorNotAvailable;
+                        sch.Details[i].SupervisorComment += $"Supervisor not available: {Scores.SupervisorNotAvailable}\n";
+                        sch.Details[i].SupervisorScore += Scores.SupervisorNotAvailable;
                     }
                 }
 
@@ -231,8 +224,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 1].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[sch.FinalExams[i + 1].Id].PresidentScore += Scores.PresidentChange;
+                        sch.Details[i + 1].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[i + 1].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 1].President != sch.FinalExams[i + 2].President)
@@ -240,8 +233,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 2].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[sch.FinalExams[i + 2].Id].PresidentScore += Scores.PresidentChange;
+                        sch.Details[i + 2].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[i + 2].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 2].President != sch.FinalExams[i + 3].President)
@@ -249,8 +242,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 3].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[sch.FinalExams[i + 3].Id].PresidentScore += Scores.PresidentChange;
+                        sch.Details[i + 3].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[i + 3].PresidentScore += Scores.PresidentChange;
                     }
                 }
                 if (sch.FinalExams[i + 3].President != sch.FinalExams[i + 4].President)
@@ -258,13 +251,11 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 4].Id].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[sch.FinalExams[i + 4].Id].PresidentScore += Scores.PresidentChange;
+                        sch.Details[i + 4].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
+                        sch.Details[i + 4].PresidentScore += Scores.PresidentChange;
                     }
                 }
-
             }
-
             return score;
         }
 
@@ -279,8 +270,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.SecretaryChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 1].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[sch.FinalExams[i + 1].Id].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[i + 1].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[i + 1].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 1].Secretary != sch.FinalExams[i + 2].Secretary)
@@ -288,8 +279,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.SecretaryChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 2].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[sch.FinalExams[i + 2].Id].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[i + 2].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[i + 2].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 2].Secretary != sch.FinalExams[i + 3].Secretary)
@@ -297,8 +288,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.SecretaryChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 3].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[sch.FinalExams[i + 3].Id].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[i + 3].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[i + 3].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
                 if (sch.FinalExams[i + 3].Secretary != sch.FinalExams[i + 4].Secretary)
@@ -306,8 +297,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.SecretaryChange;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[sch.FinalExams[i + 4].Id].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[sch.FinalExams[i + 4].Id].SecretaryScore += Scores.SecretaryChange;
+                        sch.Details[i + 4].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
+                        sch.Details[i + 4].SecretaryScore += Scores.SecretaryChange;
                     }
                 }
 
@@ -682,8 +673,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 //memberWorkloads[Array.FindIndex(ctx.Members, item => item == fi.Member)]++;
                 memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
-
-
+            
             double optimalWorkload = 100 / ctx.Members.Length;
 
             foreach (Instructor memb in ctx.Members)
@@ -699,7 +689,6 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.MemberWorkloadBad;
                 }
             }
-
             return score;
         }
 
@@ -797,13 +786,11 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentSelfStudent;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
-                        sch.Details[fi.Id].SupervisorScore += Scores.PresidentSelfStudent;
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.PresidentSelfStudent;
                     }
                 }
-
             }
-
             return score;
         }
 
@@ -812,20 +799,16 @@ namespace FinalExamScheduling.GeneticScheduling
             double score = 0;
             foreach (var fi in sch.FinalExams)
             {
-
                 if ((fi.Supervisor.Roles & Roles.Secretary) == Roles.Secretary && fi.Supervisor != fi.Secretary)
                 {
                     score += Scores.SecretarySelfStudent;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
-                        sch.Details[fi.Id].SupervisorScore += Scores.SecretarySelfStudent;
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.SecretarySelfStudent;
                     }
                 }
-
-
             }
-
             return score;
         }
 
@@ -839,13 +822,11 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.ExaminerNotPresident;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[fi.Id].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
-                        sch.Details[fi.Id].ExaminerScore += Scores.ExaminerNotPresident;
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
+                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
                     }
                 }
-
             }
-
             return score;
         }
 

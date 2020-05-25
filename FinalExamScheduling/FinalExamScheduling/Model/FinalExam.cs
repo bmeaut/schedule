@@ -25,5 +25,17 @@ namespace FinalExamScheduling.Model
 
         public Instructor Examiner = null;
 
+        public FinalExam Clone()
+        {
+            return new FinalExam
+            {
+                Student = Student,
+                Supervisor = Supervisor,
+                President = President,
+                Secretary = Secretary,
+                Member = Member,
+                Examiner = Examiner
+            };
+        }
     }
 }

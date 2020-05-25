@@ -34,20 +34,20 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public Task<Schedule> RunAsync()
         {
-            var selection = new EliteSelection();
-            var crossover = new UniformCrossover(0.5f);
+            var selection = new SchedulingMixedSelection();
+            //var selection = new SchedulingElitistSelection();
+            //var selection = new EliteSelection();
+            //var selection = new SchedulingRouletteWheelSelection();
+            var crossover = new SchedulingUniformCrossover(0.5f);
             //var mutation = new TworsMutation();
             var mutation = new SchedulingMutation(ctx);
-      
-
-            //var mutation = new UniformMutation();
 
             var chromosome = new SchedulingChromosome(ctx);
             Fitness = new SchedulingFitness(ctx);
 
 
             var population = new Population(Parameters.MinPopulationSize, Parameters.MaxPopulationSize, chromosome);
-            //population.GenerationStrategy = new PerformanceGenerationStrategy(); //nem vált be
+            //population.GenerationStrategy = new PerformanceGenerationStrategy(3); //nem vált be, minimális javulás esetleg
 
             termination = new SchedulingTermination();
 

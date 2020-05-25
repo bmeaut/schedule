@@ -21,7 +21,6 @@ namespace FinalExamScheduling.GeneticScheduling
                     offspring.Add(bestParents[i]);
                 }
             }
-
             return offspring;
         }
     }
