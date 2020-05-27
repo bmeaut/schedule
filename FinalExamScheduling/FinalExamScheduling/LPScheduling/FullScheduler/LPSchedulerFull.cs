@@ -1,12 +1,11 @@
-﻿using FinalExamScheduling.LPScheduling.FullScheduler;
-using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.Model;
 using Gurobi;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace FinalExamScheduling.LPScheduling
+namespace FinalExamScheduling.LPScheduling.FullScheduler
 {
     public class LPSchedulerFull
     {

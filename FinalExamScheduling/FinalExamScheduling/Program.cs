@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FinalExamScheduling.LPScheduling;
+using FinalExamScheduling.LPScheduling.FullScheduler;
+using FinalExamScheduling.LPScheduling.FullScheduler2;
 
 namespace FinalExamScheduling
 {
@@ -19,15 +21,29 @@ namespace FinalExamScheduling
         static HeuristicScheduler heuristicScheduler;
         static LPScheduler lpScheduler;
         static LPSchedulerFull lpSchedulerFull;
+        static LPSchedulerFull2 lpSchedulerFull2;
 
         static void Main(string[] args)
         {
             //RunGenetic();
             //RunHeuristic();
             //RunLP();
-            RunLPFull();
-
+            //RunLPFull();
+            RunLPFull2();
             Console.ReadKey();
+        }
+
+        private static void RunLPFull2()
+        {
+            FileInfo existingFile = new FileInfo("Input2.xlsx");
+
+            var context = ExcelHelper.ReadFull(existingFile);
+
+            context.Init();
+            lpSchedulerFull2 = new LPSchedulerFull2(context);
+            Schedule schedule = lpSchedulerFull2.Run(existingFile);
+
+            //ExcelHelper.Write(@"..\..\Results\Done_LPFull_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule);
         }
 
         private static void RunLPFull()

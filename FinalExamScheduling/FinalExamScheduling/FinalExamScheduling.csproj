@@ -82,7 +82,11 @@
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
-    <Compile Include="LPScheduling\FullScheduler\GRBHelper.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPConstraints2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPHelper2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPSchedulerFull2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPVariables2.cs" />
+    <Compile Include="LPScheduling\GRBHelper.cs" />
     <Compile Include="LPScheduling\FullScheduler\LPConstraints.cs" />
     <Compile Include="LPScheduling\FullScheduler\LPHelper.cs" />
     <Compile Include="LPScheduling\FullScheduler\LPVariables.cs" />

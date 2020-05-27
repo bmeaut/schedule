@@ -6,7 +6,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FinalExamScheduling.LPScheduling.FullScheduler
+namespace FinalExamScheduling.LPScheduling
 {
     public class GRBHelper
     {
