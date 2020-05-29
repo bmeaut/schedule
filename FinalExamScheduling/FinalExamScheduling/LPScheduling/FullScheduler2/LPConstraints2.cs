@@ -15,12 +15,10 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             int examCount = ctx.Students.Length;
             // Constraints
 
+            model.SetObjective(lpHelper.Sum(vars.lunchLengthAbsDistance) + lpHelper.Sum(vars.examStartEarly) + lpHelper.Sum(vars.examStartLate), GRB.MINIMIZE);
 
-            //List<GRBVar> examStartList = vars.examStart.ToList();
             for (int exam = 1; exam < examCount; exam++)
             {
-                //List<GRBVar> examStartReduced = examStartList;
-                //examStartReduced.RemoveAt(exam);
                 for (int room = 0; room < Constants.roomCount; room++)
                 {
                     for (int otherExam = 0; otherExam < exam; otherExam++)
@@ -47,16 +45,57 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             {
                 for (int day = 0; day < Constants.days; day++)
                 {
-                    GRBVar tempBin = new GRBVar();
-                    tempBin = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinary_{exam}_{day}");
-                    model.AddConstr(vars.examStart[exam] <= 
-                        day * Constants.tssInOneDay + vars.lunchStart[day] - 8.0 - vars.isMsc[exam] + tempBin * 1000.0, 
-                        $"beforeLunch_{exam}_{day}");
-                    model.AddConstr(vars.examStart[exam] >=
-                        day * Constants.tssInOneDay + vars.lunchStart[day] + vars.lunchLenght[day] - (1.0 - tempBin) * 1000.0,
-                        $"afterLunch_{exam}_{day}");
+                    var dayStart = day * Constants.tssInOneDay;
+                    var nextdayStart = (day + 1) * Constants.tssInOneDay;
+                    var examLenght = 8.0 + vars.isMsc[exam];
+
+                    GRBVar tempBinA = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinaryA_{exam}_{day}");
+                    GRBVar tempBinB = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinaryB_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] <= dayStart - 1.0 + 1000 * tempBinB + 1000 * tempBinA, $"beforeStartDay_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] >= dayStart + 12.0 - 1000 * (1.0 - tempBinB) - 1000 * tempBinA, $"startAfter9:00_{exam}_{day}");
+                    model.AddConstr(vars.examStartEarly[exam] >= dayStart + 12.0 - vars.examStart[exam] - 1000 * (1.0 - tempBinA), $"NrOfTsStartsEarlier_{exam}_{day}");
+
+                    GRBVar tempBinC = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinaryC_{exam}_{day}");
+                    GRBVar tempBinD = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinaryD_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] <= nextdayStart - 12.0 - examLenght + 1000 * tempBinD + 1000 * tempBinC, $"endBefore17:00_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] >= nextdayStart - 1000 * (1.0 - tempBinD) - 1000 * tempBinC, $"afterDayEnd_{exam}_{day}");
+                    model.AddConstr(vars.examStartLate[exam] >= vars.examStart[exam] - (nextdayStart - 12.0 - examLenght) - 1000 * (1.0 - tempBinC), $"NrOfTsEndsLater_{exam}_{day}");
+
+                    GRBVar tempBin = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinary_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] <= nextdayStart - 8.0 - vars.isMsc[exam] + 1000 * tempBin, $"endBefore18:00_{exam}_{day}");
+                    model.AddConstr(vars.examStart[exam] >= nextdayStart - 1000 * (1.0 - tempBin), $"startAfter8:00_{exam}_{day}");
+
                 }
             }
+
+            for (int day = 0; day < Constants.days; day++)
+            {
+                for (int room = 0; room < Constants.roomCount; room++)
+                {
+                    model.AddConstr(vars.lunchLengthDistance[day, room] == vars.lunchLength[day, room] - 12.0, 
+                        $"DistanceFromOptLunchLength_{day}_{room}");
+                    model.AddGenConstrAbs(vars.lunchLengthAbsDistance[day, room], vars.lunchLengthDistance[day, room], 
+                        $"AbsDistanceFromOptLunchLength_{day}_{room}");
+
+                    for (int exam = 0; exam < examCount; exam++)
+                    {
+                        GRBVar tempBin = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"tempBinary_{exam}_{day}");
+
+                        model.AddGenConstrIndicator(vars.examRoom[exam,room], 1,
+                            vars.examStart[exam] <=
+                            day * Constants.tssInOneDay + vars.lunchStart[day, room] - 8.0 - vars.isMsc[exam] + tempBin * 1000.0,
+                            $"beforeLunch_{exam}_{day}");
+
+                        model.AddGenConstrIndicator(vars.examRoom[exam, room], 1, 
+                            vars.examStart[exam] >=
+                            day * Constants.tssInOneDay + vars.lunchStart[day, room] + vars.lunchLength[day, room] - (1.0 - tempBin) * 1000.0,
+                            $"afterLunch_{exam}_{day}");
+
+                    }
+                }
+                
+            }
+
 
             // Presidents default scheduling
             /*bool isExam = false;

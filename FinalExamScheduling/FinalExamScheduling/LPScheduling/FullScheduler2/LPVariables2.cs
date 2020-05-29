@@ -15,14 +15,19 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
 
         public GRBVar[] examStart;
         public GRBVar[,] examRoom;
+        public GRBVar[] examStartEarly; // before 9:00
+        public GRBVar[] examStartLate; // after 17:00
 
         public GRBVar[,] instructors;
         public GRBVar[,] students;
 
         public GRBVar[] isMsc;
 
-        public GRBVar[] lunchStart;
-        public GRBVar[] lunchLenght;
+        public GRBVar[,] lunchStart;
+        public GRBVar[,] lunchLength;
+        public GRBVar[,] lunchLengthDistance; // distance from optimal lunch lenght
+        public GRBVar[,] lunchLengthAbsDistance;
+
 
         public bool[,,] presidentsSchedule;
         public bool[,] isCS;
@@ -36,11 +41,16 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
 
             examStart = new GRBVar[examCount];
             examRoom = new GRBVar[examCount, Constants.roomCount];
+            examStartEarly = new GRBVar[examCount];
+            examStartLate = new GRBVar[examCount];
             instructors = new GRBVar[ctx.Instructors.Length, examCount];
             students = new GRBVar[ctx.Students.Length, examCount];
             isMsc = new GRBVar[examCount];
-            lunchStart = new GRBVar[Constants.days];
-            lunchLenght = new GRBVar[Constants.days];
+            lunchStart = new GRBVar[Constants.days, Constants.roomCount];
+            lunchLength = new GRBVar[Constants.days, Constants.roomCount];
+            lunchLengthDistance = new GRBVar[Constants.days, Constants.roomCount];
+            lunchLengthAbsDistance = new GRBVar[Constants.days, Constants.roomCount];
+
             for (int exam = 0; exam < examCount; exam++)
             {
                 examStart[exam] = model.AddVar(0.0, tsCount - 1.0, 0.0, GRB.INTEGER, $"ExamStart_{exam}");
@@ -48,6 +58,9 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 {
                     examRoom[exam, room] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"ExamRoom_{exam}_{room}");
                 }
+                examStartEarly[exam] = model.AddVar(0.0, 12.0, 0.0, GRB.INTEGER, $"ExamStartsTooEarly_{exam}");
+                examStartLate[exam] = model.AddVar(0.0, 12.0, 0.0, GRB.INTEGER, $"ExamStartsTooLate_{exam}");
+
                 for (int instr = 0; instr < ctx.Instructors.Length; instr++)
                 {
                     instructors[instr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Instructor_{instr}_{exam}");
@@ -60,8 +73,13 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             }
             for (int day = 0; day < Constants.days; day++)
             {
-                lunchStart[day] = model.AddVar(Constants.lunchFirstStart, Constants.lunchLastStart, 0.0, GRB.INTEGER, $"LunchStart_{day}");
-                lunchLenght[day] = model.AddVar(8.0, 16.0, 0.0, GRB.INTEGER, $"LunchLenght_{day}");
+                for (int room = 0; room < Constants.roomCount; room++)
+                {
+                    lunchStart[day, room] = model.AddVar(Constants.lunchFirstStart, Constants.lunchLastStart, 0.0, GRB.INTEGER, $"LunchStart_{day}_{room}");
+                    lunchLength[day, room] = model.AddVar(8.0, 16.0, 0.0, GRB.INTEGER, $"LunchLenght_{day}_{room}");
+                    lunchLengthDistance[day, room] = model.AddVar(-4.0, 4.0, 0.0, GRB.INTEGER, $"LunchLenghtDistance_{day}_{room}");
+                    lunchLengthAbsDistance[day, room] = model.AddVar(0.0, 4.0, 0.0, GRB.INTEGER, $"LunchLenghtAbsDistance_{day}_{room}");
+                }
             }
 
             presidentsSchedule = new bool[ctx.Presidents.Length, tsCount, Constants.roomCount];

@@ -48,6 +48,17 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 {
                     Console.WriteLine($"{vars.examStart[exam].X}\troom0: {vars.examRoom[exam,0].X}\troom1: {vars.examRoom[exam,1].X}");
                 }
+                for (int day = 0; day < Constants.days; day++)
+                {
+                    for (int room = 0; room < Constants.roomCount; room++)
+                    {
+                        Console.WriteLine($"Day: {day} Room: {room}\tStart: {vars.lunchStart[day,room].X}\tLength: {vars.lunchLength[day,room].X}");
+                    }
+                }
+                foreach (var item in vars.examStartEarly)
+                {
+                    Console.WriteLine(item.X);
+                }
 
                 // Dispose of model and env
                 model.Dispose();
