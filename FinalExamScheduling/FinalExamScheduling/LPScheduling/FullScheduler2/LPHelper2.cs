@@ -3,6 +3,7 @@ using Gurobi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -167,6 +168,16 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             for (int i = 0; i < vars.GetLength(0); i++)
             {
                 sum.AddTerm(1, vars[i]);
+            }
+            return sum;
+        }
+
+        public GRBQuadExpr QuadSum(GRBVar[] vars)
+        {
+            GRBQuadExpr sum = 0.0;
+            for (int i = 0; i < vars.GetLength(0); i++)
+            {
+                sum.AddTerm(1.0, vars[i], vars[i]);
             }
             return sum;
         }

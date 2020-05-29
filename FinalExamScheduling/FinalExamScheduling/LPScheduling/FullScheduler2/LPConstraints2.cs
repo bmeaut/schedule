@@ -13,9 +13,20 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
         public LPConstraints2(GRBModel model, LPVariables2 vars, LPHelper2 lpHelper, Context ctx, int tsCount)
         {
             int examCount = ctx.Students.Length;
-            // Constraints
 
-            model.SetObjective(lpHelper.Sum(vars.lunchLengthAbsDistance) + lpHelper.Sum(vars.examStartEarly) + lpHelper.Sum(vars.examStartLate), GRB.MINIMIZE);
+            // Constraints
+            GRBVar[] startEarlyQuad = new GRBVar[examCount];
+            GRBVar[] startLateQuad = new GRBVar[examCount];
+            for (int exam = 0; exam < examCount; exam++)
+            {
+                startEarlyQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarquadStartEarly_{exam}");
+                startLateQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarquadStartLate_{exam}");
+
+                model.AddGenConstrPow(vars.examStartEarly[exam], startEarlyQuad[exam], 2.0, $"quadStartEarly_{exam}", "");
+                model.AddGenConstrPow(vars.examStartLate[exam], startLateQuad[exam], 2.0, $"quadStartLate_{exam}", "");
+            }
+
+            model.SetObjective(lpHelper.Sum(vars.lunchLengthAbsDistance) + lpHelper.Sum(startEarlyQuad) + lpHelper.Sum(startLateQuad), GRB.MINIMIZE);
 
             for (int exam = 1; exam < examCount; exam++)
             {
