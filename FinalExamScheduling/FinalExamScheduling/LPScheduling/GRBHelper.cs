@@ -37,11 +37,11 @@ namespace FinalExamScheduling.LPScheduling
             }
         }
 
-        public void TuneParameters()
+        public void TuneParameters(double timeLimit)
         {
             // Set the parameter for tuning tool
             model.Parameters.TuneResults = 10;
-            model.Parameters.TuneTimeLimit = 55800;
+            model.Parameters.TuneTimeLimit = timeLimit;
 
             // Tune the model
             model.Tune();

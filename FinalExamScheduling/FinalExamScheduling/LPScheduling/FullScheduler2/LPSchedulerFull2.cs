@@ -33,17 +33,24 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 env.Set("LogFile", @"..\..\Logs\FELog2_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".log");
                 env.Start();
                 GRBModel model = new GRBModel(env);
+                model.Parameters.DegenMoves = 0;
+                model.Parameters.Heuristics = 0.001;
+                model.Parameters.MIPFocus = 1;
+                model.Parameters.Cuts = 0;
+                model.Parameters.NumericFocus = 3;
+                model.Parameters.PrePasses = 1;
+                model.Parameters.PreMIQCPForm = 1;
 
                 grbHelper = new GRBHelper(model);
                 vars = new LPVariables2(ctx, tsCount, model);
                 //ExcelHelper.ReadPresidents(existingFile, vars.presidentsSchedule, vars.isCS, vars.isEE);
                 LPConstraints2 lpConstraints = new LPConstraints2(model, vars, lpHelper, ctx, tsCount);
 
-                //grbHelper.TuneParameters();
+                //grbHelper.TuneParameters(230400);
                 model.Optimize();
-                //lpHelper.ComputeIIS();t 
+                //lpHelper.ComputeIIS(); 
 
-                //schedule = lpHelper.LPToSchedule(vars, lpHelper, schedule);
+                schedule = lpHelper.LPToSchedule(vars, lpHelper, schedule);
                 for (int exam = 0; exam < examCount; exam++)
                 {
                     Console.WriteLine($"{vars.examStart[exam].X}\troom0: {vars.examRoom[exam,0].X}\troom1: {vars.examRoom[exam,1].X}");

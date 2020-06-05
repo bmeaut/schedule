@@ -760,15 +760,21 @@ namespace FinalExamScheduling.Model
 
                         ws_scheduling.Cells[row, 4].Value = fe.Programme;
                         ws_scheduling.Cells[row, 5].Value = fe.DegreeLevel;
-                        ws_scheduling.Cells[row, 6].Value = fe.Student.Name;
-                        ws_scheduling.Cells[row, 7].Value = (fe.Supervisor != null) ? fe.Supervisor.Name : "";
-                        string course = ((fe.Student.ExamCourse1 != null) ? fe.Student.ExamCourse1.Name : "")
-                                      + ((fe.Student.ExamCourse2 != null) ? "\n" + fe.Student.ExamCourse2.Name : "");
+                        ws_scheduling.Cells[row, 6].Value = (fe.Student != null) ? fe.Student.Name : "";
+
+                        string course = "";
+                        if(fe.Student != null)
+                        {
+                            ws_scheduling.Cells[row, 7].Value = (fe.Supervisor != null) ? fe.Supervisor.Name : "";
+                            course = ((fe.Student.ExamCourse1 != null) ? fe.Student.ExamCourse1.Name : "")
+                                          + ((fe.Student.ExamCourse2 != null) ? "\n" + fe.Student.ExamCourse2.Name : "");
+                        }
+                        
                         string examiner = ((fe.Examiner1 != null) ? fe.Examiner1.Name : "")
                                         + ((fe.Examiner2 != null) ? "\n" + fe.Examiner2.Name : "");
                         ws_scheduling.Cells[row, 8].Value = course;
                         ws_scheduling.Cells[row, 9].Value = examiner;
-                        ws_scheduling.Cells[row, 10].Value = fe.President.Name;
+                        ws_scheduling.Cells[row, 10].Value = (fe.President != null) ? fe.President.Name : "";
                         ws_scheduling.Cells[row, 11].Value = (fe.Member != null) ? fe.Member.Name : "";
                         ws_scheduling.Cells[row, 12].Value = (fe.Secretary != null) ? fe.Secretary.Name : "";
 

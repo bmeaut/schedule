@@ -56,6 +56,22 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             return sums;
         }
 
+        public GRBLinExpr[] SumOfPersonVarsPerTs(GRBVar[,] vars)
+        {
+            GRBLinExpr[] sums = new GRBLinExpr[vars.GetLength(1)];
+
+            for (int ts = 0; ts < vars.GetLength(1); ts++)
+            {
+                sums[ts] = 0.0;
+                for (int person = 0; person < vars.GetLength(0); person++)
+                {
+                    sums[ts].AddTerm(1.0, vars[person, ts]);
+                }
+            }
+
+            return sums;
+        }
+
         //for every ts: P_(i0,ts0,r0) + P_(i1,ts0,r0) + P_(i2,ts0,r0) +...+ P_(i0,ts0,r1) + P_(i1,ts0,r1) + ...
         public GRBLinExpr[] SumOfPersonVarsPerTs(GRBVar[,,] vars)
         {
@@ -250,105 +266,28 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
         }
 
         
-
         public Schedule LPToSchedule(LPVariables2 vars, LPHelper2 lpHelper, Schedule schedule)
         {
-            
-            // Build up the scheduling
-            for (int ts = 0; ts < tsCount; ts++)
+            for (int exam = 0; exam < ctx.Students.Length; exam++)
             {
-                Console.WriteLine();
-                Console.WriteLine($"tsNr: {ts}");
+                schedule.FinalExams[exam] = new FinalExam();
+
+                for (int student = 0; student < ctx.Students.Length; student++)
+                {
+                    if (vars.students[student, exam].X == 1.0)
+                    {
+                        schedule.FinalExams[exam].Student = ctx.Students[student];
+                    }
+                }
+                schedule.FinalExams[exam].startTs = (int)vars.examStart[exam].X;
                 for (int room = 0; room < Constants.roomCount; room++)
                 {
-                    Console.Write($"roomNr: {room}\t");
-                    //if (vars.varSkipped[ts, room].X == 1.0) Console.Write($"Skip\t");
-                    //if (vars.varLunch[ts, room].X == 1.0) Console.Write($"Lunch\t");
-                    //if (vars.varBSc[ts, room].X == 1.0) Console.Write($"BSc\t");
-                    //if (vars.varMSc[ts, room].X == 1.0) Console.Write($"MSc\t");
-                    if (vars.isCS[ts, room]) Console.Write($"CS\t");
-                    if (vars.isEE[ts, room]) Console.Write($"EE\t");
-
-                    /*List<Instructor> instructorsInTs = new List<Instructor>();
-                    for (int i = 0; i < ctx.Instructors.Length; i++)
+                    if(vars.examRoom[exam,room].X == 1.0)
                     {
-
-                        if (vars.varInstructors[i, ts, room].X == 1.0)
-                        {
-                            instructorsInTs.Add(ctx.Instructors[i]);
-                            Console.Write($"{ctx.Instructors[i].Name}\t");
-                        }
+                        schedule.FinalExams[exam].RoomNr = room;
                     }
-                    for (int i = 0; i < ctx.Students.Length; i++)
-                    {
-                        if (vars.varStudents[i, ts, room].X == 1.0)
-                        {
-                            Console.Write($"St:{ctx.Students[i].Name}\t");
-                        }
-                    }
-                    Console.WriteLine();*/
                 }
             }
-
-            /*int feIndex = 0;
-            for (int room = 0; room < Constants.roomCount; room++)
-            {
-                for (int ts = 0; ts < tsCount; ts++)
-                {
-                    int day = ts / Constants.tssInOneDay;
-                    int tsInDay = ts % Constants.tssInOneDay;
-
-                    for (int student = 0; student < ctx.Students.Length; student++)
-                    {
-                        if (vars.varStudents[student, ts, room].X == 1.0)
-                        {
-                            var before = -1.0;
-                            if (ts != 0)
-                            {
-                                before = vars.varStudents[student, ts - 1, room].X;
-                            }
-                            if (before <= 0.0)
-                            {
-                                schedule.FinalExams[feIndex] = new FinalExam()
-                                {
-                                    Student = ctx.Students[student],
-                                    Programme = ctx.Students[student].Programme,
-                                    RoomNr = room,
-                                    startTs = ts,
-                                    DegreeLevel = ctx.Students[student].DegreeLevel
-                                };
-
-                                List<Instructor> instructorsInTs = new List<Instructor>();
-                                for (int i = 0; i < ctx.Instructors.Length; i++)
-                                {
-                                    if (vars.varInstructors[i, ts, room].X == 1.0)
-                                    {
-                                        instructorsInTs.Add(ctx.Instructors[i]);
-                                    }
-                                }
-
-                                schedule.FinalExams[feIndex].President = lpHelper.GetPresidentsArray(vars.presidentsSchedule)[ts, room];
-                                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
-                                {
-                                    if (vars.varPMSession[day, tsInDay, room].X == 1 && vars.varSecretariesToSessions[secr, day * 2 + 1, room].X == 1)
-                                    {
-                                        schedule.FinalExams[feIndex].Secretary = ctx.Secretaries[secr];
-                                    }
-                                }
-
-                                if (instructorsInTs.Contains(schedule.FinalExams[feIndex].Student.Supervisor))
-                                {
-                                    schedule.FinalExams[feIndex].Supervisor = schedule.FinalExams[feIndex].Student.Supervisor;
-                                }
-
-                                feIndex++;
-                            }
-
-                        }
-
-                    }
-                }
-            }*/
             return schedule;
         }
     }

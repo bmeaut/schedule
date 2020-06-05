@@ -43,7 +43,7 @@ namespace FinalExamScheduling
             lpSchedulerFull2 = new LPSchedulerFull2(context);
             Schedule schedule = lpSchedulerFull2.Run(existingFile);
 
-            //ExcelHelper.Write(@"..\..\Results\Done_LPFull_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule);
+            ExcelHelper.Write(@"..\..\Results\Done_LPFull2_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule);
         }
 
         private static void RunLPFull()

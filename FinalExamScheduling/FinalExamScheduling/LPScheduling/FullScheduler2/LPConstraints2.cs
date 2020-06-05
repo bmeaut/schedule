@@ -19,8 +19,8 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             GRBVar[] startLateQuad = new GRBVar[examCount];
             for (int exam = 0; exam < examCount; exam++)
             {
-                startEarlyQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarquadStartEarly_{exam}");
-                startLateQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarquadStartLate_{exam}");
+                startEarlyQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarQuadStartEarly_{exam}");
+                startLateQuad[exam] = model.AddVar(0.0, 144.0, 0.0, GRB.INTEGER, $"VarQuadStartLate_{exam}");
 
                 model.AddGenConstrPow(vars.examStartEarly[exam], startEarlyQuad[exam], 2.0, $"quadStartEarly_{exam}", "");
                 model.AddGenConstrPow(vars.examStartLate[exam], startLateQuad[exam], 2.0, $"quadStartLate_{exam}", "");
@@ -107,6 +107,14 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 
             }
 
+            // Add constraint: be a student in every ts
+            string[] nameOfStudentsPerTsConstrs = Enumerable.Range(0, examCount).Select(x => "Student" + x).ToArray();
+            model.AddConstrs(lpHelper.SumOfPersonVarsPerTs(vars.students), lpHelper.TArray(GRB.EQUAL, examCount), lpHelper.TArray(1.0, examCount), 
+                nameOfStudentsPerTsConstrs);
+
+            string[] nameOfStudentsConstrs = Enumerable.Range(0, examCount).Select(x => "Student" + x).ToArray();
+            model.AddConstrs(lpHelper.SumOfPersonVarsPerPerson(vars.students), lpHelper.TArray(GRB.EQUAL, examCount), lpHelper.TArray(1.0, examCount), 
+                nameOfStudentsConstrs);
 
             // Presidents default scheduling
             /*bool isExam = false;
