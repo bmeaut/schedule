@@ -18,7 +18,13 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
         public GRBVar[] examStartEarly; // before 9:00
         public GRBVar[] examStartLate; // after 17:00
 
-        public GRBVar[,] instructors;
+        public GRBVar[,] secretaries;
+        public GRBVar[,] members;
+        public GRBVar[,] examiners1;
+        public GRBVar[,] examiners2;
+        public GRBVar[,] supervisors;
+        public GRBVar[,] presidents;
+
         public GRBVar[,] students;
 
         public GRBVar[] isMsc;
@@ -43,7 +49,15 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             examRoom = new GRBVar[examCount, Constants.roomCount];
             examStartEarly = new GRBVar[examCount];
             examStartLate = new GRBVar[examCount];
-            instructors = new GRBVar[ctx.Instructors.Length, examCount];
+
+            secretaries = new GRBVar[ctx.Secretaries.Length, examCount];
+            members = new GRBVar[ctx.Members.Length, examCount];
+            examiners1 = new GRBVar[ctx.Instructors.Length, examCount];
+            examiners2 = new GRBVar[ctx.Instructors.Length, examCount];
+
+            supervisors = new GRBVar[ctx.Instructors.Length, examCount];
+            presidents = new GRBVar[ctx.Presidents.Length, examCount];
+
             students = new GRBVar[ctx.Students.Length, examCount];
             isMsc = new GRBVar[examCount];
             lunchStart = new GRBVar[Constants.days, Constants.roomCount];
@@ -61,9 +75,24 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 examStartEarly[exam] = model.AddVar(0.0, 12.0, 0.0, GRB.INTEGER, $"ExamStartsTooEarly_{exam}");
                 examStartLate[exam] = model.AddVar(0.0, 12.0, 0.0, GRB.INTEGER, $"ExamStartsTooLate_{exam}");
 
+                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                {
+                    secretaries[secr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Secretary_{secr}_{exam}");
+                }
+                for (int memb = 0; memb < ctx.Members.Length; memb++)
+                {
+                    members[memb, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Member_{memb}_{exam}");
+                }
                 for (int instr = 0; instr < ctx.Instructors.Length; instr++)
                 {
-                    instructors[instr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Instructor_{instr}_{exam}");
+                    examiners1[instr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Examiner_{instr}_{exam}");
+                    examiners2[instr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Examiner_{instr}_{exam}");
+
+                    supervisors[instr, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"Supervisor_{instr}_{exam}");
+                }
+                for (int pres = 0; pres < ctx.Presidents.Length; pres++)
+                {
+                    presidents[pres, exam] = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, $"President_{pres}_{exam}");
                 }
                 for (int student = 0; student < ctx.Students.Length; student++)
                 {

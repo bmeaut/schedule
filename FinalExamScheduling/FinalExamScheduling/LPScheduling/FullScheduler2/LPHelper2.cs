@@ -1,5 +1,6 @@
 ﻿using FinalExamScheduling.Model;
 using Gurobi;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -243,6 +244,13 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
 
         }
 
+        public void NoCollision(GRBModel model, GRBVar start1, GRBVar start2, GRBVar length1, GRBVar length2)
+        {
+            GRBVar tempBin = model.AddVar(0.0, 1.0, 0.0, GRB.BINARY, "tempBinary");
+            model.AddConstr(start2 <= start1 - length2 + tempBin * 1000, "start2_before_start1");
+            model.AddConstr(start2 >= start1 + length1 - (1.0 - tempBin) * 1000, "start2_after_start1");
+        }
+
         public Instructor[,] GetPresidentsArray(bool[,,] presidentsSchedule)
         {
             Instructor[,] presidents = new Instructor[tsCount, Constants.roomCount];
@@ -265,19 +273,58 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
             return presidents;
         }
 
-        
+        public GRBVar[,] GetExaminersVars(GRBVar[,] instructorVars, Course course)
+        {
+            //nr of members x nr of ts
+            GRBVar[,] examinersVars = new GRBVar[course.Instructors.Length, instructorVars.GetLength(1)];
+            int index = 0;
+            for (int i = 0; i < instructorVars.GetLength(0); i++)
+            {
+                if (course.Instructors.Contains(ctx.Instructors[i]))
+                {
+                    for (int ts = 0; ts < instructorVars.GetLength(1); ts++)
+                    {
+                        examinersVars[index, ts] = instructorVars[i, ts];
+                    }
+                    index++;
+                }
+            }
+            return examinersVars;
+        }
+
+
         public Schedule LPToSchedule(LPVariables2 vars, LPHelper2 lpHelper, Schedule schedule)
         {
             for (int exam = 0; exam < ctx.Students.Length; exam++)
             {
                 schedule.FinalExams[exam] = new FinalExam();
 
+                if(vars.isMsc[exam].X == 1.0) schedule.FinalExams[exam].DegreeLevel = DegreeLevel.MSc;
+                else schedule.FinalExams[exam].DegreeLevel = DegreeLevel.BSc;
+
                 for (int student = 0; student < ctx.Students.Length; student++)
                 {
-                    if (vars.students[student, exam].X == 1.0)
-                    {
-                        schedule.FinalExams[exam].Student = ctx.Students[student];
-                    }
+                    if (vars.students[student, exam].X == 1.0) schedule.FinalExams[exam].Student = ctx.Students[student]; 
+                }
+                schedule.FinalExams[exam].Programme = schedule.FinalExams[exam].Student.Programme;
+                for (int pres = 0; pres < ctx.Presidents.Length; pres++)
+                {
+                    if (vars.presidents[pres, exam].X == 1.0) schedule.FinalExams[exam].President = ctx.Presidents[pres];   
+                }
+                for (int member = 0; member < ctx.Members.Length; member++)
+                {
+                    if (vars.members[member, exam].X == 1.0) schedule.FinalExams[exam].Member = ctx.Members[member];
+                }
+                for (int secr = 0; secr < ctx.Secretaries.Length; secr++)
+                {
+                    if (vars.secretaries[secr, exam].X == 1.0) schedule.FinalExams[exam].Secretary = ctx.Secretaries[secr];
+                }
+                for (int instr = 0; instr < ctx.Instructors.Length; instr++)
+                {
+                    if (vars.examiners1[instr, exam].X == 1.0) schedule.FinalExams[exam].Examiner1 = ctx.Instructors[instr];
+                    if (vars.examiners2[instr, exam].X == 1.0) schedule.FinalExams[exam].Examiner2 = ctx.Instructors[instr];
+                    if (vars.supervisors[instr, exam].X == 1.0) schedule.FinalExams[exam].Supervisor = ctx.Instructors[instr];
+
                 }
                 schedule.FinalExams[exam].startTs = (int)vars.examStart[exam].X;
                 for (int room = 0; room < Constants.roomCount; room++)

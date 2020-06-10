@@ -46,7 +46,7 @@ namespace FinalExamScheduling.LPScheduling.FullScheduler2
                 //ExcelHelper.ReadPresidents(existingFile, vars.presidentsSchedule, vars.isCS, vars.isEE);
                 LPConstraints2 lpConstraints = new LPConstraints2(model, vars, lpHelper, ctx, tsCount);
 
-                //grbHelper.TuneParameters(230400);
+                //grbHelper.TuneParameters(124200);
                 model.Optimize();
                 //lpHelper.ComputeIIS(); 
 
