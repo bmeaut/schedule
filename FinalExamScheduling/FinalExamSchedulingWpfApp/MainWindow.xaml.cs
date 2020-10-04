@@ -27,6 +27,8 @@ namespace FinalExamSchedulingWpfApp
 		public static StudentsViewModel StudentsViewModel { get; set; }
 		public static CoursesViewModel CoursesViewModel { get; set; }
 		public static InstructorsViewModel InstructorsViewModel { get; set; }
+		public static int ExamCount { get; internal set; }
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -65,7 +67,7 @@ namespace FinalExamSchedulingWpfApp
 			}
 			FileInfo existingFile = new FileInfo(fileName);
 			var context = ExcelHelper.Read(existingFile);
-			UpdateModel(context);
+			UpdateViewModel(context);
 		}
 		private string ShowOpenFileDialog()
 		{
@@ -83,9 +85,50 @@ namespace FinalExamSchedulingWpfApp
 			}
 			return null;
 		}
-		private void UpdateModel(Context context)
+		private void UpdateViewModel(Context context)
 		{
-			// TODO
+			ExamCount = context.Instructors.Length;
+			foreach(var instructor in context.Instructors)
+			{
+				var tempAvailability = new System.Collections.ObjectModel.ObservableCollection<InstructorViewModel._Availability>();
+				foreach (var a in instructor.Availability)
+				{
+					tempAvailability.Add(new InstructorViewModel._Availability { Available = a });
+				}
+				InstructorsViewModel.Instructors.Add(new InstructorViewModel
+				{
+					Name = instructor.Name,
+					CanBePresident = (instructor.Roles & Roles.President) != 0,
+					CanBeMember = (instructor.Roles & Roles.Member) != 0,
+					CanBeSecretary = (instructor.Roles & Roles.Secretary) != 0,
+					Availability = tempAvailability
+				});
+			}
+			foreach(var course in context.Courses)
+			{
+				var instructorNames = new List<string>();
+				foreach(var i in context.Instructors)
+				{
+					instructorNames.Add(i.Name);
+				}
+				CoursesViewModel.Courses.Add(new CourseViewModel
+				{
+					Name = course.Name,
+					CourseCode = course.CourseCode,
+					Instructors = string.Join("; ", instructorNames)
+				});
+			}
+			foreach(var student in context.Students)
+			{
+				StudentsViewModel.Students.Add(new StudentViewModel
+				{
+					Name = student.Name,
+					Neptun = student.Neptun,
+					Supervisor = student.Supervisor.Name,
+					ExamCourse = student.ExamCourse.CourseCode
+				});
+			}
+			InstructorsViewModel.UpdateAvailabilityColumns();
 			MessageBox.Show("Success");
 		}
 	}

@@ -21,7 +21,11 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 			get { return _name; }
 			set
 			{
-				if (_name == value) return;
+				if (value == null)
+					throw new ArgumentException("Value cannot be empty.");
+				if (_name != null && _name == value) return;
+				if (MainWindow.StudentsViewModel.Students.FirstOrDefault(s => s.Name == value) != null)
+					throw new ArgumentException("A student with this name already exists.");
 				_name = value;
 				OnPropertyChanged();
 			}
@@ -31,8 +35,12 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 			get { return _neptun; }
 			set
 			{
-				if (_neptun == value) return;
-				if (!Regex.IsMatch(value, "^[a-zA-Z0-9]{6}$")) throw new ArgumentException("Invalid Neptun format");
+				if (value == null)
+					throw new ArgumentException("Value cannot be empty.");
+				if (_neptun != null && _neptun == value) return;
+				if (!Regex.IsMatch(value, "^[a-zA-Z0-9]{6}$")) throw new ArgumentException("Invalid Neptun format.");
+				if (MainWindow.StudentsViewModel.Students.FirstOrDefault(s => s.Name == value) != null)
+					throw new ArgumentException("The Neptun code already exists.");
 				_neptun = value;
 				OnPropertyChanged();
 			}
@@ -42,10 +50,26 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 			get { return _supervisor.Name; }
 			set
 			{
-				if (_supervisor.Name == value) return;
+				if (value == null)
+					throw new ArgumentException("Value cannot be empty.");
+				if (_supervisor != null && _supervisor.Name == value) return;
 				var tmp = MainWindow.InstructorsViewModel.Instructors.FirstOrDefault(i => i.Name == value);
-				if (tmp == null) throw new ArgumentException($"${value} is not an existing instructor");
+				if (tmp == null) throw new ArgumentException($"{value} is not an existing instructor.");
 				_supervisor = tmp;
+				OnPropertyChanged();
+			}
+		}
+		public string ExamCourse
+		{
+			get { return _examCourse.CourseCode; }
+			set
+			{
+				if (value == null)
+					throw new ArgumentException("Value cannot be empty.");
+				if (_examCourse != null && _examCourse.CourseCode == value) return;
+				var tmp = MainWindow.CoursesViewModel.Courses.FirstOrDefault(c => c.CourseCode == value);
+				if (tmp == null) throw new ArgumentException($"{value} must be an existing course.");
+				_examCourse = tmp;
 				OnPropertyChanged();
 			}
 		}

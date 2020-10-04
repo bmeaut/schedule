@@ -24,8 +24,28 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 			get { return _name; }
 			set
 			{
-				if (_name == value) return;
+				if (value == null)
+					throw new ArgumentException("Value cannot be empty.");
+				if (_name != null && _name == value) return;
+				if (MainWindow.InstructorsViewModel.Instructors.FirstOrDefault(i => i.Name == value) != null)
+					throw new ArgumentException("An instructor with this name already exists.");
 				_name = value;
+				// Find occurences of the old name, and replace it with the new one
+				foreach (var s in MainWindow.StudentsViewModel.Students)
+				{
+					if (s.Supervisor == _name)
+						s.Supervisor = value;
+				}
+				foreach(var c in MainWindow.CoursesViewModel.Courses)
+				{
+					foreach(var i in c._instructors)
+					{
+						if (i.Name == _name)
+						{
+							c.Instructors = c.Instructors.Replace(_name, value);
+						}
+					}
+				}
 				OnPropertyChanged();
 			}
 		}

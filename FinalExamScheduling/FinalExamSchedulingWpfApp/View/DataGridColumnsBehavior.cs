@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,8 +29,11 @@ namespace FinalExamSchedulingWpfApp.View
             {
                 return;
             }
-            foreach (DataGridColumn column in columns)
+            foreach (var column in columns)
             {
+                var dataGridOwnerProperty = column.GetType().GetProperty("DataGridOwner", BindingFlags.Instance | BindingFlags.NonPublic);
+                if (dataGridOwnerProperty != null)
+                    dataGridOwnerProperty.SetValue(column, null);
                 dataGrid.Columns.Add(column);
             }
             columns.CollectionChanged += (sender, e2) =>

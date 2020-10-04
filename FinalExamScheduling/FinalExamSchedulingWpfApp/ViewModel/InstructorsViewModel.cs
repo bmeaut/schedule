@@ -48,13 +48,16 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 				EditingElementStyle = Application.Current.TryFindResource("MaterialDesignDataGridCheckBoxColumnEditingStyle") as Style,
 				Binding = new Binding("CanBeMember")
 			});
+		}
+		public void UpdateAvailabilityColumns()
+		{
 			// Read number of time slots from number of students
-			for (int i = 0; i < MainWindow.StudentsViewModel.Students.Count; i++)
+			for (int i = 0; i < MainWindow.ExamCount; i++)
 			{
 				ColumnCollection.Add(new DataGridCheckBoxColumn
 				{
 					// TODO: meaningful times instead of index
-					Header = $"${i}",
+					Header = $"{i}",
 					ElementStyle = Application.Current.TryFindResource("MaterialDesignDataGridCheckBoxColumnStyle") as Style,
 					EditingElementStyle = Application.Current.TryFindResource("MaterialDesignDataGridCheckBoxColumnEditingStyle") as Style,
 					Binding = new Binding(string.Format("Availability[{0}]", i))
