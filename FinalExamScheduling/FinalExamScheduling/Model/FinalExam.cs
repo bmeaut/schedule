@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.Model
 {
-    public class FinalExam: Entity
+    public class FinalExam : Entity
     {
         public Student Student = null;
 
@@ -24,6 +24,22 @@ namespace FinalExamScheduling.Model
 
 
         public Instructor Examiner = null;
+
+
+       
+        public String StudentName { get { return Student.Name; } }
+
+        public String SupervisorName { get { return Supervisor.Name; } }
+
+        public String PresidentName { get { return President.Name; } }
+
+        public String SecretaryName { get { return Secretary.Name; } }
+
+        public String MemberName { get { return Member.Name; } }
+
+        public String ExaminerName { get { return Examiner.Name; } }
+
+        public String StudentCourse { get { return Student.ExamCourse.Name; } }
 
     }
 }

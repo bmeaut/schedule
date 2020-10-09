@@ -1,0 +1,42 @@
+﻿<Window x:Name="Window_schedule" x:Class="FinalExamScheduling.WpfWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FinalExamScheduling"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="900">
+    <Grid x:Name="grid_schedule" Margin="0,0,-0.4,0">
+        <Button x:Name="bt_start" Content="Start" HorizontalAlignment="Left" Margin="376,44,0,0" VerticalAlignment="Top" Width="81" Click="bt_Click" Height="27"/>
+        <Label x:Name="lb_order" Content="Válasszon sorrendet!" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="345" Height="29" Background="{x:Null}"/>
+        <ComboBox x:Name="cb_order" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Width="345" Height="27" SelectedIndex="0">
+            <ComboBoxItem x:Name="cbi_1" Content="Elnök -&gt; Titkár -&gt; Hallgató -&gt; Vizsgáztató -&gt; Belső tag"/>
+            <ComboBoxItem x:Name="cbi_2" Content="Elnök -&gt; Titkár -&gt; Hallgató -&gt; Belső tag -&gt; Vizsgáztató"/>
+            <ComboBoxItem x:Name="cbi_3" Content="Elnök -&gt; Titkár -&gt; Belső tag -&gt; Hallgató -&gt; Vizsgáztató"/>
+        </ComboBox>
+        <GridSplitter Height="6" Margin="0,86,-1,0" VerticalAlignment="Top" Background="#FFA4C0F7" HorizontalAlignment="Stretch"/>
+        <GridSplitter HorizontalAlignment="Stretch" Height="19" Margin="0,118,-1,0" VerticalAlignment="Top"/>
+        <Button x:Name="bt_schedule" Content="Beosztás" HorizontalAlignment="Left" Margin="0,118,0,0" VerticalAlignment="Top" Width="250" Click="bt_schedule_Click" IsEnabled="False"/>
+        <Button x:Name="bt_statistic" Content="Statisztikák" HorizontalAlignment="Left" Margin="250,118,0,0" VerticalAlignment="Top" Width="250" Click="bt_statistic_Click" IsEnabled="False"/>
+        <Button x:Name="bt_search" Content="Keresés" HorizontalAlignment="Left" Margin="500,118,0,0" VerticalAlignment="Top" Width="250" Click="bt_search_Click" IsEnabled="False"/>
+        <Label x:Name="lb_text" Content="" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Width="727" Background="{x:Null}" Visibility="Hidden"/>
+        <DataGrid x:Name="dg_schedule" Margin="10,188,9.6,10" AutoGenerateColumns="False" Visibility="Hidden">
+            <DataGrid.Columns>
+                <DataGridTextColumn x:Name="dgc_student" Header="Hallgató" Binding="{Binding StudentName}"/>
+                <DataGridTextColumn x:Name="dgc_supervisor" Header="Konzulens" Binding="{Binding SupervisorName}"/>
+                <DataGridTextColumn x:Name="dgc_president" Header="Elnök" Binding="{Binding PresidentName}"/>
+                <DataGridTextColumn x:Name="dgc_secretary" Header="Titkár" Binding="{Binding SecretaryName}"/>
+                <DataGridTextColumn x:Name="dgc_member" Header="Belső tag" Binding="{Binding MemberName}"/>
+                <DataGridTextColumn x:Name="dgc_examiner" Header="Vizsgáztató" Binding="{Binding ExaminerName}"/>
+                <DataGridTextColumn x:Name="dgc_course" Header="Kurzus" Binding="{Binding StudentCourse}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="bt_search_instructor" Content="Oktató" HorizontalAlignment="Left" Margin="500,139,0,0" VerticalAlignment="Top" Width="125" Height="20" Click="bt_search_instructor_Click" Visibility="Hidden"/>
+        <Button x:Name="bt_search_student" Content="Hallgató" HorizontalAlignment="Left" Margin="625,139,0,0" VerticalAlignment="Top" Width="125" Height="20" Click="bt_search_student_Click" Visibility="Hidden"/>
+        <TextBox x:Name="tb_search_input" HorizontalAlignment="Left" Height="23" Margin="10,159,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="140" Visibility="Hidden"/>
+        <Button x:Name="bt_search_start" Content="Keresés" HorizontalAlignment="Left" Margin="170,159,0,0" VerticalAlignment="Top" Width="80" Height="23" Click="bt_search_start_Click" Visibility="Hidden"/>
+        <Label x:Name="lb_search_empty" Content="" HorizontalAlignment="Left" Margin="276,159,0,0" VerticalAlignment="Top" Width="219" Visibility="Hidden"/>
+
+
+    </Grid>
+</Window>
