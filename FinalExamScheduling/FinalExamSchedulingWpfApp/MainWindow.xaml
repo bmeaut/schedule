@@ -32,6 +32,9 @@
             <DataTemplate DataType="{x:Type viewModel:CoursesViewModel}" >
                 <view:CoursesView DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:ConfigureViewModel}" >
+                <view:ConfigureView DataContext="{Binding}" />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <dockablz:Layout Partition="{StaticResource Partition}">
@@ -83,17 +86,38 @@
                                 <TextBlock Text="Courses"/>
                             </StackPanel>
                         </ListBoxItem>
+                        <ListBoxItem
+                            x:Name="listBoxItemConfigure"
+                            MouseLeftButtonUp="ConfigureViewClicked">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Cog" Margin="0,0,6,0" />
+                                <TextBlock Text="Configure"/>
+                            </StackPanel>
+                        </ListBoxItem>
                     </ListBox>
                     <ContentControl x:Name="contentControlInputPage"
                                     Grid.Column="1"
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
                                     Content="{Binding}" />
+                    <Button x:Name="runButton"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Width="100"
+                        ToolTip="Resource name: MaterialDesignRaisedButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,6" Grid.Row="1" Grid.Column="1">
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="RUN"/>
+                                <materialDesign:PackIcon Kind="Play" Margin="6,0,0,0" />
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
                 </Grid>
             </TabItem>
+            <!--
             <TabItem Header="CONFIGURE &amp; RUN">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Configuration and run</TextBlock>
             </TabItem>
+            -->
             <TabItem Header="OUTPUT">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">View results</TextBlock>
             </TabItem>

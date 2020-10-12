@@ -27,6 +27,7 @@ namespace FinalExamSchedulingWpfApp
 		public static StudentsViewModel StudentsViewModel { get; set; }
 		public static CoursesViewModel CoursesViewModel { get; set; }
 		public static InstructorsViewModel InstructorsViewModel { get; set; }
+		public static ConfigureViewModel ConfigureViewModel { get; set; }
 		public static int ExamCount { get; internal set; }
 
 		public MainWindow()
@@ -35,6 +36,7 @@ namespace FinalExamSchedulingWpfApp
 			StudentsViewModel = new StudentsViewModel();
 			CoursesViewModel = new CoursesViewModel();
 			InstructorsViewModel = new InstructorsViewModel();
+			ConfigureViewModel = new ConfigureViewModel();
 		}
 		private void WindowLoaded(object sender, RoutedEventArgs e)
 		{
@@ -52,6 +54,10 @@ namespace FinalExamSchedulingWpfApp
 		private void CoursesViewClicked(object sender, MouseButtonEventArgs e)
 		{
 			DataContext = CoursesViewModel;
+		}
+		private void ConfigureViewClicked(object sender, MouseButtonEventArgs e)
+		{
+			DataContext = ConfigureViewModel;
 		}
 
 		private void LoadInputFileClick(object sender, RoutedEventArgs e)
