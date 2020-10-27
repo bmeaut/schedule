@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FinalExamScheduling.LPScheduling;
 using System.Windows.Media;
+using System.Windows.Controls.DataVisualization.Charting;
 
 namespace FinalExamScheduling
 {
@@ -21,13 +22,13 @@ namespace FinalExamScheduling
         //static LPScheduler lpScheduler;
         //static Schedule schedule;
 
-        public static int Order
+        public static Schedule schedule
         {
             get;
             set;
         }
 
-        public static Schedule schedule
+        public static Context context
         {
             get;
             set;
@@ -39,11 +40,8 @@ namespace FinalExamScheduling
             WpfWindow window = new WpfWindow();
             System.Windows.Application wpfApplication = new System.Windows.Application();
             wpfApplication.Run(window);
-            //Order = WpfWindow.OrderNumber;
             //RunGenetic();
-            //Console.WriteLine("Itt még nem futott le a heuritic");
             //RunHeuristic();
-            //Console.WriteLine("Itt már lefutott a heuritic");
             //RunLP();
             //Console.ReadKey();
         }
@@ -74,7 +72,7 @@ namespace FinalExamScheduling
         {
             FileInfo existingFile = new FileInfo("Input.xlsx");
 
-            var context = ExcelHelper.Read(existingFile);
+            context = ExcelHelper.Read(existingFile);
 
             context.Init();
             heuristicScheduler = new HeuristicScheduler(context);
@@ -103,7 +101,6 @@ namespace FinalExamScheduling
             SchedulingFitness evaluator = new SchedulingFitness(context);
             double penaltyScore = evaluator.EvaluateAll(schedule);
             Console.WriteLine("Penalty score: " + penaltyScore);
-            //Console.WriteLine(schedule.FinalExams[2].Student.Name);
 
             scheduler = new GeneticScheduler(context);
             //ExcelHelper.Write(@"..\..\Results\Done_He_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", schedule, context, scheduler.GetFinalScores(schedule, evaluator));
@@ -136,6 +133,10 @@ namespace FinalExamScheduling
                 else if (exam.StudentName == identify)
                     finalExamsList.Add(exam);
             }
+
+            if (finalExamsList.Count == 0)
+                return null;
+
             return finalExamsList;
         }
 
@@ -164,7 +165,84 @@ namespace FinalExamScheduling
                     finalExamsList.Add(exam);
             }
 
+            if (finalExamsList.Count == 0)
+                return null;
+
             return finalExamsList;
+        }
+
+        public static List<KeyValuePair<string, int>> LoadColumnChartPresidents(Context context)
+        {
+            int[] presidentWorkloads = new int[context.Presidents.Length];
+
+            foreach (FinalExam exam in schedule.FinalExams)
+                presidentWorkloads[Array.IndexOf(context.Presidents, exam.President)]++;
+
+            List<KeyValuePair<string, int>> presidentsWorkloadsList = new List<KeyValuePair<string, int>>();
+
+            for (int j = 0; j < context.Presidents.Length; j++)
+                presidentsWorkloadsList.Add(new KeyValuePair<string, int> (context.Presidents[j].Name, presidentWorkloads[j]));
+
+            return presidentsWorkloadsList;
+        }
+
+        public static List<KeyValuePair<string, int>> LoadColumnChartSecretaries(Context context)
+        {
+            int[] secretaryWorkloads = new int[context.Secretaries.Length];
+
+            foreach (FinalExam exam in schedule.FinalExams)
+                secretaryWorkloads[Array.IndexOf(context.Secretaries, exam.Secretary)]++;
+
+            List<KeyValuePair<string, int>> secretariesWorkloadsList = new List<KeyValuePair<string, int>>();
+
+            for (int j = 0; j < context.Secretaries.Length; j++)
+                secretariesWorkloadsList.Add(new KeyValuePair<string, int>(context.Secretaries[j].Name, secretaryWorkloads[j]));
+
+            return secretariesWorkloadsList;
+        }
+
+        public static List<KeyValuePair<string, int>> LoadColumnChartMembers(Context context)
+        {
+            int[] memberWorkloads = new int[context.Members.Length];
+
+            foreach (FinalExam exam in schedule.FinalExams)
+                memberWorkloads[Array.IndexOf(context.Members, exam.Member)]++;
+
+            List<KeyValuePair<string, int>> membersWorkloadsList = new List<KeyValuePair<string, int>>();
+
+            for (int j = 0; j < context.Members.Length; j++)
+                membersWorkloadsList.Add(new KeyValuePair<string, int>(context.Members[j].Name, memberWorkloads[j]));
+
+            return membersWorkloadsList;
+        }
+
+        public static List<KeyValuePair<string, int>> LoadColumnChartExaminers(Context context, String courseName)
+        {
+            foreach (Course course in context.Courses)
+            {
+                if (course.Name == courseName)
+                {
+                    int[] examinerWorkloads = new int[course.Instructors.Length];
+
+                    for (int i = 0; i < course.Instructors.Length; i++)
+                    {
+                        foreach (FinalExam exam in schedule.FinalExams)
+                        {
+                            if (exam.Examiner == course.Instructors[i] && exam.StudentCourse == courseName)
+                                examinerWorkloads[i]++;
+                        }
+                    }
+
+                    List<KeyValuePair<string, int>> examinerWorkloadsList = new List<KeyValuePair<string, int>>();
+
+                    for (int j = 0; j < course.Instructors.Length; j++)
+                        examinerWorkloadsList.Add(new KeyValuePair<string, int>(course.Instructors[j].Name, examinerWorkloads[j]));
+
+                    return examinerWorkloadsList;
+                }
+            }
+
+            return null;
         }
 
         static void RunGenetic()

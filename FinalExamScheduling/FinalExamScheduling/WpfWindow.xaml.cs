@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.DataVisualization.Charting;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +24,7 @@ namespace FinalExamScheduling
     /// </summary>
     public partial class WpfWindow : Window
     {
+
         public WpfWindow()
         {
             InitializeComponent();
@@ -56,8 +58,38 @@ namespace FinalExamScheduling
             hideSearch();
             bt_statistic.IsEnabled = false;
 
+            cb_instructor_roles.Visibility = Visibility.Visible;
+            bt_statistic_start.Visibility = Visibility.Visible;
             lb_text.Visibility = Visibility.Visible;
+            gs_statistic.Visibility = Visibility.Visible;
             lb_text.Content = "Az oktatók terheléseloszlása";
+        }
+
+        private void bt_statistic_start_Click(object sender, RoutedEventArgs e)
+        {
+            mcChart.Visibility = Visibility.Visible;
+
+            switch (cb_instructor_roles.SelectedIndex)
+            {
+                case 0:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartPresidents(Program.context);
+                    break;
+                case 1:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartSecretaries(Program.context);
+                    break;
+                case 2:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartMembers(Program.context);
+                    break;
+                case 3:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartExaminers(Program.context, "Adatvezérelt alkalmazások fejlesztése");
+                    break;
+                case 4:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartExaminers(Program.context, "Adatvezérelt rendszerek");
+                    break;
+                case 5:
+                    ((ColumnSeries)mcChart.Series[0]).ItemsSource = Program.LoadColumnChartExaminers(Program.context, "Alkalmazásfejlesztési környezetek");
+                    break;
+            }
         }
 
         private void bt_search_Click(object sender, RoutedEventArgs e)
@@ -76,6 +108,9 @@ namespace FinalExamScheduling
             bt_search_instructor.IsEnabled = false;
             tb_search_input.Visibility = Visibility.Visible;
             bt_search_start.Visibility = Visibility.Visible;
+            lb_search_text.Visibility = Visibility.Visible;
+            gs_search.Visibility = Visibility.Visible;
+            lb_search_text.Content = "Adja meg a keresett oktató nevét!";
         }
 
         private void bt_search_student_Click(object sender, RoutedEventArgs e)
@@ -85,24 +120,46 @@ namespace FinalExamScheduling
 
             tb_search_input.Visibility = Visibility.Visible;
             bt_search_start.Visibility = Visibility.Visible;
-            
+            lb_search_text.Visibility = Visibility.Visible;
+            gs_search.Visibility = Visibility.Visible;
+            lb_search_text.Content = "Adja meg a hallgató nevét vagy neptunkódját!";
+
         }
 
         private void bt_search_start_Click(object sender, RoutedEventArgs e)
         {
-            dg_schedule.Visibility = Visibility.Visible;
-
-            //if (Program.GetFinalExamForInstructor(tb_search_input.Text) == null)
-            //{
-            //    dg_schedule.Visibility = Visibility.Hidden;
-            //    lb_search_empty.Content = "Nem található a keresett személy";
-            //}
-
+            //instructor search
             if (bt_search_student.IsEnabled)
-                dg_schedule.ItemsSource = Program.GetFinalExamForInstructor(tb_search_input.Text);
-            
+            {
+                if(Program.GetFinalExamForInstructor(tb_search_input.Text) == null)
+                {
+                    dg_schedule.Visibility = Visibility.Hidden;
+                    lb_search_empty.Visibility = Visibility.Visible;
+                    lb_search_empty.Content = "A keresett oktató nem található";
+                }
+                else
+                {
+                    lb_search_empty.Visibility = Visibility.Hidden;
+                    dg_schedule.Visibility = Visibility.Visible;
+                    dg_schedule.ItemsSource = Program.GetFinalExamForInstructor(tb_search_input.Text);
+                }
+            }
+            //student search
             else
-                dg_schedule.ItemsSource = Program.GetFinalExamForStudent(tb_search_input.Text);
+            {
+                if (Program.GetFinalExamForStudent(tb_search_input.Text) == null)
+                {
+                    dg_schedule.Visibility = Visibility.Hidden;
+                    lb_search_empty.Visibility = Visibility.Visible;
+                    lb_search_empty.Content = "A keresett hallgató nem található";
+                }
+                else
+                {
+                    lb_search_empty.Visibility = Visibility.Hidden;
+                    dg_schedule.Visibility = Visibility.Visible;
+                    dg_schedule.ItemsSource = Program.GetFinalExamForStudent(tb_search_input.Text);
+                }
+            }
         }
 
         void hideSchedule()
@@ -116,6 +173,10 @@ namespace FinalExamScheduling
         {
             bt_statistic.IsEnabled = true;
             lb_text.Visibility = Visibility.Hidden;
+            cb_instructor_roles.Visibility = Visibility.Hidden;
+            bt_statistic_start.Visibility = Visibility.Hidden;
+            mcChart.Visibility = Visibility.Hidden;
+            gs_statistic.Visibility = Visibility.Hidden;
         }
 
         void hideSearch()
@@ -123,6 +184,8 @@ namespace FinalExamScheduling
             bt_search.IsEnabled = true;
             bt_search_instructor.Visibility = Visibility.Hidden;
             bt_search_student.Visibility = Visibility.Hidden;
+            lb_search_text.Visibility = Visibility.Hidden;
+            gs_search.Visibility = Visibility.Hidden;
             hideSearchInstructors();
             hideSearchStudent();
         }
@@ -146,7 +209,7 @@ namespace FinalExamScheduling
             tb_search_input.Visibility = Visibility.Hidden;
             bt_search_start.Visibility = Visibility.Hidden;
             dg_schedule.Visibility = Visibility.Hidden;
-            //lb_search_empty.Visibility = Visibility.Hidden;
+            lb_search_empty.Visibility = Visibility.Hidden;
         }
 
     }

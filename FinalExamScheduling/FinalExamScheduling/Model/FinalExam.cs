@@ -8,6 +8,8 @@ namespace FinalExamScheduling.Model
 {
     public class FinalExam : Entity
     {
+        public String Date { get; set; }
+
         public Student Student = null;
 
 

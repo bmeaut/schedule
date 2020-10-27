@@ -223,6 +223,8 @@ namespace FinalExamScheduling.HeuristicScheduling
                     Console.WriteLine($"A {i}. záróvizsgán a {allPresidents[finalExamIndexes[f]].Name} az elnök, {scores[finalExamIndexes[f], f]} súllyal");
                 }
             }
+
+            setDate(schedule);
         }
 
         //-----------------------------------------Titkárok---------------------------------------------------------
@@ -618,7 +620,20 @@ namespace FinalExamScheduling.HeuristicScheduling
             }
         }
 
-
+        public void setDate(Schedule schedule)
+        {
+            int f = 0;
+            while (f != 100)
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    for (int j = 1; j <= 10; j++)
+                    {
+                        schedule.FinalExams[f++].Date = $"{i}. Nap {j}. Vizsga";
+                    }
+                }
+            }
+        }
 
     }
 }
