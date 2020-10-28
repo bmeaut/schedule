@@ -10,8 +10,11 @@ namespace FinalExamScheduling.Model
     {
         public string Name;
         public string Neptun;
+        public DegreeLevel DegreeLevel;
+        public Programme Programme;
         public Instructor Supervisor;
-        public Course ExamCourse;
-        public int TimeSlot;
+        public Course ExamCourse1;
+        public Course ExamCourse2 = null;
+        //public int TimeSlot;
     }
 }

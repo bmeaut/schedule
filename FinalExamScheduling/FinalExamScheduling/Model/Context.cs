@@ -9,6 +9,17 @@ namespace FinalExamScheduling.Model
     public class Context
     {
 
+        public Context() { } //are constructors used anywhere? they haven't been here before
+        public Context(Context context)
+        {
+            Students = context.Students;
+            Secretaries = context.Secretaries;
+            Presidents = context.Presidents;
+            Members = context.Members;
+            Courses = context.Courses;
+            Instructors = context.Instructors;
+        }
+
         public Student[] Students;
         public Instructor[] Instructors;
         public Course[] Courses;
@@ -16,6 +27,7 @@ namespace FinalExamScheduling.Model
         public Instructor[] Presidents;
         public Instructor[] Secretaries;
         public Instructor[] Members;
+        public Instructor[] Supervisors;
 
         public Random Rnd = new Random();
 
@@ -36,8 +48,11 @@ namespace FinalExamScheduling.Model
             Members = Instructors.Where(i => i.Roles.HasFlag(Roles.Member)).ToArray();
             RandStudents = Students.OrderBy(x => this.Rnd.Next()).ToArray();
 
-
-
+            Supervisors = new Instructor[Students.Length];
+            for(int student = 0; student < Students.Length; student++)
+            {
+                Supervisors[student] = Students[student].Supervisor;
+            }
         }
 
         private void FillIDs(IEnumerable<Entity> entities)

@@ -84,8 +84,10 @@
     <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
+    <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Context.cs" />
     <Compile Include="Model\Course.cs" />
+    <Compile Include="Model\Enums.cs" />
     <Compile Include="Model\ExcelHelper.cs" />
     <Compile Include="Model\FinalExam.cs" />
     <Compile Include="Model\Entity.cs" />
@@ -108,6 +110,7 @@
     <None Include="Input.xlsx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Input2.xlsx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

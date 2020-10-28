@@ -36,6 +36,16 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double SecretarySelfStudent = 1;
         public const double ExaminerNotPresident = 1;
 
+        //TODO: add algorithms for penalties
+        //Hard
+        public const double PresidentInMoreRooms = 1000;
+        public const double ExaminerInMoreRooms = 1000;
+        public const double MemberInMoreRooms = 1000;
+        public const double SecretaryInMoreRooms = 1000;
 
+        //Soft
+        public const double LunchStartsSoon = 40;
+        public const double LunchEndsLate = 40;
+        public const double LunchNotOptimalLenght = 0.5;
     }
 }
