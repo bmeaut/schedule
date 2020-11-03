@@ -11,7 +11,7 @@
              d:DesignHeight="450" d:DesignWidth="900">
     <Grid x:Name="grid_schedule" Margin="0,0,-0.4,0">
         <GridSplitter Height="98" Margin="0,0,-1,0" VerticalAlignment="Top" Background="LightSteelBlue" HorizontalAlignment="Stretch"/>
-        <Button x:Name="bt_start" Content="Start" HorizontalAlignment="Left" Margin="376,44,0,0" VerticalAlignment="Top" Width="81" Click="bt_Click" Height="27"/>
+        <Button x:Name="bt_start" Content="Indítás" HorizontalAlignment="Left" Margin="376,44,0,0" VerticalAlignment="Top" Width="81" Click="bt_Click" Height="27"/>
         <Label x:Name="lb_order" Content="Válasszon sorrendet!" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="345" Height="29" Background="{x:Null}" FontSize="14"/>
         <ComboBox x:Name="cb_order" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Width="345" Height="27" SelectedIndex="0">
             <ComboBoxItem x:Name="cbi_1" Content="Elnök -&gt; Titkár -&gt; Hallgató -&gt; Vizsgáztató -&gt; Belső tag"/>

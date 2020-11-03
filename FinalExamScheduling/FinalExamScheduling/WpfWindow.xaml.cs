@@ -110,7 +110,7 @@ namespace FinalExamScheduling
             bt_search_start.Visibility = Visibility.Visible;
             lb_search_text.Visibility = Visibility.Visible;
             gs_search.Visibility = Visibility.Visible;
-            lb_search_text.Content = "Adja meg a keresett oktató nevét!";
+            lb_search_text.Content = "Adja meg az oktató nevét!";
         }
 
         private void bt_search_student_Click(object sender, RoutedEventArgs e)
