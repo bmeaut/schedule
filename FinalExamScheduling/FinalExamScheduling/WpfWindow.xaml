@@ -52,7 +52,10 @@
             <ComboBoxItem x:Name="cbi_examiners3" Content="Vizsgáztatók: Alkalmazásfejlesztési környezetek"/>
         </ComboBox>
         <Button x:Name="bt_statistic_start" Content="Statisztika" HorizontalAlignment="Left" Margin="317,190,0,0" VerticalAlignment="Top" Width="77" Height="22" Click="bt_statistic_start_Click" Visibility="Hidden"/>
-        <DVC:Chart Canvas.Top="80" Canvas.Left="10" x:Name="mcChart" Background="LightSteelBlue" Margin="10,226,144,85" Visibility="Hidden">
+        <DVC:Chart Canvas.Top="80" Canvas.Left="10" x:Name="mcChart" Background="LightSteelBlue" Margin="10,226,406.4,85" Visibility="Hidden">
+            <DVC:Chart.Axes>
+                <DVC:LinearAxis Minimum="0" Orientation="Y"/>
+            </DVC:Chart.Axes>
             <DVC:Chart.LegendStyle>
                 <Style TargetType="Control">
                     <Setter Property="Width" Value="0"/>
@@ -60,6 +63,7 @@
                 </Style>
             </DVC:Chart.LegendStyle>
             <DVC:ColumnSeries IndependentValueBinding="{Binding Key}" DependentValueBinding="{Binding Value}"/>
+            
         </DVC:Chart>
 
     </Grid>

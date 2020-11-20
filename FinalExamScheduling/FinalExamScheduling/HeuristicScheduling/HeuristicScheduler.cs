@@ -55,7 +55,7 @@ namespace FinalExamScheduling.HeuristicScheduling
 
             GetMembers2(schedule);
 
-            GetExaminers(schedule);
+            GetExaminers2(schedule);
             
             return schedule;
         }
@@ -73,7 +73,7 @@ namespace FinalExamScheduling.HeuristicScheduling
             GetPointsStudents3(schedule);
             GetStudents(schedule);
             
-            GetExaminers(schedule);
+            GetExaminers2(schedule);
 
             return schedule;
         }
@@ -407,11 +407,6 @@ namespace FinalExamScheduling.HeuristicScheduling
                         {
                             scores[stud, instr] += Scores.ExaminerSecretary;
                         }
-
-                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Member)
-                        {
-                            scores[stud, instr] += Scores.ExaminerMember;
-                        }
                     }
                 }
                 
@@ -506,6 +501,79 @@ namespace FinalExamScheduling.HeuristicScheduling
                 Console.WriteLine($"A {f}. záróvizsgán {allMembers[finalExamIndexes[f]].Name} a tag, {scores[finalExamIndexes[f], f]} súllyal");
             }
         }
+
+        //-----------------------------------------Vizsgáztatók2---------------------------------------------------------
+        public void GetExaminers2(Schedule schedule)
+        {
+            foreach (Course course in ctx.Courses)
+            {
+                int numOfStudents = 0;
+                List<Student> allStudents = new List<Student>();
+                List<int> studentFEIndexes = new List<int>();
+
+                for (int i = 0; i < 100; i++)
+                {
+                    if (schedule.FinalExams[i].Student.ExamCourse == course)
+                    {
+                        numOfStudents++;
+                        allStudents.Add(schedule.FinalExams[i].Student);
+                        studentFEIndexes.Add(i);
+                    }
+                }
+
+                int oneInstructorNr = ((int)Math.Ceiling((double)numOfStudents / course.Instructors.Length));
+                int allInstructorsNr = oneInstructorNr * course.Instructors.Length;
+
+                Instructor[] allExaminer = new Instructor[allInstructorsNr];
+
+                for (int examinerNr = 0; examinerNr < course.Instructors.Length; examinerNr++)
+                {
+                    for (int i = examinerNr * oneInstructorNr; i < oneInstructorNr * (examinerNr + 1); i++)
+                    {
+                        allExaminer[i] = course.Instructors[examinerNr];
+                    }
+                }
+
+                double[,] scores = new double[numOfStudents, allInstructorsNr];
+                int[] studentIndexes = Enumerable.Range(0, numOfStudents).ToArray();
+                int[] instructorIndexes = Enumerable.Range(0, allInstructorsNr).ToArray();
+
+                for (int stud = 0; stud < numOfStudents; stud++)
+                {
+                    for (int instr = 0; instr < allInstructorsNr; instr++)
+                    {
+                        if (allExaminer[instr].Availability[studentFEIndexes[stud]] == false)
+                        {
+                            scores[stud, instr] -= Scores.ExaminerNotAvailable;
+                        }
+
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].President)
+                        {
+                            scores[stud, instr] += Scores.ExaminerNotPresident; //ExaminerPresident
+                        }
+
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Secretary)
+                        {
+                            scores[stud, instr] += Scores.ExaminerSecretary;
+                        }
+
+                        if (allExaminer[instr] == schedule.FinalExams[studentFEIndexes[stud]].Member)
+                        {
+                            scores[stud, instr] += Scores.ExaminerMember;
+                        }
+                    }
+                }
+
+                EgervaryAlgorithm.RunAlgorithm(scores, instructorIndexes, studentIndexes);
+                for (int f = 0; f < studentIndexes.Length; f++)
+                {
+                    schedule.FinalExams[studentFEIndexes[f]].Examiner = allExaminer[studentIndexes[f]];
+                    Console.WriteLine($"A {studentFEIndexes[f]}. záróvizsgán {allExaminer[studentIndexes[f]].Name} a vizsgáztató, {scores[f, studentIndexes[f]]} súllyal");
+                }
+            }
+        }
+
+
 
         //-----------------------------------------Belső tagok3---------------------------------------------------------
         public void GetMembers3(Schedule schedule)

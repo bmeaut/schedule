@@ -122,7 +122,7 @@ namespace FinalExamScheduling
             bt_search_start.Visibility = Visibility.Visible;
             lb_search_text.Visibility = Visibility.Visible;
             gs_search.Visibility = Visibility.Visible;
-            lb_search_text.Content = "Adja meg a hallgató nevét vagy neptunkódját!";
+            lb_search_text.Content = "Adja meg a hallgató nevét vagy Neptun-kódját!";
 
         }
 
