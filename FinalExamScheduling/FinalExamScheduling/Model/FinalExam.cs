@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.Model
 {
-    public class FinalExam: Entity
+    public class FinalExam : Entity
     {
         public Student Student = null;
         public Instructor Supervisor = null;
@@ -18,7 +18,16 @@ namespace FinalExamScheduling.Model
         public DegreeLevel DegreeLevel;
         public Programme Programme;
         public int RoomNr;
+        public int DayNr;
         public int startTs;
+        public int EndTs
+        {
+            get
+            {
+                if (Student.ExamCourse2 == null) return (startTs + 7);
+                else return (startTs + 8);
+            }
+        }
 
         public FinalExam Clone()
         {
@@ -34,6 +43,7 @@ namespace FinalExamScheduling.Model
                 DegreeLevel = DegreeLevel,
                 Programme = Programme,
                 RoomNr = RoomNr,
+                DayNr = DayNr,
                 startTs = startTs
             };
         }

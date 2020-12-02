@@ -8,16 +8,18 @@ namespace FinalExamScheduling.GeneticScheduling
 {
     static class Scores
     {
-        public const double StudentDuplicated = 10000;      
+        public const double StudentDuplicated = 10000;
+        public const double TimeOverLap = 10000;
 
-        public const double PresidentNotAvailable = 1000;
+        /*public const double PresidentNotAvailable = 1000;
         public const double SecretaryNotAvailable = 1000;
-        public const double ExaminerNotAvailable = 1000;
+        public const double Examiner1NotAvailable = 1000;
+        public const double Examiner2NotAvailable = 1000;
         public const double MemberNotAvailable = 5;
-        public const double SupervisorNotAvailable = 5;
+        public const double SupervisorNotAvailable = 5;*/
 
-        public const double PresidentChange = 1000;
-        public const double SecretaryChange = 1000;
+        /*public const double PresidentChange = 1000;
+        public const double SecretaryChange = 1000;*/
 
         public const double PresidentWorkloadWorst = 30;
         public const double PresidentWorkloadWorse = 20;
@@ -38,14 +40,16 @@ namespace FinalExamScheduling.GeneticScheduling
 
         //TODO: add algorithms for penalties
         //Hard
-        public const double PresidentInMoreRooms = 1000;
-        public const double ExaminerInMoreRooms = 1000;
+       /* public const double PresidentInMoreRooms = 1000;
+        public const double ExaminerInMoreRooms = 1000; //independent of No. 1 or 2
         public const double MemberInMoreRooms = 1000;
-        public const double SecretaryInMoreRooms = 1000;
+        public const double SecretaryInMoreRooms = 1000;*/
 
         //Soft
         public const double LunchStartsSoon = 40;
         public const double LunchEndsLate = 40;
-        public const double LunchNotOptimalLenght = 0.5;
+        public const double LunchLengthWorst = 400;
+        public const double LunchLengthWorse = 2;
+        public const double LunchLengthBad = 1;
     }
 }

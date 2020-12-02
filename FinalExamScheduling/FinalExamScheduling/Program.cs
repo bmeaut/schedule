@@ -1,5 +1,4 @@
-﻿using FinalExamScheduling.HeuristicScheduling;
-using FinalExamScheduling.Model;
+﻿using FinalExamScheduling.Model;
 using FinalExamScheduling.GeneticScheduling;
 
 using System;
@@ -20,9 +19,6 @@ namespace FinalExamScheduling
         static void Main(string[] args)
         {
             RunGenetic();
-            //RunHeuristic();
-            //RunLP();
-
         }
 
         /*
@@ -50,9 +46,9 @@ namespace FinalExamScheduling
         {
             var watch = Stopwatch.StartNew();
 
-            FileInfo existingFile = new FileInfo("Input.xlsx");
+            FileInfo existingFile = new FileInfo("Input2.xlsx");
 
-            var context = ExcelHelper.Read(existingFile);
+            var context = ExcelHelper.ReadFull(existingFile);
             context.Init();
             scheduler = new GeneticScheduler(context);
 

@@ -9,7 +9,7 @@ namespace FinalExamScheduling.Model
     public class Context
     {
 
-        public Context() { } //are constructors used anywhere? they haven't been here before
+        public Context() { } //are constructors used anywhere? they haven't been here before - LP
         public Context(Context context)
         {
             Students = context.Students;
@@ -35,11 +35,14 @@ namespace FinalExamScheduling.Model
 
         public Student[] RandStudents;
 
+        public int NOStudents;
+
         public void Init()
         {
             FillIDs(Students);
             FillIDs(Instructors);
             FillIDs(Courses);
+            SetNumberOfStudents(Students);
             //FillIDs(Presidents);
             //FillIDs(Secretaries);
             //FillIDs(Members);
@@ -63,6 +66,12 @@ namespace FinalExamScheduling.Model
                 e.Id = id;
                 id++;
             }
+        }
+
+        private void SetNumberOfStudents(Student[] students)
+        {
+            NOStudents = students.Length;
+            //foreach (Student s in students) NOStudents++;
         }
     }
 }

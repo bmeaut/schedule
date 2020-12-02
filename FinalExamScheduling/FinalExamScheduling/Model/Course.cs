@@ -11,7 +11,7 @@ namespace FinalExamScheduling.Model
         public string Name;
         public string CourseCode;
         public Instructor[] Instructors;
-        public Instructor[] InstructorsSecondary; //can be there with bigger penalty score
+        public Instructor[] InstructorsSecondary; //can be there with bigger penalty score, not handled yet (but already read and stored)
         //public int count = 0; //what is it for?
     }
 }

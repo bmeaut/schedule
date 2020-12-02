@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace FinalExamScheduling.GeneticScheduling
 {
+    //TODO: Scores
     public class SchedulingFitness : IFitness
     {
         //public int president;
@@ -24,14 +25,17 @@ namespace FinalExamScheduling.GeneticScheduling
             CostFunctions = new List<Func<Schedule, double>>()
             {
                 GetStudentDuplicatedScore,
-                GetPresidentNotAvailableScore,
+                GetTimeOverLapScore,
+                //TODO: availability check depending on day and start-time
+                /*GetPresidentNotAvailableScore,
                 GetSecretaryNotAvailableScore,
-                GetExaminerNotAvailableScore,
+                GetExaminer1NotAvailableScore,
+                GetExaminer2NotAvailableScore,
                 GetMemberNotAvailableScore,
-                GetSupervisorNotAvailableScore,
+                GetSupervisorNotAvailableScore,*/
 
-                GetPresidentChangeScore,
-                GetSecretaryChangeScore,
+                //GetPresidentChangeScore,
+                //GetSecretaryChangeScore,
 
                 GetPresidentWorkloadWorstScore,
                 GetPresidentWorkloadWorseScore,
@@ -45,9 +49,13 @@ namespace FinalExamScheduling.GeneticScheduling
 
                 GetPresidentSelfStudentScore,
                 GetSecretarySelfStudentScore,
-                GetExaminerNotPresidentScore
-
-           };
+                GetExaminerNotPresidentScore,
+                GetLunchStartsSoonScore,
+                GetLunchEndsLateScore,
+                GetLunchLengthWorstScore,
+                GetLunchLengthWorseScore,
+                GetLunchLengthBadScore
+            };
         }
 
 
@@ -56,8 +64,7 @@ namespace FinalExamScheduling.GeneticScheduling
             int score = 0;
 
 
-//dinamic value instead of hand-written '100'
-            sch.Details = new FinalExamDetail[100];
+            sch.Details = new FinalExamDetail[ctx.NOStudents];
 
             var tasks = CostFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
             Task.WaitAll(tasks);
@@ -73,10 +80,10 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             int score = 0;
 
-            Schedule sch = new Schedule(100);
-            //sch.FinalExams = new FinalExam[100];
-            sch.Details = new FinalExamDetail[100];
-            for (int i = 0; i < 100; i++)
+            Schedule sch = new Schedule(ctx.NOStudents);
+            //sch.FinalExams = new FinalExam[ctx.NOStudents];
+            sch.Details = new FinalExamDetail[ctx.NOStudents];
+            for (int i = 0; i < ctx.NOStudents; i++)
             {
                 sch.FinalExams[i]=((FinalExam)chromosome.GetGene(i).Value)/*.Clone()*/;
             }
@@ -95,12 +102,12 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             double score = 0;
             List<Student> studentBefore = new List<Student>();
-            int[] count = new int[100];
+            int[] count = new int[ctx.NOStudents];
             foreach (var fe in sch.FinalExams)
             {
                 count[fe.Student.Id]++;
             }
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < ctx.NOStudents; i++)
             {
                 if (count[i] > 1)
                 {
@@ -111,7 +118,370 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
-        public double GetPresidentNotAvailableScore(Schedule sch)
+        public double GetTimeOverLapScore(Schedule sch)
+        {
+            double score = 0;
+            for (int i = 0; i < sch.FinalExams.Length - 1; i++)
+            {
+                for (int j = i + 1; j < sch.FinalExams.Length; j++)
+                {
+                    if (sch.FinalExams[i].DayNr == sch.FinalExams[j].DayNr)
+                    {
+                        if (sch.FinalExams[i].RoomNr == sch.FinalExams[j].RoomNr)
+                        {
+                            if ((sch.FinalExams[i].startTs < sch.FinalExams[j].startTs && sch.FinalExams[i].EndTs >= sch.FinalExams[j].startTs) || (sch.FinalExams[i].startTs > sch.FinalExams[j].startTs && sch.FinalExams[i].startTs <= sch.FinalExams[j].EndTs) || (sch.FinalExams[i].startTs == sch.FinalExams[j].startTs))
+                            {
+                                score += Scores.TimeOverLap;
+                            }
+                        }
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchStartsSoonScore(Schedule sch)
+        {
+            double score = 0;
+            for(int d=0; d < Constants.days; d++)
+            {
+                for(int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchStart < Constants.lunchFirstStart)
+                    {
+                        score += Scores.LunchStartsSoon;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchEndsLateScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd > Constants.lunchLastEnd)
+                    {
+                        score += Scores.LunchEndsLate;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthWorstScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd-lunchStart+1<8 || lunchEnd-lunchStart+1>16)
+                    {
+                        score += Scores.LunchLengthWorst;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthWorseScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd - lunchStart+1 >= 8 && lunchEnd - lunchStart+1 < 10)
+                    {
+                        score += Scores.LunchLengthWorse;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthBadScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd - lunchStart+1 >= 10 && lunchEnd - lunchStart+1 < 12)
+                    {
+                        score += Scores.LunchLengthBad;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double[] GetLunchStartEnd(Schedule sch, int dayNr, int roomNr)
+        {
+            double lunchStart = -1;
+            double lunchEnd = 121;
+            double firstStartAfter1130 = 121; //no exams start after 11:30, no need for lunchtime
+            double firstFullEndAfter1130 = 121; //same
+            double lastEndBefore1340 = -1; //no full exams between 11:30 and 13:40
+            double lastFullStartBefore1340 = -1; //same
+            double firstSingleEndAfter1130 = 121; //no exam at 11:30
+            double lastSingleStartBefore1340 = -1; //no exam at 13:40
+            double lastEndBefore1130 = -1; //no full exams before 11:30
+            double firstStartAfter1340 = 121; //no exams start after 13:40
+
+            for (int i = 0; i < sch.FinalExams.Length; i++)
+            {
+                if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
+                {
+                    if (sch.FinalExams[i].startTs >= Constants.lunchFirstStart)
+                    {
+                        if (sch.FinalExams[i].startTs < firstStartAfter1130)
+                        {
+                            firstStartAfter1130 = sch.FinalExams[i].startTs;
+                            firstFullEndAfter1130 = sch.FinalExams[i].EndTs;
+                        }
+                        if (sch.FinalExams[i].EndTs <= Constants.lunchLastEnd)
+                        {
+                            if (sch.FinalExams[i].EndTs > lastEndBefore1340)
+                            {
+                                lastEndBefore1340 = sch.FinalExams[i].EndTs;
+                                lastFullStartBefore1340 = sch.FinalExams[i].startTs;
+                            }
+                        }
+                        else
+                        {
+                            if (sch.FinalExams[i].startTs <= Constants.lunchLastEnd)
+                            {
+                                if (sch.FinalExams[i].startTs > lastSingleStartBefore1340)
+                                {
+                                    lastSingleStartBefore1340 = sch.FinalExams[i].startTs;
+                                }
+                            }
+                            else
+                            {
+                                if (sch.FinalExams[i].startTs < firstStartAfter1340)
+                                {
+                                    firstStartAfter1340 = sch.FinalExams[i].startTs;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (sch.FinalExams[i].EndTs >= Constants.lunchFirstStart)
+                        {
+                            if (sch.FinalExams[i].EndTs < firstSingleEndAfter1130)
+                            {
+                                firstSingleEndAfter1130 = sch.FinalExams[i].EndTs;
+                            }
+                        }
+                        else
+                        {
+                            if (sch.FinalExams[i].EndTs > lastEndBefore1130)
+                            {
+                                lastEndBefore1130 = sch.FinalExams[i].EndTs;
+                            }
+                        }
+                    }
+                }
+            }
+            if (firstStartAfter1130 == 121) { } //no full exam after 11:30
+            else if (lastEndBefore1340 == -1 && lastEndBefore1130 == -1) { } //no full exam before 13:40
+            else
+            {
+                if (lastEndBefore1340 == -1) //no full exam between 11:30 and 13:40
+                {
+                    lunchStart = Math.Max(firstSingleEndAfter1130, lastEndBefore1130);
+                    lunchEnd = Math.Min(lastSingleStartBefore1340, firstStartAfter1340);
+                }
+                else
+                {
+                    if (firstStartAfter1130 == lastFullStartBefore1340) //1 full exam between ~
+                    {
+                        if (firstSingleEndAfter1130 == 121 && lastEndBefore1130 == -1) //no exam start before 11:30
+                        {
+                            if (lastSingleStartBefore1340 == -1 && firstStartAfter1340 == 121) //no exam end after 13:40
+                            {
+                                if (firstStartAfter1130 - Constants.lunchFirstStart > Constants.lunchLastEnd - firstFullEndAfter1130)
+                                {
+                                    lunchEnd = firstStartAfter1130;
+                                }
+                                else
+                                {
+                                    lunchStart = firstFullEndAfter1130;
+                                }
+                            }
+                            else //exam end after 13:40
+                            {
+                                if (firstStartAfter1130 - Constants.lunchFirstStart > Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - firstFullEndAfter1130)
+                                {
+                                    lunchStart = Constants.lunchFirstStart;
+                                    lunchEnd = firstStartAfter1130;
+                                }
+                                else
+                                {
+                                    lunchStart = firstFullEndAfter1130;
+                                    lunchEnd = Math.Min(lastSingleStartBefore1340, firstStartAfter1340);
+                                }
+                            }
+                        }
+                        else //exam start before 11:30
+                        {
+                            if (lastSingleStartBefore1340 == -1 && firstStartAfter1340 == 121) //no exam end after 13:40
+                            {
+                                if (firstStartAfter1130 - Math.Max(firstSingleEndAfter1130, lastEndBefore1130) > Constants.lunchLastEnd - firstFullEndAfter1130)
+                                {
+                                    lunchStart = Math.Max(firstSingleEndAfter1130, lastEndBefore1130);
+                                    lunchEnd = firstStartAfter1130;
+                                }
+                                else
+                                {
+                                    lunchStart = firstFullEndAfter1130;
+                                    lunchEnd = Constants.lunchLastEnd;
+                                }
+                            }
+                            else //exam end after 13:40
+                            {
+                                if (firstStartAfter1130 - Math.Max(firstSingleEndAfter1130, lastEndBefore1130) > Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - firstFullEndAfter1130)
+                                {
+                                    lunchStart = Math.Max(firstSingleEndAfter1130, lastEndBefore1130);
+                                    lunchEnd = firstStartAfter1130;
+                                }
+                                else
+                                {
+                                    lunchStart = firstFullEndAfter1130;
+                                    lunchEnd = Math.Min(lastSingleStartBefore1340, firstStartAfter1340);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        bool morethantwo = false;
+                        for (int i = 0; i < sch.FinalExams.Length; i++)
+                        {
+                            if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
+                            {
+                                if (sch.FinalExams[i].startTs > firstStartAfter1130 && sch.FinalExams[i].startTs < lastFullStartBefore1340)
+                                {
+                                    morethantwo = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (morethantwo) //3 full exam between ~ -> not enough time for lunch
+                        {
+                            lunchStart = Constants.lunchFirstStart;
+                            lunchEnd = firstStartAfter1130;
+                        }
+                        else //2 full exam between ~
+                        {
+                            if (firstSingleEndAfter1130 == 121 && lastEndBefore1130 == -1) //no exam start before 11:30
+                            {
+                                if (lastSingleStartBefore1340 == -1 && firstStartAfter1340 == 121) //no exam end after 13:40
+                                {
+                                    if (firstStartAfter1130 - Constants.lunchFirstStart > Math.Max(Constants.lunchLastEnd - lastEndBefore1340, lastFullStartBefore1340 - firstFullEndAfter1130))
+                                    {
+                                        lunchStart = Constants.lunchFirstStart;
+                                        lunchEnd = firstStartAfter1130;
+                                    }
+                                    else if (Constants.lunchLastEnd - lastEndBefore1340 > lastFullStartBefore1340 - firstFullEndAfter1130)
+                                    {
+                                        lunchStart = lastEndBefore1340;
+                                        lunchEnd = Constants.lunchLastEnd;
+                                    }
+                                    else
+                                    {
+                                        lunchStart = firstFullEndAfter1130;
+                                        lunchEnd = lastFullStartBefore1340;
+                                    }
+                                }
+                                else //exam end after 13:40
+                                {
+                                    if (firstStartAfter1130 - Constants.lunchFirstStart > Math.Max(Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - lastEndBefore1340, lastFullStartBefore1340 - firstFullEndAfter1130))
+                                    {
+                                        lunchStart = Constants.lunchFirstStart;
+                                        lunchEnd = firstStartAfter1130;
+                                    }
+                                    else if (Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - lastEndBefore1340 > lastFullStartBefore1340 - firstFullEndAfter1130)
+                                    {
+                                        lunchStart = lastEndBefore1340;
+                                        lunchEnd = Math.Min(lastSingleStartBefore1340, firstStartAfter1340);
+                                    }
+                                    else
+                                    {
+                                        lunchStart = firstFullEndAfter1130;
+                                        lunchEnd = lastFullStartBefore1340;
+                                    }
+                                }
+                            }
+                            else //exam start before 11:30
+                            {
+                                if (lastSingleStartBefore1340 == -1 && firstStartAfter1340 == 121) //no exam end after 13:40
+                                {
+                                    if (firstStartAfter1130 - Math.Max(firstSingleEndAfter1130, lastEndBefore1130) > Math.Max(Constants.lunchLastEnd - lastEndBefore1340, lastFullStartBefore1340 - firstFullEndAfter1130))
+                                    {
+                                        lunchStart = Math.Max(firstSingleEndAfter1130, lastEndBefore1130);
+                                        lunchEnd = firstStartAfter1130;
+                                    }
+                                    else if (Constants.lunchLastEnd - lastEndBefore1340 > lastFullStartBefore1340 - firstFullEndAfter1130)
+                                    {
+                                        lunchStart = lastEndBefore1340;
+                                        lunchEnd = Constants.lunchLastEnd;
+                                    }
+                                    else
+                                    {
+                                        lunchStart = firstFullEndAfter1130;
+                                        lunchEnd = lastFullStartBefore1340;
+                                    }
+                                }
+                                else //exam end after 13:40
+                                {
+                                    if (firstStartAfter1130 - Math.Max(firstSingleEndAfter1130, lastEndBefore1130) > Math.Max(Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - lastEndBefore1340, lastFullStartBefore1340 - firstFullEndAfter1130))
+                                    {
+                                        lunchStart = Math.Max(firstSingleEndAfter1130, lastEndBefore1130);
+                                        lunchEnd = firstStartAfter1130;
+                                    }
+                                    else if (Math.Min(lastSingleStartBefore1340, firstStartAfter1340) - lastEndBefore1340 > lastFullStartBefore1340 - firstFullEndAfter1130)
+                                    {
+                                        lunchStart = lastEndBefore1340;
+                                        lunchEnd = Math.Min(lastSingleStartBefore1340, firstStartAfter1340);
+                                    }
+                                    else
+                                    {
+                                        lunchStart = firstFullEndAfter1130;
+                                        lunchEnd = lastFullStartBefore1340;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return new double[] { lunchStart, lunchEnd };
+        }
+
+
+        /*public double GetPresidentNotAvailableScore(Schedule sch)
         {
             double score = 0;
             for (int i = 0; i < sch.FinalExams.Length; i++)
@@ -147,19 +517,43 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
-        public double GetExaminerNotAvailableScore(Schedule sch)
+        public double GetExaminer1NotAvailableScore(Schedule sch)
         {
             double score = 0;
             for (int i = 0; i < sch.FinalExams.Length; i++)
             {
-                if (sch.FinalExams[i].Examiner.Availability[i] == false)
+                if (sch.FinalExams[i].Examiner1.Availability[i] == false)
                 {
-                    score += Scores.ExaminerNotAvailable;
+                    score += Scores.Examiner1NotAvailable;
                     if (ctx.FillDetails)
                     {
                         //sch.Details[fi.Id].ExaminerComment...
-                        sch.Details[i].ExaminerComment += $"Examiner not available: {Scores.ExaminerNotAvailable}\n";
-                        sch.Details[i].ExaminerScore += Scores.ExaminerNotAvailable;
+                        sch.Details[i].ExaminerComment += $"Examiner1 not available: {Scores.Examiner1NotAvailable}\n";
+                        sch.Details[i].ExaminerScore += Scores.Examiner1NotAvailable;
+                    }
+                }
+
+
+            }
+            return score;
+        }
+
+        public double GetExaminer2NotAvailableScore(Schedule sch)
+        {
+            double score = 0;
+            for (int i = 0; i < sch.FinalExams.Length; i++)
+            {
+                if (sch.FinalExams[i].Examiner2 != null)
+                {
+                    if (sch.FinalExams[i].Examiner2.Availability[i] == false)
+                    {
+                        score += Scores.Examiner2NotAvailable;
+                        if (ctx.FillDetails)
+                        {
+                            //sch.Details[fi.Id].ExaminerComment...
+                            sch.Details[i].ExaminerComment += $"Examiner2 not available: {Scores.Examiner2NotAvailable}\n";
+                            sch.Details[i].ExaminerScore += Scores.Examiner2NotAvailable;
+                        }
                     }
                 }
 
@@ -207,13 +601,13 @@ namespace FinalExamScheduling.GeneticScheduling
 
             }
             return score;
-        }
+        }*/
 
 
 
-        
 
-        public double GetPresidentChangeScore(Schedule sch)
+        //TODO: Ez a két rész a blokkok miatt újraírandó
+        /*public double GetPresidentChangeScore(Schedule sch)
         {
             double score = 0;
 
@@ -305,7 +699,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
             return score;
-        }
+        }*/
 
         public double GetPresidentWorkloadWorstScore(Schedule schedule)
         {
@@ -320,7 +714,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 presidentWorkloads[Array.IndexOf(ctx.Presidents, fi.President)]++;
             }
 
-            double optimalWorkload = 100 / ctx.Presidents.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Presidents.Length;
 
             foreach (Instructor pres in ctx.Presidents)
             {
@@ -352,7 +746,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
 
-            double optimalWorkload = 100 / ctx.Presidents.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Presidents.Length;
 
             foreach (Instructor pres in ctx.Presidents)
             {
@@ -385,7 +779,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
 
-            double optimalWorkload = 100 / ctx.Presidents.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Presidents.Length;
 
             foreach (Instructor pres in ctx.Presidents)
             {
@@ -417,7 +811,7 @@ namespace FinalExamScheduling.GeneticScheduling
              }
 
 
-             double optimalWorkload = 100 / ctx.Presidents.Length;
+             double optimalWorkload = ctx.NOStudents / ctx.Presidents.Length;
 
              foreach (Instructor pres in ctx.Presidents)
              {
@@ -466,7 +860,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 secretaryWorkloads[Array.IndexOf(ctx.Secretaries, fi.Secretary)]++;
             }
 
-            double optimalWorkload = 100 / ctx.Secretaries.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Secretaries.Length;
 
             foreach (Instructor secr in ctx.Secretaries)
             {
@@ -498,7 +892,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
 
-            double optimalWorkload = 100 / ctx.Secretaries.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Secretaries.Length;
 
             foreach (Instructor secr in ctx.Secretaries)
             {
@@ -531,7 +925,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
 
-            double optimalWorkload = 100 / ctx.Secretaries.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Secretaries.Length;
 
             foreach (Instructor secr in ctx.Secretaries)
             {
@@ -562,7 +956,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 secretaryWorkloads[fi.Secretary.Id]++;
             }
 
-            double optimalWorkload = 100 / ctx.Secretaries.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Secretaries.Length;
 
             foreach (Instructor secr in ctx.Secretaries)
             {
@@ -610,7 +1004,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
 
-            double optimalWorkload = 100 / ctx.Members.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Members.Length;
 
             foreach (Instructor memb in ctx.Members)
             {
@@ -642,7 +1036,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
 
-            double optimalWorkload = 100 / ctx.Members.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Members.Length;
 
             foreach (Instructor memb in ctx.Members)
             {
@@ -674,7 +1068,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 memberWorkloads[Array.IndexOf(ctx.Members, fi.Member)]++;
             }
             
-            double optimalWorkload = 100 / ctx.Members.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Members.Length;
 
             foreach (Instructor memb in ctx.Members)
             {
@@ -703,7 +1097,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 memberWorkloads[fi.Member.Id]++;
             }
 
-            double optimalWorkload = 100 / ctx.Members.Length;
+            double optimalWorkload = ctx.NOStudents / ctx.Members.Length;
 
             foreach (Instructor memb in ctx.Members)
             {
@@ -817,7 +1211,19 @@ namespace FinalExamScheduling.GeneticScheduling
             double score = 0;
             foreach (var fi in sch.FinalExams)
             {
-                if ((fi.Examiner.Roles & Roles.President) == Roles.President && fi.Examiner != fi.President)
+                if (fi.Examiner2 != null)
+                {
+                    if (((fi.Examiner1.Roles & Roles.President) == Roles.President || (fi.Examiner2.Roles & Roles.President) == Roles.President) && fi.Examiner1 != fi.President && fi.Examiner2 != fi.President)
+                    {
+                        score += Scores.ExaminerNotPresident;
+                        if (ctx.FillDetails)
+                        {
+                            sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
+                            sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
+                        }
+                    }
+                }
+                else if ((fi.Examiner1.Roles & Roles.President) == Roles.President && fi.Examiner1 != fi.President)
                 {
                     score += Scores.ExaminerNotPresident;
                     if (ctx.FillDetails)

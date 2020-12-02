@@ -1,5 +1,6 @@
 ﻿using FinalExamScheduling.Model;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Domain.Randomizations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,11 @@ namespace FinalExamScheduling.GeneticScheduling
 
         //private Student[] randStudents;
 
-        public SchedulingChromosome(Context context) : base(100)
+        public SchedulingChromosome(Context context) : base(context.NOStudents)
         {
             this.ctx = context;
             //randStudents = context.Students.OrderBy(x => context.Rnd.Next()).ToArray();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < context.NOStudents; i++)
             {
                 ReplaceGene(i, GenerateGene(i));
             }
@@ -29,9 +30,9 @@ namespace FinalExamScheduling.GeneticScheduling
         public Schedule Schedule
         {
             get {
-                Schedule schedule = new Schedule(100);
+                Schedule schedule = new Schedule(ctx.NOStudents);
                 //schedule.FinalExams = new FinalExam[100];
-                for (int i = 0; i < 100; i++)
+                for (int i = 0; i < ctx.NOStudents; i++)
                 {
                     schedule.FinalExams[i] = (FinalExam)GetGene(i).Value;
                 }
@@ -62,7 +63,17 @@ namespace FinalExamScheduling.GeneticScheduling
             fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
             fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
             fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner = fe.Student.ExamCourse.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse.Instructors.Length)];
+            fe.Examiner1 = fe.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse1.Instructors.Length)];
+            if (fe.Student.ExamCourse2 != null) fe.Examiner2 = fe.Student.ExamCourse2.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse2.Instructors.Length)];
+            fe.DegreeLevel = fe.Student.DegreeLevel;
+            fe.Programme = fe.Student.Programme;
+            //fe.RoomNr = new Random().Next(0, 3);
+            fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
+            //fe.DayNr = new Random().Next(0, Constants.days);
+            fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+            //fe.startTs = new Random().Next(0, 120);
+            if (fe.Student.ExamCourse2 != null) fe.startTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
+            else fe.startTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
 
             return new Gene(fe);
         }

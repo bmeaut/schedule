@@ -84,15 +84,14 @@ namespace FinalExamScheduling.GeneticScheduling
 
             GenerationFitness.Add(geneticAlgorithm.GenerationsNumber, bestFitness);
 
-//////////////////////////////////////////////////////////////////////beszúrtam a penalty-t
-            Console.WriteLine("Generation {0}: {1:N0},   Penalty: {2}", geneticAlgorithm.GenerationsNumber, bestFitness, Fitness.Evaluate(bestChromosome));
+            Console.WriteLine("Generation {0}: {1:N0}", geneticAlgorithm.GenerationsNumber, bestFitness);
         }
 
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
             ctx.FillDetails = true;
             
-            sch.Details = Enumerable.Range(0, 100).Select(i => new FinalExamDetail()).ToArray();
+            sch.Details = Enumerable.Range(0, ctx.NOStudents).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
          

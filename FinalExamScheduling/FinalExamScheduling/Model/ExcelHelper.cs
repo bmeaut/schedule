@@ -138,6 +138,7 @@ namespace FinalExamScheduling.Model
             using (ExcelPackage xlPackage = new ExcelPackage(existingFile))
             {
                 Console.WriteLine("Reading of Excel was succesful");
+                //Console.WriteLine(existingFile.FullName);
 
                 ExcelWorksheet ws_students = xlPackage.Workbook.Worksheets[1];
                 ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets[2];
@@ -311,95 +312,112 @@ namespace FinalExamScheduling.Model
 
                 #region Scheduling
 
-                ws_scheduling.Cells[1, 1].Value = "Student";
+                ws_scheduling.Cells[1, 1].Value = "DayNr";
+                ws_scheduling.Cells[1, 2].Value = "RoomNr";
+                ws_scheduling.Cells[1, 3].Value = "StartTs";
+                ws_scheduling.Cells[1, 4].Value = "EndTs";
+                ws_scheduling.Cells[1, 5].Value = "Student";
+                ws_scheduling.Cells[1, 6].Value = "Programme";
 
-                ws_scheduling.Cells[1, 2].Value = "Supervisor";
-                ws_scheduling.Cells[1, 3].Value = "President";
-                ws_scheduling.Cells[1, 4].Value = "Secretary";
-                ws_scheduling.Cells[1, 5].Value = "Member";
-                ws_scheduling.Cells[1, 6].Value = "Examiner";
-                ws_scheduling.Cells[1, 7].Value = "Course";
+                ws_scheduling.Cells[1, 7].Value = "Supervisor";
+                ws_scheduling.Cells[1, 8].Value = "President";
+                ws_scheduling.Cells[1, 9].Value = "Secretary";
+                ws_scheduling.Cells[1, 10].Value = "Member";
+                ws_scheduling.Cells[1, 11].Value = "Examiner1";
+                ws_scheduling.Cells[1, 12].Value = "Course1";
+                ws_scheduling.Cells[1, 13].Value = "Examiner2";
+                ws_scheduling.Cells[1, 14].Value = "Course2";
 
-                for (int j = 1; j <= 7; j++)
+                for (int j = 1; j <= 14; j++)
                 {
                     var cell = ws_scheduling.Cells[1, j];
                     cell.Style.Border.Bottom.Style = ExcelBorderStyle.Thick;
                     cell.Style.Font.Bold = true;
                     cell.Style.Font.Size = 14;
                 }
-                string author = "Szilvia Erdős";
+                //string author = "Szilvia Erdős & Antal Czett";
 
                 int i = 2;
                 foreach (FinalExam exam in sch.FinalExams)
                 {
-                    ws_scheduling.Cells[i, 1].Value = exam.Student.Name;
-                    double studentScore = sch.Details[exam.Id].StudentScore;
-                    if (studentScore > 0)
+                    ws_scheduling.Cells[i, 1].Value = exam.DayNr;
+                    ws_scheduling.Cells[i, 2].Value = exam.RoomNr;
+                    ws_scheduling.Cells[i, 3].Value = exam.startTs;
+                    ws_scheduling.Cells[i, 4].Value = exam.EndTs;
+
+                    ws_scheduling.Cells[i, 5].Value = exam.Student.Name;
+                    //double studentScore = sch.Details[exam.Id].StudentScore;
+                    /*if (studentScore > 0)
                     {
                         ws_scheduling.Cells[i, 1].AddComment(sch.Details[exam.Id].StudentComment, author);
 
                         ws_scheduling.Cells[i, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(studentScore), 0));
 
-                    }
+                    }*/
 
-                    ws_scheduling.Cells[i, 2].Value = exam.Supervisor.Name;
-                    double supervisorScore = sch.Details[exam.Id].SupervisorScore;
-                    if (supervisorScore > 0)
+                    ws_scheduling.Cells[i, 6].Value = exam.Programme + ", " + exam.DegreeLevel;
+
+                    ws_scheduling.Cells[i, 7].Value = exam.Supervisor.Name;
+                    //double supervisorScore = sch.Details[exam.Id].SupervisorScore;
+                    /*if (supervisorScore > 0)
                     {
                         ws_scheduling.Cells[i, 2].AddComment(sch.Details[exam.Id].SupervisorComment, author);
 
                         ws_scheduling.Cells[i, 2].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 2].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(supervisorScore), 0));
 
-                    }
+                    }*/
 
-                    ws_scheduling.Cells[i, 3].Value = exam.President.Name;
-                    double presidentScore = sch.Details[exam.Id].PresidentScore;
+                    ws_scheduling.Cells[i, 8].Value = exam.President.Name;
+                    /*double presidentScore = sch.Details[exam.Id].PresidentScore;
                     if (presidentScore > 0)
                     {
                         ws_scheduling.Cells[i, 3].AddComment(sch.Details[exam.Id].PresidentComment, author);
 
                         ws_scheduling.Cells[i, 3].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 3].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(presidentScore), 0));
-                    }
+                    }*/
 
 
-                    ws_scheduling.Cells[i, 4].Value = exam.Secretary.Name;
-                    double secretaryScore = sch.Details[exam.Id].SecretaryScore;
+                    ws_scheduling.Cells[i, 9].Value = exam.Secretary.Name;
+                    /*double secretaryScore = sch.Details[exam.Id].SecretaryScore;
                     if (secretaryScore > 0)
                     {
                         ws_scheduling.Cells[i, 4].AddComment(sch.Details[exam.Id].SecretaryComment, author);
 
                         ws_scheduling.Cells[i, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 4].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(secretaryScore), 0));
-                    }
+                    }*/
 
-                    ws_scheduling.Cells[i, 5].Value = exam.Member.Name;
-                    double memberScore = sch.Details[exam.Id].MemberScore;
+                    ws_scheduling.Cells[i, 10].Value = exam.Member.Name;
+                    /*double memberScore = sch.Details[exam.Id].MemberScore;
                     if (memberScore > 0)
                     {
                         ws_scheduling.Cells[i, 5].AddComment(sch.Details[exam.Id].MemberComment, author);
 
                         ws_scheduling.Cells[i, 5].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 5].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(memberScore), 0));
-                    }
+                    }*/
 
-                    ws_scheduling.Cells[i, 6].Value = exam.Examiner1.Name;
-                    double examinerScore = sch.Details[exam.Id].ExaminerScore;
+                    ws_scheduling.Cells[i, 11].Value = exam.Examiner1.Name;
+                    /*double examinerScore = sch.Details[exam.Id].ExaminerScore;
                     if (examinerScore > 0)
                     {
                         ws_scheduling.Cells[i, 6].AddComment(sch.Details[exam.Id].ExaminerComment, author);
 
                         ws_scheduling.Cells[i, 6].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
                         ws_scheduling.Cells[i, 6].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, GetGreen(examinerScore), 0));
+                    }*/
+
+                    ws_scheduling.Cells[i, 12].Value = exam.Student.ExamCourse1.Name;
+                    if (exam.Student.ExamCourse2 != null)
+                    {
+                        ws_scheduling.Cells[i, 13].Value = exam.Examiner2.Name;
+                        ws_scheduling.Cells[i, 14].Value = exam.Student.ExamCourse2.Name;
                     }
 
-                    ws_scheduling.Cells[i, 7].Value = exam.Student.ExamCourse1.Name;
-                    ws_scheduling.Cells[i, 8].Value = exam.Id;
-
-
-                    if (i % 10 == 1)
+                    /*if (i % 10 == 1)
                     {
                         for (int j = 1; j <= 7; j++)
                         {
@@ -414,7 +432,7 @@ namespace FinalExamScheduling.Model
                             var cell = ws_scheduling.Cells[i, j];
                             cell.Style.Border.Bottom.Style = ExcelBorderStyle.Dotted;
                         }
-                    }
+                    }*/
 
                     i++;
                 }
