@@ -407,6 +407,12 @@ namespace FinalExamScheduling.HeuristicScheduling
                         {
                             scores[stud, instr] += Scores.ExaminerSecretary;
                         }
+
+                        if (allExaminer[instr].Roles == Roles.Member)
+                        {
+                            scores[stud, instr] += Scores.ExaminerMember;
+                        }
+
                     }
                 }
                 

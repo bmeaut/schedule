@@ -39,7 +39,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double ExaminerSecretary = 1;
         public const double ExaminerMember = 1;
         public const double MemberExaminer = 1;
-        public const double MemberSupervisor = 100;
+        public const double MemberSupervisor = 1;
         public const double MemberSelfStudent = 1;
 
         public const double ExaminerAvailable = 1;
