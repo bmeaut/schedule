@@ -11,12 +11,21 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double StudentDuplicated = 10000;
         public const double TimeOverLap = 10000;
 
-        /*public const double PresidentNotAvailable = 1000;
+        public const double PresidentNotAvailable = 1000;
         public const double SecretaryNotAvailable = 1000;
         public const double Examiner1NotAvailable = 1000;
         public const double Examiner2NotAvailable = 1000;
-        public const double MemberNotAvailable = 5;
-        public const double SupervisorNotAvailable = 5;*/
+        public const double MemberNotAvailable = 50;
+        public const double SupervisorNotAvailable = 5;
+
+        public const double PresidentInMoreRooms = 1000;
+        public const double SecretaryInMoreRooms = 1000;
+        public const double ExaminerInMoreRooms = 1000; //independent of No. 1 or 2
+        public const double MemberInMoreRooms = 50;
+        public const double SupervisorInMoreRooms = 5;
+
+        public const double BlockLengthWorst = 1000;
+        public const double BlockLengthBad = 40;
 
         /*public const double PresidentChange = 1000;
         public const double SecretaryChange = 1000;*/
@@ -38,17 +47,12 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double SecretarySelfStudent = 1;
         public const double ExaminerNotPresident = 1;
 
-        //TODO: add algorithms for penalties
-        //Hard
-       /* public const double PresidentInMoreRooms = 1000;
-        public const double ExaminerInMoreRooms = 1000; //independent of No. 1 or 2
-        public const double MemberInMoreRooms = 1000;
-        public const double SecretaryInMoreRooms = 1000;*/
+        public const string FirstExamStartsSoon = "x^2*5";
+        public const string LastExamEndsLate = "x^3*5";
 
-        //Soft
         public const double LunchStartsSoon = 40;
         public const double LunchEndsLate = 40;
-        public const double LunchLengthWorst = 400;
+        public const double LunchLengthWorst = 1000;
         public const double LunchLengthWorse = 2;
         public const double LunchLengthBad = 1;
     }

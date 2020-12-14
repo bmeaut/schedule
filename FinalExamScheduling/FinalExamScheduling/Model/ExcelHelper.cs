@@ -338,7 +338,16 @@ namespace FinalExamScheduling.Model
                 //string author = "Szilvia Erdős & Antal Czett";
 
                 int i = 2;
-                foreach (FinalExam exam in sch.FinalExams)
+                List<List<FinalExam>> blocks = new SchedulingFitness(context).GetAllBlocks(sch);
+                List<FinalExam> exams = new List<FinalExam>();
+                foreach(List<FinalExam> block in blocks)
+                {
+                    foreach(FinalExam fe in block)
+                    {
+                        exams.Add(fe);
+                    }
+                }
+                foreach (FinalExam exam in exams)
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.DayNr;
                     ws_scheduling.Cells[i, 2].Value = exam.RoomNr;
