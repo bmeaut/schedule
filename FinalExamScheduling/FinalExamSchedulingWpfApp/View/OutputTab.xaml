@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="FinalExamSchedulingWpfApp.View.OutputTab"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FinalExamSchedulingWpfApp.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModel="clr-namespace:FinalExamSchedulingWpfApp.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewModel:ScheduleViewModel}" >
+                <local:ScheduleView DataContext="{Binding}" />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:WorkloadViewModel}" >
+                <local:WorkloadView DataContext="{Binding}" />
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="160"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ListBox Grid.Column="0" Grid.Row="0">
+            <ListBoxItem
+                x:Name="listBoxItemSchedule"
+                MouseLeftButtonUp="ScheduleViewClicked"
+                IsSelected="True">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Timetable" Margin="0,0,6,0" />
+                    <TextBlock Text="Schedule"/>
+                </StackPanel>
+            </ListBoxItem>
+            <ListBoxItem
+                x:Name="listBoxItemWorkload"
+                MouseLeftButtonUp="WorkloadViewClicked">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AccountClock" Margin="0,0,6,0" />
+                    <TextBlock Text="Workloads"/>
+                </StackPanel>
+            </ListBoxItem>
+        </ListBox>
+        <ContentControl x:Name="contentControlOutputPage"
+                        Grid.Column="1"
+                        Grid.Row="0"
+                        Content="{Binding}" />
+    </Grid>
+</UserControl>

@@ -21,6 +21,7 @@ namespace FinalExamSchedulingWpfApp.View
 		public ConfigureView()
 		{
 			InitializeComponent();
+			dataGridScores.PreviewMouseWheel += MouseWheelBubble.PreviewMouseWheel;
 		}
 	}
 }

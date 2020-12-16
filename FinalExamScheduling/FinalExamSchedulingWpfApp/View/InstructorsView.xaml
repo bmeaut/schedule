@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:FinalExamSchedulingWpfApp.View"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,12 +17,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ScrollViewer>
-        <StackPanel Orientation="Vertical">
-            <DataGrid x:Name="dataGridInstructors" RowHeight="40"
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch">
+        <DataGrid x:Name="dataGridInstructors" RowHeight="40"
                 local:DataGridColumnsBehavior.BindableColumns="{Binding ColumnCollection}"
                 AutoGenerateColumns="False"
                 ItemsSource="{Binding Instructors}"/>
-        </StackPanel>
     </ScrollViewer>
 </UserControl>

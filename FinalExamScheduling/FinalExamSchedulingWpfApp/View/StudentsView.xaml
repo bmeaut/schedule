@@ -9,25 +9,62 @@
              mc:Ignorable="d" 
              TextElement.FontWeight="Medium"
              TextElement.FontSize="14"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             HorizontalContentAlignment="Stretch"
+             VerticalContentAlignment="Stretch"
+             ScrollViewer.HorizontalScrollBarVisibility="Auto">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+                <ResourceDictionary Source="DataGridRowErrorStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <ScrollViewer>
-        <StackPanel Orientation="Vertical">
-            <DataGrid x:Name="dataGridStudents" RowHeight="40"
-                AutoGenerateColumns="False"
-                ItemsSource="{Binding Students}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}"
-                                        Header="Name"
-                                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </StackPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalContentAlignment="Stretch">
+        <DataGrid x:Name="dataGridStudents" RowHeight="40"
+                  AutoGenerateColumns="False"
+                  ItemsSource="{Binding Students}"
+                  RowStyle="{StaticResource DataGridRowErrorStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                        x:Name="dataGridStudentsColumnName"
+                        Header="Student Name"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                        Width="240">
+                    <DataGridTextColumn.Binding>
+                        <Binding Path="Name" ValidatesOnExceptions="True" UpdateSourceTrigger="PropertyChanged">
+                            <Binding.ValidationRules>
+                                <ExceptionValidationRule />
+                            </Binding.ValidationRules>
+                        </Binding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                        x:Name="dataGridStudentsColumnNeptun"
+                        Header="Neptun Code"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                        Binding="{Binding Path=Neptun, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                        x:Name="dataGridStudentsColumnSupervisor"
+                        Header="Supervisor"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                        Binding="{Binding Path=Supervisor, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                        Width="240">
+                </DataGridTextColumn>
+                <DataGridTextColumn
+                        x:Name="dataGridStudentsColumnExamCourse"
+                        Header="Exam Course Code"
+                        ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                        EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                        Binding="{Binding Path=ExamCourse, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                        Width="150">
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
     </ScrollViewer>
 </UserControl>

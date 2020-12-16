@@ -14,7 +14,10 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
-        FontFamily="{materialDesign:MaterialDesignFont}"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Final exam scheduling" Height="900" Width="1600" Loaded="WindowLoaded">
     <Window.Resources>
         <ResourceDictionary>
@@ -23,105 +26,123 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <system:String x:Key="Partition">MainWindow</system:String>
-            <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}" >
-                <view:StudentsView DataContext="{Binding}" />
-            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel:InstructorsViewModel}" >
                 <view:InstructorsView DataContext="{Binding}" />
             </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel:CoursesViewModel}" >
                 <view:CoursesView DataContext="{Binding}" />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:StudentsViewModel}" >
+                <view:StudentsView DataContext="{Binding}" />
+            </DataTemplate>
             <DataTemplate DataType="{x:Type viewModel:ConfigureViewModel}" >
                 <view:ConfigureView DataContext="{Binding}" />
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
-    <dockablz:Layout Partition="{StaticResource Partition}">
-        <dragablz:TabablzControl TabStripPlacement="Top" ConsolidateOrphanedItems="True">
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController Partition="{StaticResource Partition}" />
-            </dragablz:TabablzControl.InterTabController>
-            <TabItem Header="INPUT">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Button
+    <materialDesign:DialogHost x:Name="MyDialogHost">
+        <materialDesign:DialogHost.DialogContent>
+            <ProgressBar Width="24" Height="24" Margin="16"
+                 Style="{DynamicResource MaterialDesignCircularProgressBar}"
+                 IsIndeterminate="True"
+                 Value="33"/>
+        </materialDesign:DialogHost.DialogContent>
+        <dockablz:Layout Partition="{StaticResource Partition}">
+            <dragablz:TabablzControl TabStripPlacement="Top" ConsolidateOrphanedItems="True">
+                <dragablz:TabablzControl.InterTabController>
+                    <dragablz:InterTabController Partition="{StaticResource Partition}" />
+                </dragablz:TabablzControl.InterTabController>
+                <TabItem Header="INPUT">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="160"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Button
                         Style="{StaticResource MaterialDesignRaisedButton}"
                         Grid.Column="0" Grid.Row="0"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Stretch"
                         VerticalAlignment="Center"
-                        Margin="0,8,0,8"
-                        Click="LoadInputFileClick" >
-                        LOAD INPUT FILE
-                    </Button>
-                    <ListBox Grid.Column="0" Grid.Row="1">
-                        <ListBoxItem
-                            x:Name="listBoxItemStudents"
-                            MouseLeftButtonUp="StudentsViewClicked">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account" Margin="0,0,6,0" />
-                                <TextBlock Text="Students"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem
-                            x:Name="listBoxItemInstructors"
-                            MouseLeftButtonUp="InstructorsViewClicked">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Teach" Margin="0,0,6,0" />
-                                <TextBlock Text="Instructors"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem
-                            x:Name="listBoxItemCourses"
-                            MouseLeftButtonUp="CoursesViewClicked">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BookOpen" Margin="0,0,6,0" />
-                                <TextBlock Text="Courses"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem
-                            x:Name="listBoxItemConfigure"
-                            MouseLeftButtonUp="ConfigureViewClicked">
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Cog" Margin="0,0,6,0" />
-                                <TextBlock Text="Configure"/>
-                            </StackPanel>
-                        </ListBoxItem>
-                    </ListBox>
-                    <ContentControl x:Name="contentControlInputPage"
-                                    Grid.Column="1"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    Content="{Binding}" />
-                    <Button x:Name="runButton"
-                        Style="{StaticResource MaterialDesignRaisedButton}"
-                        Width="100"
-                        ToolTip="Resource name: MaterialDesignRaisedButton" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,6,6" Grid.Row="1" Grid.Column="1">
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="RUN"/>
-                                <materialDesign:PackIcon Kind="Play" Margin="6,0,0,0" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </Grid>
-            </TabItem>
-            <!--
+                        Margin="6"
+                        ToolTip="Load data from an XLSX file. This will clear current data."
+                        Click="LoadInputFileClicked" >
+                            LOAD INPUT FILE
+                        </Button>
+                        <ListBox Grid.Column="0" Grid.Row="1">
+                            <ListBoxItem
+                                x:Name="listBoxItemInstructors"
+                                MouseLeftButtonUp="InstructorsViewClicked"
+                                IsSelected="True">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Teach" Margin="0,0,6,0" />
+                                    <TextBlock Text="Instructors"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem
+                                x:Name="listBoxItemCourses"
+                                MouseLeftButtonUp="CoursesViewClicked">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="BookOpen" Margin="0,0,6,0" />
+                                    <TextBlock Text="Courses"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem
+                                x:Name="listBoxItemStudents"
+                                MouseLeftButtonUp="StudentsViewClicked">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Account" Margin="0,0,6,0" />
+                                    <TextBlock Text="Students"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                            <ListBoxItem
+                                x:Name="listBoxItemConfigure"
+                                MouseLeftButtonUp="ConfigureViewClicked">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Cog" Margin="0,0,6,0" />
+                                    <TextBlock Text="Configure"/>
+                                </StackPanel>
+                            </ListBoxItem>
+                        </ListBox>
+                        <ContentControl
+                            x:Name="contentControlInputPage"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Grid.RowSpan="3"
+                            Content="{Binding}" />
+                        <Button
+                            x:Name="runButton"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
+                            ToolTip="Run the chosen algorithm with the current data and configuration."
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            Margin="6"
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Click="runButton_Click">
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="RUN"/>
+                                    <materialDesign:PackIcon Kind="Play" Margin="6,0,0,0" />
+                                </StackPanel>
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </TabItem>
+                <!--
             <TabItem Header="CONFIGURE &amp; RUN">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Configuration and run</TextBlock>
             </TabItem>
             -->
-            <TabItem Header="OUTPUT">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">View results</TextBlock>
-            </TabItem>
-        </dragablz:TabablzControl>
+                <TabItem Header="OUTPUT">
+                    <view:OutputTab />
+                </TabItem>
+            </dragablz:TabablzControl>
 
-    </dockablz:Layout>
+        </dockablz:Layout>
+    </materialDesign:DialogHost>
 </Window>

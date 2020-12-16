@@ -19,15 +19,18 @@ namespace FinalExamSchedulingWpfApp.View
 	/// </summary>
 	public partial class StudentsView : UserControl
 	{
+		// Ezek a sorok csak a kezdeti teszteléshez kellettek, ezt a logikát a StudentsViewModel-ben kell csinálni.
 		//public List<TestStudent> Students = new List<TestStudent>();
 		public StudentsView()
 		{
 
 			InitializeComponent();
+			dataGridStudents.PreviewMouseWheel += MouseWheelBubble.PreviewMouseWheel;
 			//Students.AddRange(new[] { new TestStudent { Id = 1, ExamCourse = ExamCourse.egyik, Name = "Mekk Elek", Neptun = "N3PTUN", },
 			//	new TestStudent { Id = 2, ExamCourse = ExamCourse.masik, Name = "Mekk Elek", Neptun = "N3PTUN", }});
 			//dataGridStudents.ItemsSource = Students;
 		}
+
 
 
 		//public enum ExamCourse { egyik = 1, masik = 2};
@@ -38,5 +41,7 @@ namespace FinalExamSchedulingWpfApp.View
 		//	public ExamCourse ExamCourse { get; set; }
 		//	public string Neptun { get; set; }
 		//}
+
+
 	}
 }

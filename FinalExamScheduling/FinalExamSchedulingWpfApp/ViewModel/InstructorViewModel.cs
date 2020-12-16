@@ -15,28 +15,49 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 		private bool _canBePresident;
 		private bool _canBeSecretary;
 		private bool _canBeMember;
-		private ObservableCollection<_Availability> _availability;
+		//private ObservableCollection<_Availability> _availability; // TODO delete this
+		private ObservableCollection<bool> _availability;
+		public CollectiveViewModel CollectiveViewModel { get; set; }
 
-		// TODO: availability = number of students
+		public InstructorViewModel()
+		{
+			Availability = new ObservableCollection<bool>();
+			for (int i = 0; i < MainWindow.ExamCount; i++)
+			{
+				Availability.Add(false);
+			}
+			CollectiveViewModel = new CollectiveViewModel()
+			{
+				InstructorsViewModel = MainWindow.InstructorsViewModel,
+				CoursesViewModel = MainWindow.CoursesViewModel,
+				StudentsViewModel = MainWindow.StudentsViewModel,
+				ExamCount = MainWindow.ExamCount
+			};
+		}
+		public InstructorViewModel(CollectiveViewModel collectiveViewModel)
+		{
+			Availability = new ObservableCollection<bool>();
+			CollectiveViewModel = collectiveViewModel;
+		}
 
 		public string Name
 		{
 			get { return _name; }
 			set
 			{
-				if (value == null)
+				if (string.IsNullOrWhiteSpace(value))
 					throw new ArgumentException("Value cannot be empty.");
 				if (_name != null && _name == value) return;
-				if (MainWindow.InstructorsViewModel.Instructors.FirstOrDefault(i => i.Name == value) != null)
+				if (CollectiveViewModel.InstructorsViewModel.Instructors.FirstOrDefault(i => i.Name == value) != null)
 					throw new ArgumentException("An instructor with this name already exists.");
 				_name = value;
 				// Find occurences of the old name, and replace it with the new one
-				foreach (var s in MainWindow.StudentsViewModel.Students)
+				foreach (var s in CollectiveViewModel.StudentsViewModel.Students)
 				{
 					if (s.Supervisor == _name)
 						s.Supervisor = value;
 				}
-				foreach(var c in MainWindow.CoursesViewModel.Courses)
+				foreach(var c in CollectiveViewModel.CoursesViewModel.Courses)
 				{
 					foreach(var i in c._instructors)
 					{
@@ -79,20 +100,24 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 				OnPropertyChanged();
 			}
 		}
-		public ObservableCollection<_Availability> Availability
+		//public ObservableCollection<_Availability> Availability // TODO delete this
+		public ObservableCollection<bool> Availability
 		{
+			// TODO: Collection changed event? use private field, call OnCollectionChanged in set,
+			//    subscribe to the CollectionChanged event of this with the OnCollectionChanged
+			// TODO: oooor it works just fine without all this fuss
 			get; set;
 		}
 
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
-			var handler = PropertyChanged;
-			if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public class _Availability : INotifyPropertyChanged
+		// TODO delete this
+		/*public class _Availability : INotifyPropertyChanged
 		{
 			private bool _available;
 			public bool Available
@@ -111,6 +136,6 @@ namespace FinalExamSchedulingWpfApp.ViewModel
 				if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
 			}
 			public event PropertyChangedEventHandler PropertyChanged;
-		}
+		}*/
 	}
 }

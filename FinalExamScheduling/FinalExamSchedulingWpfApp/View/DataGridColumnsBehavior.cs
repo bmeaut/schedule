@@ -20,56 +20,71 @@ namespace FinalExamSchedulingWpfApp.View
                                                 typeof(ObservableCollection<DataGridColumn>),
                                                 typeof(DataGridColumnsBehavior),
                                                 new UIPropertyMetadata(null, BindableColumnsPropertyChanged));
+        /// <summary>
+        /// Collection to store collection change handlers - to be able to unsubscribe later.
+        /// </summary>
+        private static readonly Dictionary<ObservableCollection<DataGridColumn>, NotifyCollectionChangedEventHandler> _handlers;
+        static DataGridColumnsBehavior()
+        {
+            _handlers = new Dictionary<ObservableCollection<DataGridColumn>, NotifyCollectionChangedEventHandler>();
+        }
         private static void BindableColumnsPropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
             DataGrid dataGrid = source as DataGrid;
             ObservableCollection<DataGridColumn> columns = e.NewValue as ObservableCollection<DataGridColumn>;
-            dataGrid.Columns.Clear();
-            if (columns == null)
+            if (columns != null)
             {
-                return;
-            }
-            foreach (var column in columns)
-            {
-                var dataGridOwnerProperty = column.GetType().GetProperty("DataGridOwner", BindingFlags.Instance | BindingFlags.NonPublic);
-                if (dataGridOwnerProperty != null)
-                    dataGridOwnerProperty.SetValue(column, null);
-                dataGrid.Columns.Add(column);
-            }
-            columns.CollectionChanged += (sender, e2) =>
-            {
-                NotifyCollectionChangedEventArgs ne = e2 as NotifyCollectionChangedEventArgs;
-                if (ne.Action == NotifyCollectionChangedAction.Reset)
+                dataGrid.Columns.Clear();
+                // Add columns from this source.
+                foreach (DataGridColumn column in columns)
+				{
+                    var dataGridOwnerProperty = column.GetType().GetProperty("DataGridOwner", BindingFlags.Instance | BindingFlags.NonPublic);
+                    if (dataGridOwnerProperty != null)
+                        dataGridOwnerProperty.SetValue(column, null);
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        dataGrid.Columns.Add(column);
+                    }, System.Windows.Threading.DispatcherPriority.ContextIdle);
+                    
+                }
+
+                // Unsubscribe old handler
+                NotifyCollectionChangedEventHandler h;
+                if (_handlers.TryGetValue(columns, out h))
                 {
+                    columns.CollectionChanged -= h;
+                    _handlers.Remove(columns);
+                }
+                // Subscribe new handler
+                h = (_, ne) => OnCollectionChanged(ne, dataGrid);
+                _handlers[columns] = h;
+                columns.CollectionChanged += h;
+            }
+        }
+        static void OnCollectionChanged(NotifyCollectionChangedEventArgs ne, DataGrid dataGrid)
+		{
+            switch (ne.Action)
+            {
+                case NotifyCollectionChangedAction.Reset:
                     dataGrid.Columns.Clear();
                     foreach (DataGridColumn column in ne.NewItems)
-                    {
                         dataGrid.Columns.Add(column);
-                    }
-                }
-                else if (ne.Action == NotifyCollectionChangedAction.Add)
-                {
+                    break;
+                case NotifyCollectionChangedAction.Add:
                     foreach (DataGridColumn column in ne.NewItems)
-                    {
                         dataGrid.Columns.Add(column);
-                    }
-                }
-                else if (ne.Action == NotifyCollectionChangedAction.Move)
-                {
+                    break;
+                case NotifyCollectionChangedAction.Move:
                     dataGrid.Columns.Move(ne.OldStartingIndex, ne.NewStartingIndex);
-                }
-                else if (ne.Action == NotifyCollectionChangedAction.Remove)
-                {
+                    break;
+                case NotifyCollectionChangedAction.Remove:
                     foreach (DataGridColumn column in ne.OldItems)
-                    {
                         dataGrid.Columns.Remove(column);
-                    }
-                }
-                else if (ne.Action == NotifyCollectionChangedAction.Replace)
-                {
+                    break;
+                case NotifyCollectionChangedAction.Replace:
                     dataGrid.Columns[ne.NewStartingIndex] = ne.NewItems[0] as DataGridColumn;
-                }
-            };
+                    break;
+            }
         }
         public static void SetBindableColumns(DependencyObject element, ObservableCollection<DataGridColumn> value)
         {

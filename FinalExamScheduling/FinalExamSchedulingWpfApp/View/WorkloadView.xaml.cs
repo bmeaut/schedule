@@ -14,14 +14,13 @@ using System.Windows.Shapes;
 namespace FinalExamSchedulingWpfApp.View
 {
 	/// <summary>
-	/// Interaction logic for CoursesView.xaml
+	/// Interaction logic for WorkloadView.xaml
 	/// </summary>
-	public partial class CoursesView : UserControl
+	public partial class WorkloadView : UserControl
 	{
-		public CoursesView()
+		public WorkloadView()
 		{
 			InitializeComponent();
-			dataGridCourses.PreviewMouseWheel += MouseWheelBubble.PreviewMouseWheel;
 		}
 	}
 }

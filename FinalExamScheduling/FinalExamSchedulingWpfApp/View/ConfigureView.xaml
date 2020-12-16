@@ -3,10 +3,39 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:FinalExamSchedulingWpfApp.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="Configure" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-    </Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer VerticalContentAlignment="Stretch">
+        <StackPanel Orientation="Vertical" Margin="16">
+            <TextBlock Text="Choose an algorithm for the scheduling."
+                       Margin="0,8,0,8" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
+            <RadioButton GroupName="algorithm" IsChecked="{Binding AlgorithmSelector[0]}"
+                         Margin="0,8,0,0" Content="Genetic" />
+            <RadioButton GroupName="algorithm" IsChecked="{Binding AlgorithmSelector[1]}"
+                         Margin="0,8,0,0" Content="Heuristic" />
+            <RadioButton GroupName="algorithm" IsChecked="{Binding AlgorithmSelector[2]}"
+                         Margin="0,8,0,0" Content="Linear Programming" />
+            <TextBlock Text="Choose the penalty scores."
+                       Margin="0,24,0,0" Style="{StaticResource MaterialDesignHeadline6TextBlock}" />
+            <DataGrid x:Name="dataGridScores" Margin="0,8,0,0" ItemsSource="{Binding Scores}"
+                      AutoGenerateColumns="False" CanUserReorderColumns="False"
+                      CanUserAddRows="False" CanUserDeleteRows="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Binding="{Binding PenaltyName}"
+                                        Header="Penalty" />
+                    <DataGridTextColumn Binding="{Binding Path=Score, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Score" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
