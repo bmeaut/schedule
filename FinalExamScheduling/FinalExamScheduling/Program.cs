@@ -46,7 +46,7 @@ namespace FinalExamScheduling
         {
             var watch = Stopwatch.StartNew();
 
-            FileInfo existingFile = new FileInfo("Input2.xlsx");
+            FileInfo existingFile = new FileInfo("input2.xlsx");
 
             var context = ExcelHelper.ReadFull(existingFile);
             context.Init();

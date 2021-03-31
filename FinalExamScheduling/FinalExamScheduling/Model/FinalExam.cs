@@ -19,13 +19,13 @@ namespace FinalExamScheduling.Model
         public Programme Programme;
         public int RoomNr;
         public int DayNr;
-        public int startTs;
+        public int StartTs;
         public int EndTs
         {
             get
             {
-                if (Student.ExamCourse2 == null) return (startTs + 7);
-                else return (startTs + 8);
+                if (Student.ExamCourse2 == null) return (StartTs + 7);
+                else return (StartTs + 8);
             }
         }
 
@@ -44,7 +44,7 @@ namespace FinalExamScheduling.Model
                 Programme = Programme,
                 RoomNr = RoomNr,
                 DayNr = DayNr,
-                startTs = startTs
+                StartTs = StartTs
             };
         }
     }

@@ -40,11 +40,20 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetMemberInMoreRoomsScore,
                 GetSupervisorInMoreRoomsScore,
 
-                GetExamsInBlockWorstScore,
-                GetExamsInBlockBadScore,
+                GetBlockLengthWorstScore,
+                GetBlockLengthBadScore,
 
-                //GetPresidentChangeScore,
-                //GetSecretaryChangeScore,
+                GetProgrammeOrLevelChangeInBlockWorstScore,
+                GetProgrammeOrLevelChangeInBlockWorseScore,
+                GetProgrammeOrLevelChangeInBlockBadScore,
+
+                GetPresidentChangeInBlockScore,
+                GetSecretaryChangeInBlockScore,
+                GetPresidentChangeInDayScore,
+                GetSecretaryChangeInDayScore,
+
+                GetInstructorBadProgrammeScore,
+                //GetInstructorBreakScore,
 
                 GetPresidentWorkloadWorstScore,
                 GetPresidentWorkloadWorseScore,
@@ -58,10 +67,11 @@ namespace FinalExamScheduling.GeneticScheduling
 
                 GetPresidentSelfStudentScore,
                 GetSecretarySelfStudentScore,
+
                 GetExaminerNotPresidentScore,
 
-                GetFirstExamStartsTooSoonScore,
-                GetLastExamEndsTooLateScore,
+                GetFirstExamStartsSoonScore,
+                GetLastExamEndsLateScore,
 
                 GetLunchStartsSoonScore,
                 GetLunchEndsLateScore,
@@ -71,7 +81,7 @@ namespace FinalExamScheduling.GeneticScheduling
             };
         }
 
-
+        #region additional functions
         public double EvaluateAll(Schedule sch)
         {
             int score = 0;
@@ -111,141 +121,52 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
-        public double GetStudentDuplicatedScore(Schedule sch)
+        public List<FinalExam> GetExamsBeforeLunch(Schedule sch, int dayNr, int roomNr)
         {
-            double score = 0;
-            List<Student> studentBefore = new List<Student>();
-            int[] count = new int[ctx.NOStudents];
-            foreach (var fe in sch.FinalExams)
+            List<FinalExam> exams = new List<FinalExam>();
+            double lunchStart = GetLunchStartEnd(sch, dayNr, roomNr)[0];
+            for(int i=0; i < sch.FinalExams.Length; i++)
             {
-                count[fe.Student.Id]++;
-            }
-            for (int i = 0; i < ctx.NOStudents; i++)
-            {
-                if (count[i] > 1)
+                if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
                 {
-                    score += (count[i] - 1) * Scores.StudentDuplicated;
-
-                }
-            }
-            return score;
-        }
-
-        public double GetTimeOverLapScore(Schedule sch)
-        {
-            double score = 0;
-            for (int i = 0; i < sch.FinalExams.Length - 1; i++)
-            {
-                for (int j = i + 1; j < sch.FinalExams.Length; j++)
-                {
-                    if (sch.FinalExams[i].DayNr == sch.FinalExams[j].DayNr)
+                    if (sch.FinalExams[i].StartTs < lunchStart)
                     {
-                        if (sch.FinalExams[i].RoomNr == sch.FinalExams[j].RoomNr)
-                        {
-                            if ((sch.FinalExams[i].startTs < sch.FinalExams[j].startTs && sch.FinalExams[i].EndTs >= sch.FinalExams[j].startTs) || (sch.FinalExams[i].startTs > sch.FinalExams[j].startTs && sch.FinalExams[i].startTs <= sch.FinalExams[j].EndTs) || (sch.FinalExams[i].startTs == sch.FinalExams[j].startTs))
-                            {
-                                score += Scores.TimeOverLap;
-                            }
-                        }
+                        exams.Add(sch.FinalExams[i]);
                     }
                 }
             }
-            return score;
+            return exams.OrderBy(fe => fe.StartTs).ToList();
         }
 
-        public double GetLunchStartsSoonScore(Schedule sch)
+        public List<FinalExam> GetExamsAfterLunch(Schedule sch, int dayNr, int roomNr)
         {
-            double score = 0;
+            List<FinalExam> exams = new List<FinalExam>();
+            double lunchEnd = GetLunchStartEnd(sch, dayNr, roomNr)[1];
+            for (int i = 0; i < sch.FinalExams.Length; i++)
+            {
+                if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
+                {
+                    if (sch.FinalExams[i].EndTs > lunchEnd)
+                    {
+                        exams.Add(sch.FinalExams[i]);
+                    }
+                }
+            }
+            return exams.OrderBy(fe => fe.StartTs).ToList();
+        }
+
+        public List<List<FinalExam>> GetAllBlocks(Schedule sch)
+        {
+            List<List<FinalExam>> blocks = new List<List<FinalExam>>();
             for(int d=0; d < Constants.days; d++)
             {
                 for(int r = 0; r < Constants.roomCount; r++)
                 {
-                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
-                    double lunchStart = lunchTime[0];
-                    double lunchEnd = lunchTime[1];
-                    if (lunchStart < Constants.lunchFirstStart)
-                    {
-                        score += Scores.LunchStartsSoon;
-                    }
+                    blocks.Add(GetExamsBeforeLunch(sch, d, r));
+                    blocks.Add(GetExamsAfterLunch(sch, d, r));
                 }
             }
-            return score;
-        }
-
-        public double GetLunchEndsLateScore(Schedule sch)
-        {
-            double score = 0;
-            for (int d = 0; d < Constants.days; d++)
-            {
-                for (int r = 0; r < Constants.roomCount; r++)
-                {
-                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
-                    double lunchStart = lunchTime[0];
-                    double lunchEnd = lunchTime[1];
-                    if (lunchEnd > Constants.lunchLastEnd)
-                    {
-                        score += Scores.LunchEndsLate;
-                    }
-                }
-            }
-            return score;
-        }
-
-        public double GetLunchLengthWorstScore(Schedule sch)
-        {
-            double score = 0;
-            for (int d = 0; d < Constants.days; d++)
-            {
-                for (int r = 0; r < Constants.roomCount; r++)
-                {
-                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
-                    double lunchStart = lunchTime[0];
-                    double lunchEnd = lunchTime[1];
-                    if (lunchEnd-lunchStart+1<8 || lunchEnd-lunchStart+1>16)
-                    {
-                        score += Scores.LunchLengthWorst;
-                    }
-                }
-            }
-            return score;
-        }
-
-        public double GetLunchLengthWorseScore(Schedule sch)
-        {
-            double score = 0;
-            for (int d = 0; d < Constants.days; d++)
-            {
-                for (int r = 0; r < Constants.roomCount; r++)
-                {
-                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
-                    double lunchStart = lunchTime[0];
-                    double lunchEnd = lunchTime[1];
-                    if (lunchEnd - lunchStart+1 >= 8 && lunchEnd - lunchStart+1 < 10)
-                    {
-                        score += Scores.LunchLengthWorse;
-                    }
-                }
-            }
-            return score;
-        }
-
-        public double GetLunchLengthBadScore(Schedule sch)
-        {
-            double score = 0;
-            for (int d = 0; d < Constants.days; d++)
-            {
-                for (int r = 0; r < Constants.roomCount; r++)
-                {
-                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
-                    double lunchStart = lunchTime[0];
-                    double lunchEnd = lunchTime[1];
-                    if (lunchEnd - lunchStart+1 >= 10 && lunchEnd - lunchStart+1 < 12)
-                    {
-                        score += Scores.LunchLengthBad;
-                    }
-                }
-            }
-            return score;
+            return blocks;
         }
 
         public double[] GetLunchStartEnd(Schedule sch, int dayNr, int roomNr)
@@ -265,19 +186,19 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
                 {
-                    if (sch.FinalExams[i].startTs < Constants.lunchFirstStart)
+                    if (sch.FinalExams[i].StartTs < Constants.lunchFirstStart)
                     {
-                        if (sch.FinalExams[i].startTs > lastStartBefore1130)
+                        if (sch.FinalExams[i].StartTs > lastStartBefore1130)
                         {
-                            lastStartBefore1130 = sch.FinalExams[i].startTs;
+                            lastStartBefore1130 = sch.FinalExams[i].StartTs;
                             lastStartBefore1130sEnd = sch.FinalExams[i].EndTs;
                         }
                     }
                     else
                     {
-                        if (sch.FinalExams[i].startTs < firstStartAfter1130)
+                        if (sch.FinalExams[i].StartTs < firstStartAfter1130)
                         {
-                            firstStartAfter1130 = sch.FinalExams[i].startTs;
+                            firstStartAfter1130 = sch.FinalExams[i].StartTs;
                             firstStartAfter1130sEnd = sch.FinalExams[i].EndTs;
                         }
                     }
@@ -286,7 +207,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         if (sch.FinalExams[i].EndTs < firstEndAfter1340)
                         {
                             firstEndAfter1340 = sch.FinalExams[i].EndTs;
-                            firstEndAfter1340sStart = sch.FinalExams[i].startTs;
+                            firstEndAfter1340sStart = sch.FinalExams[i].StartTs;
                         }
                     }
                     else
@@ -294,7 +215,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         if (sch.FinalExams[i].EndTs > lastEndBefore1340)
                         {
                             lastEndBefore1340 = sch.FinalExams[i].EndTs;
-                            lastEndBefore1340sStart = sch.FinalExams[i].startTs;
+                            lastEndBefore1340sStart = sch.FinalExams[i].StartTs;
                         }
                     }
                 }
@@ -337,7 +258,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 {
                                     if (sch.FinalExams[i].RoomNr == roomNr)
                                     {
-                                        if (sch.FinalExams[i].startTs > firstStartAfter1130 && sch.FinalExams[i].startTs < lastEndBefore1340sStart)
+                                        if (sch.FinalExams[i].StartTs > firstStartAfter1130 && sch.FinalExams[i].StartTs < lastEndBefore1340sStart)
                                         {
                                             isthereathird = true;
                                             break;
@@ -390,7 +311,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 {
                                     if (sch.FinalExams[i].RoomNr == roomNr)
                                     {
-                                        if (sch.FinalExams[i].startTs > firstStartAfter1130 && sch.FinalExams[i].startTs < lastEndBefore1340sStart)
+                                        if (sch.FinalExams[i].StartTs > firstStartAfter1130 && sch.FinalExams[i].StartTs < lastEndBefore1340sStart)
                                         {
                                             isthereathird = true;
                                             break;
@@ -463,7 +384,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 {
                                     if (sch.FinalExams[i].RoomNr == roomNr)
                                     {
-                                        if (sch.FinalExams[i].startTs > firstStartAfter1130 && sch.FinalExams[i].startTs < lastEndBefore1340sStart)
+                                        if (sch.FinalExams[i].StartTs > firstStartAfter1130 && sch.FinalExams[i].StartTs < lastEndBefore1340sStart)
                                         {
                                             isthereathird = true;
                                             break;
@@ -520,7 +441,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 {
                                     if (sch.FinalExams[i].RoomNr == roomNr)
                                     {
-                                        if (sch.FinalExams[i].startTs > firstStartAfter1130 && sch.FinalExams[i].startTs < lastEndBefore1340sStart)
+                                        if (sch.FinalExams[i].StartTs > firstStartAfter1130 && sch.FinalExams[i].StartTs < lastEndBefore1340sStart)
                                         {
                                             isthereathird = true;
                                             break;
@@ -567,248 +488,84 @@ namespace FinalExamScheduling.GeneticScheduling
             return new double[] { lunchStart, lunchEnd };
         }
 
-        public double GetExamsInBlockWorstScore(Schedule sch)
+        public double ProgrammeOrLevelChangeInBlock(Schedule sch)
         {
             double score = 0;
-            for(int d=0; d < Constants.days; d++)
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
             {
-                for(int r = 0; r < Constants.roomCount; r++)
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
                 {
-                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
-                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
-                    if (firstBlock.Count.Equals(1))
+                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
                     {
-                        score += Scores.BlockLengthWorst;
+                        changeCounter++;
                     }
-                    if (lastBlock.Count.Equals(1))
-                    {
-                        score += Scores.BlockLengthWorst;
-                    }
-                    if (firstBlock.Count >= 6)
-                    {
-                        score += Scores.BlockLengthWorst;
-                    }
-                    if (lastBlock.Count >= 6)
-                    {
-                        score += Scores.BlockLengthWorst;
-                    }
+                }
+                switch (changeCounter)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        score += Scores.ProgrammeOrLevelChangeInBlockBad;
+                        break;
+                    case 2:
+                        score += Scores.ProgrammeOrLevelChangeInBlockWorse;
+                        break;
+                    default:
+                        score += Scores.ProgrammeOrLevelChangeInBlockWorst;
+                        break;
+                }
+            }
+            return score;
+        }
+        #endregion
+
+
+
+        public double GetStudentDuplicatedScore(Schedule sch)
+        {
+            double score = 0;
+            List<Student> studentBefore = new List<Student>();
+            int[] count = new int[ctx.NOStudents];
+            foreach (var fe in sch.FinalExams)
+            {
+                count[fe.Student.Id]++;
+            }
+            for (int i = 0; i < ctx.NOStudents; i++)
+            {
+                if (count[i] > 1)
+                {
+                    score += (count[i] - 1) * Scores.StudentDuplicated;
+
                 }
             }
             return score;
         }
 
-        public double GetExamsInBlockBadScore(Schedule sch)
+        public double GetTimeOverLapScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int i = 0; i < sch.FinalExams.Length - 1; i++)
             {
-                for (int r = 0; r < Constants.roomCount; r++)
+                for (int j = i + 1; j < sch.FinalExams.Length; j++)
                 {
-                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
-                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
-                    if (firstBlock.Count.Equals(2))
+                    if (sch.FinalExams[i].DayNr == sch.FinalExams[j].DayNr)
                     {
-                        score += Scores.BlockLengthBad;
-                    }
-                    if (lastBlock.Count.Equals(2))
-                    {
-                        score += Scores.BlockLengthBad;
-                    }
-                }
-            }
-            return score;
-        }
-
-        //TODO: Ez a két rész a blokkok miatt újraírandó
-        /*public double GetPresidentChangeScore(Schedule sch)
-        {
-            double score = 0;
-
-            for (int i = 0; i < sch.FinalExams.Length; i += 5)
-            {
-                if (sch.FinalExams[i].President != sch.FinalExams[i + 1].President)
-                {
-                    score += Scores.PresidentChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 1].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[i + 1].PresidentScore += Scores.PresidentChange;
-                    }
-                }
-                if (sch.FinalExams[i + 1].President != sch.FinalExams[i + 2].President)
-                {
-                    score += Scores.PresidentChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 2].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[i + 2].PresidentScore += Scores.PresidentChange;
-                    }
-                }
-                if (sch.FinalExams[i + 2].President != sch.FinalExams[i + 3].President)
-                {
-                    score += Scores.PresidentChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 3].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[i + 3].PresidentScore += Scores.PresidentChange;
-                    }
-                }
-                if (sch.FinalExams[i + 3].President != sch.FinalExams[i + 4].President)
-                {
-                    score += Scores.PresidentChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 4].PresidentComment += $"President changed: {Scores.PresidentChange}\n";
-                        sch.Details[i + 4].PresidentScore += Scores.PresidentChange;
-                    }
-                }
-            }
-            return score;
-        }
-
-        public double GetSecretaryChangeScore(Schedule sch)
-        {
-            double score = 0; 
-
-            for (int i = 0; i < sch.FinalExams.Length; i += 5)
-            {
-                if (sch.FinalExams[i].Secretary != sch.FinalExams[i + 1].Secretary)
-                {
-                    score += Scores.SecretaryChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 1].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[i + 1].SecretaryScore += Scores.SecretaryChange;
-                    }
-                }
-                if (sch.FinalExams[i + 1].Secretary != sch.FinalExams[i + 2].Secretary)
-                {
-                    score += Scores.SecretaryChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 2].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[i + 2].SecretaryScore += Scores.SecretaryChange;
-                    }
-                }
-                if (sch.FinalExams[i + 2].Secretary != sch.FinalExams[i + 3].Secretary)
-                {
-                    score += Scores.SecretaryChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 3].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[i + 3].SecretaryScore += Scores.SecretaryChange;
-                    }
-                }
-                if (sch.FinalExams[i + 3].Secretary != sch.FinalExams[i + 4].Secretary)
-                {
-                    score += Scores.SecretaryChange;
-                    if (ctx.FillDetails)
-                    {
-                        sch.Details[i + 4].SecretaryComment += $"Secretary changed: {Scores.SecretaryChange}\n";
-                        sch.Details[i + 4].SecretaryScore += Scores.SecretaryChange;
-                    }
-                }
-
-            }
-
-            return score;
-        }*/
-
-        public List<FinalExam> GetExamsBeforeLunch(Schedule sch, int dayNr, int roomNr)
-        {
-            List<FinalExam> exams = new List<FinalExam>();
-            double lunchStart = GetLunchStartEnd(sch, dayNr, roomNr)[0];
-            for(int i=0; i < sch.FinalExams.Length; i++)
-            {
-                if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
-                {
-                    if (sch.FinalExams[i].startTs < lunchStart)
-                    {
-                        exams.Add(sch.FinalExams[i]);
-                    }
-                }
-            }
-            return exams.OrderBy(fe => fe.startTs).ToList();
-        }
-
-        public List<FinalExam> GetExamsAfterLunch(Schedule sch, int dayNr, int roomNr)
-        {
-            List<FinalExam> exams = new List<FinalExam>();
-            double lunchEnd = GetLunchStartEnd(sch, dayNr, roomNr)[1];
-            for (int i = 0; i < sch.FinalExams.Length; i++)
-            {
-                if (sch.FinalExams[i].DayNr == dayNr && sch.FinalExams[i].RoomNr == roomNr)
-                {
-                    if (sch.FinalExams[i].EndTs > lunchEnd)
-                    {
-                        exams.Add(sch.FinalExams[i]);
-                    }
-                }
-            }
-            return exams.OrderBy(fe => fe.startTs).ToList();
-        }
-
-        public List<List<FinalExam>> GetAllBlocks(Schedule sch)
-        {
-            List<List<FinalExam>> blocks = new List<List<FinalExam>>();
-            for(int d=0; d < Constants.days; d++)
-            {
-                for(int r = 0; r < Constants.roomCount; r++)
-                {
-                    blocks.Add(GetExamsBeforeLunch(sch, d, r));
-                    blocks.Add(GetExamsAfterLunch(sch, d, r));
-                }
-            }
-            return blocks;
-        }
-
-        public double GetFirstExamStartsTooSoonScore(Schedule sch)
-        {
-            double score = 0;
-            for(int d = 0; d < Constants.days; d++)
-            {
-                int minstart = 120;
-                for(int i = 0; i < sch.FinalExams.Length; i++)
-                {
-                    if (sch.FinalExams[i].DayNr == d)
-                    {
-                        if (sch.FinalExams[i].startTs < minstart)
+                        if (sch.FinalExams[i].RoomNr == sch.FinalExams[j].RoomNr)
                         {
-                            minstart = sch.FinalExams[i].startTs;
+                            if ((sch.FinalExams[i].StartTs < sch.FinalExams[j].StartTs && sch.FinalExams[i].EndTs >= sch.FinalExams[j].StartTs) || (sch.FinalExams[i].StartTs > sch.FinalExams[j].StartTs && sch.FinalExams[i].StartTs <= sch.FinalExams[j].EndTs) || (sch.FinalExams[i].StartTs == sch.FinalExams[j].StartTs))
+                            {
+                                score += Scores.TimeOverLap;
+                            }
                         }
                     }
                 }
-                if (minstart < 12)
-                {
-                    score += ((12 - minstart) ^ 2) * 5;
-                }
             }
             return score;
         }
 
-        public double GetLastExamEndsTooLateScore(Schedule sch)
-        {
-            double score = 0;
-            for (int d = 0; d < Constants.days; d++)
-            {
-                int maxend = -1;
-                for (int i = 0; i < sch.FinalExams.Length; i++)
-                {
-                    if (sch.FinalExams[i].DayNr == d)
-                    {
-                        if (sch.FinalExams[i].EndTs > maxend)
-                        {
-                            maxend = sch.FinalExams[i].EndTs;
-                        }
-                    }
-                }
-                if (maxend > 107)
-                {
-                    score += ((maxend - 107) ^ 3) * 5;
-                }
-            }
-            return score;
-        }
+
 
         public double GetPresidentNotAvailableScore(Schedule sch)
         {
@@ -817,7 +574,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 FinalExam fe = sch.FinalExams[i];
                 Instructor instructor = sch.FinalExams[i].President;
-                for (int f=fe.startTs;f<=fe.EndTs; f++) {
+                for (int f=fe.StartTs;f<=fe.EndTs; f++) {
                     if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                     {
                         score += Scores.PresidentNotAvailable;
@@ -835,7 +592,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 FinalExam fe = sch.FinalExams[i];
                 Instructor instructor = sch.FinalExams[i].Secretary;
-                for (int f = fe.startTs; f <= fe.EndTs; f++)
+                for (int f = fe.StartTs; f <= fe.EndTs; f++)
                 {
                     if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                     {
@@ -854,7 +611,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 FinalExam fe = sch.FinalExams[i];
                 Instructor instructor = sch.FinalExams[i].Examiner1;
-                for (int f = fe.startTs; f <= fe.EndTs; f++)
+                for (int f = fe.StartTs; f <= fe.EndTs; f++)
                 {
                     if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                     {
@@ -875,7 +632,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 if (fe.Examiner2 != null)
                 {
                     Instructor instructor = sch.FinalExams[i].Examiner2;
-                    for (int f = fe.startTs; f <= fe.EndTs; f++)
+                    for (int f = fe.StartTs; f <= fe.EndTs; f++)
                     {
                         if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                         {
@@ -895,7 +652,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 FinalExam fe = sch.FinalExams[i];
                 Instructor instructor = sch.FinalExams[i].Member;
-                for (int f = fe.startTs; f <= fe.EndTs; f++)
+                for (int f = fe.StartTs; f <= fe.EndTs; f++)
                 {
                     if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                     {
@@ -914,7 +671,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 FinalExam fe = sch.FinalExams[i];
                 Instructor instructor = sch.FinalExams[i].Supervisor;
-                for (int f = fe.startTs; f <= fe.EndTs; f++)
+                for (int f = fe.StartTs; f <= fe.EndTs; f++)
                 {
                     if (instructor.Availability[fe.DayNr * Constants.tssInOneDay + f] == false)
                     {
@@ -925,6 +682,8 @@ namespace FinalExamScheduling.GeneticScheduling
             }
             return score;
         }
+
+
 
         public double GetPresidentInMoreRoomsScore(Schedule sch)
         {
@@ -941,9 +700,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             if (fei.RoomNr != fej.RoomNr)
                             {
                                 bool notfinished = true;
-                                for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                 {
-                                    for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                    for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                     {
                                         if (ti == tj)
                                         {
@@ -978,9 +737,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             if (fei.RoomNr != fej.RoomNr)
                             {
                                 bool notfinished = true;
-                                for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                 {
-                                    for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                    for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                     {
                                         if (ti == tj)
                                         {
@@ -1020,9 +779,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             if (fei.Examiner1.Equals(fej.Examiner1))
                             {
                                 bool notfinished = true;
-                                for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                 {
-                                    for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                    for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                     {
                                         if (ti == tj)
                                         {
@@ -1043,9 +802,9 @@ namespace FinalExamScheduling.GeneticScheduling
                                         if (fei.Examiner1.Equals(fej.Examiner2))
                                         {
                                             bool notfinished = true;
-                                            for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                            for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                             {
-                                                for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                                for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                                 {
                                                     if (ti == tj)
                                                     {
@@ -1060,9 +819,9 @@ namespace FinalExamScheduling.GeneticScheduling
                                         if (fei.Examiner2.Equals(fej.Examiner1))
                                         {
                                             bool notfinished = true;
-                                            for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                            for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                             {
-                                                for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                                for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                                 {
                                                     if (ti == tj)
                                                     {
@@ -1077,9 +836,9 @@ namespace FinalExamScheduling.GeneticScheduling
                                         if (fei.Examiner2.Equals(fej.Examiner2))
                                         {
                                             bool notfinished = true;
-                                            for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                            for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                             {
-                                                for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                                for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                                 {
                                                     if (ti == tj)
                                                     {
@@ -1097,9 +856,9 @@ namespace FinalExamScheduling.GeneticScheduling
                                         if (fei.Examiner2.Equals(fej.Examiner1))
                                         {
                                             bool notfinished = true;
-                                            for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                            for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                             {
-                                                for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                                for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                                 {
                                                     if (ti == tj)
                                                     {
@@ -1118,9 +877,9 @@ namespace FinalExamScheduling.GeneticScheduling
                                     if (fei.Examiner1.Equals(fej.Examiner2))
                                     {
                                         bool notfinished = true;
-                                        for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                        for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                         {
-                                            for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                            for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                             {
                                                 if (ti == tj)
                                                 {
@@ -1157,9 +916,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             if (fei.RoomNr != fej.RoomNr)
                             {
                                 bool notfinished = true;
-                                for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                 {
-                                    for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                    for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                     {
                                         if (ti == tj)
                                         {
@@ -1194,9 +953,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             if (fei.RoomNr != fej.RoomNr)
                             {
                                 bool notfinished = true;
-                                for (int ti = fei.startTs; ti <= fei.EndTs; ti++)
+                                for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
                                 {
-                                    for (int tj = fej.startTs; tj <= fej.EndTs; tj++)
+                                    for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
                                     {
                                         if (ti == tj)
                                         {
@@ -1214,6 +973,299 @@ namespace FinalExamScheduling.GeneticScheduling
             }
             return score;
         }
+
+
+
+        public double GetBlockLengthWorstScore(Schedule sch)
+        {
+            double score = 0;
+            for(int d=0; d < Constants.days; d++)
+            {
+                for(int r = 0; r < Constants.roomCount; r++)
+                {
+                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
+                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
+                    if (firstBlock.Count.Equals(1))
+                    {
+                        score += Scores.BlockLengthWorst;
+                    }
+                    if (lastBlock.Count.Equals(1))
+                    {
+                        score += Scores.BlockLengthWorst;
+                    }
+                    if (firstBlock.Count >= 6)
+                    {
+                        score += Scores.BlockLengthWorst;
+                    }
+                    if (lastBlock.Count >= 6)
+                    {
+                        score += Scores.BlockLengthWorst;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetBlockLengthBadScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
+                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
+                    if (firstBlock.Count.Equals(2))
+                    {
+                        score += Scores.BlockLengthBad;
+                    }
+                    if (lastBlock.Count.Equals(2))
+                    {
+                        score += Scores.BlockLengthBad;
+                    }
+                }
+            }
+            return score;
+        }
+
+
+
+        //TODO: nem akarom 3x lefuttatni (most csak 1x fut), de látványosabbak a pontok, ha külön vannak szedve
+        public double GetProgrammeOrLevelChangeInBlockWorstScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        score += Scores.ProgrammeOrLevelChangeInBlockWorst;
+                        break;
+                }
+            }
+            return score;
+        }
+
+        public double GetProgrammeOrLevelChangeInBlockWorseScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 2:
+                        score += Scores.ProgrammeOrLevelChangeInBlockWorse;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return score;
+        }
+
+        public double GetProgrammeOrLevelChangeInBlockBadScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 1:
+                        score += Scores.ProgrammeOrLevelChangeInBlockBad;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return score;
+        }
+
+
+
+        public double GetPresidentChangeInBlockScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach(List<FinalExam> block in blocks)
+            {
+                for(int i=1; i < block.Count; i++)
+                {
+                    if (!block[i].President.Equals(block[i - 1].President))
+                    {
+                        score += Scores.PresidentChangeInBlock;
+                    }
+                }
+            }
+            return score;
+        }
+        
+        public double GetSecretaryChangeInBlockScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!block[i].Secretary.Equals(block[i - 1].Secretary))
+                    {
+                        score += Scores.SecretaryChangeInBlock;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetPresidentChangeInDayScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
+                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
+                    if (firstBlock.Count > 0 && lastBlock.Count > 0)
+                    {
+                        if (!firstBlock.Last().President.Equals(lastBlock.First().President))
+                        {
+                            score += Scores.PresidentChangeInDay;
+                        }
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetSecretaryChangeInDayScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    List<FinalExam> firstBlock = GetExamsBeforeLunch(sch, d, r);
+                    List<FinalExam> lastBlock = GetExamsAfterLunch(sch, d, r);
+                    if (firstBlock.Count > 0 && lastBlock.Count > 0)
+                    {
+                        if (!firstBlock.Last().Secretary.Equals(lastBlock.First().Secretary))
+                        {
+                            score += Scores.SecretaryChangeInDay;
+                        }
+                    }
+                }
+            }
+            return score;
+        }
+
+
+
+        public double GetInstructorBadProgrammeScore(Schedule sch)
+        {
+            double score = 0;
+            foreach(List<FinalExam> block in GetAllBlocks(sch))
+            {
+                foreach(FinalExam fe in block)
+                {
+                    if (!fe.President.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
+                    if (!fe.Secretary.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
+                    if (!fe.Member.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
+                }
+            }
+            return score;
+        }
+
+        #region slow function - instructor breaks
+        /*//only works as expected if instructor has maximum one exam at a time - too slow :(
+        public double GetInstructorBreakScore(Schedule sch)
+        {
+            double score = 0;
+            List<FinalExam> block = new List<FinalExam>();
+            for (int d = 0; d < Constants.days; d++)
+            {
+                foreach (Instructor inst in ctx.Instructors)
+                {
+                    List<int> startendTimes = new List<int>();
+                    for (int r = 0; r < Constants.roomCount; r++)
+                    {
+                        foreach(FinalExam fe in GetExamsBeforeLunch(sch, d, r))
+                        {
+                            if(inst.Equals(fe.Supervisor) || inst.Equals(fe.President) || inst.Equals(fe.Secretary) || inst.Equals(fe.Member) || inst.Equals(fe.Examiner1) || inst.Equals(fe.Examiner2))
+                            {
+                                startendTimes.Add(fe.StartTs);
+                                startendTimes.Add(fe.EndTs);
+                            }
+                        }
+                    }
+                    startendTimes.Sort();
+                    for (int i = 1; i < startendTimes.Count - 2; i += 2)
+                    {
+                        if (startendTimes[i + 1] - startendTimes[i] > 1)
+                        {
+                            score += Scores.InstructorBreak;
+                        }
+                    }
+                    startendTimes.Clear();
+                    for (int r = 0; r < Constants.roomCount; r++)
+                    {
+                        foreach (FinalExam fe in GetExamsAfterLunch(sch, d, r))
+                        {
+                            if (inst.Equals(fe.Supervisor) || inst.Equals(fe.President) || inst.Equals(fe.Secretary) || inst.Equals(fe.Member) || inst.Equals(fe.Examiner1) || inst.Equals(fe.Examiner2))
+                            {
+                                startendTimes.Add(fe.StartTs);
+                                startendTimes.Add(fe.EndTs);
+                            }
+                        }
+                    }
+                    startendTimes.Sort();
+                    for (int i = 1; i < startendTimes.Count - 2; i += 2)
+                    {
+                        if (startendTimes[i + 1] - startendTimes[i] > 1)
+                        {
+                            score += Scores.InstructorBreak;
+                        }
+                    }
+                }
+            }
+            return score;
+        }
+        */
+        #endregion
+
+
 
         public double GetPresidentWorkloadWorstScore(Schedule schedule)
         {
@@ -1502,6 +1554,8 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
+
+
         public double GetPresidentSelfStudentScore(Schedule sch)
         {
             double score = 0;
@@ -1538,6 +1592,8 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
+
+
         public double GetExaminerNotPresidentScore(Schedule sch)
         {
             double score = 0;
@@ -1562,6 +1618,153 @@ namespace FinalExamScheduling.GeneticScheduling
                     {
                         sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
                         sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
+                    }
+                }
+            }
+            return score;
+        }
+
+
+
+        public double GetFirstExamStartsSoonScore(Schedule sch)
+        {
+            double score = 0;
+            for(int d = 0; d < Constants.days; d++)
+            {
+                int minstart = 120;
+                for(int i = 0; i < sch.FinalExams.Length; i++)
+                {
+                    if (sch.FinalExams[i].DayNr == d)
+                    {
+                        if (sch.FinalExams[i].StartTs < minstart)
+                        {
+                            minstart = sch.FinalExams[i].StartTs;
+                        }
+                    }
+                }
+                if (minstart < 12)
+                {
+                    score += ((12 - minstart) ^ 2) * 5;
+                }
+            }
+            return score;
+        }
+
+        public double GetLastExamEndsLateScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                int maxend = -1;
+                for (int i = 0; i < sch.FinalExams.Length; i++)
+                {
+                    if (sch.FinalExams[i].DayNr == d)
+                    {
+                        if (sch.FinalExams[i].EndTs > maxend)
+                        {
+                            maxend = sch.FinalExams[i].EndTs;
+                        }
+                    }
+                }
+                if (maxend > 107)
+                {
+                    score += ((maxend - 107) ^ 3) * 5;
+                }
+            }
+            return score;
+        }
+
+
+
+        public double GetLunchStartsSoonScore(Schedule sch)
+        {
+            double score = 0;
+            for(int d=0; d < Constants.days; d++)
+            {
+                for(int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchStart < Constants.lunchFirstStart)
+                    {
+                        score += Scores.LunchStartsSoon;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchEndsLateScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd > Constants.lunchLastEnd)
+                    {
+                        score += Scores.LunchEndsLate;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthWorstScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd-lunchStart+1<8 || lunchEnd-lunchStart+1>16)
+                    {
+                        score += Scores.LunchLengthWorst;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthWorseScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd - lunchStart+1 >= 8 && lunchEnd - lunchStart+1 < 10)
+                    {
+                        score += Scores.LunchLengthWorse;
+                    }
+                }
+            }
+            return score;
+        }
+
+        public double GetLunchLengthBadScore(Schedule sch)
+        {
+            double score = 0;
+            for (int d = 0; d < Constants.days; d++)
+            {
+                for (int r = 0; r < Constants.roomCount; r++)
+                {
+                    double[] lunchTime = GetLunchStartEnd(sch, d, r);
+                    double lunchStart = lunchTime[0];
+                    double lunchEnd = lunchTime[1];
+                    if (lunchEnd - lunchStart+1 >= 10 && lunchEnd - lunchStart+1 < 12)
+                    {
+                        score += Scores.LunchLengthBad;
                     }
                 }
             }

@@ -27,24 +27,31 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double BlockLengthWorst = 1000;
         public const double BlockLengthBad = 40;
 
-        /*public const double PresidentChange = 1000;
-        public const double SecretaryChange = 1000;*/
+        public const double ProgrammeOrLevelChangeInBlockWorst = 10000;
+        public const double ProgrammeOrLevelChangeInBlockWorse = 100;
+        public const double ProgrammeOrLevelChangeInBlockBad = 20;
+
+        public const double PresidentChangeInBlock = 1000;
+        public const double SecretaryChangeInBlock = 1000;
+        public const double PresidentChangeInDay = 10;
+        public const double SecretaryChangeInDay = 10;
+
+        public const double InstructorBadProgramme = 10000;
+        //public const double InstructorBreak = 2;
 
         public const double PresidentWorkloadWorst = 30;
         public const double PresidentWorkloadWorse = 20;
         public const double PresidentWorkloadBad = 10;
-
         public const double SecretaryWorkloadWorst = 30;
         public const double SecretaryWorkloadWorse = 20;
         public const double SecretaryWorkloadBad = 10;
-
-
         public const double MemberWorkloadWorst = 30;
         public const double MemberWorkloadWorse = 20;
         public const double MemberWorkloadBad = 10;
 
         public const double PresidentSelfStudent = 2;
         public const double SecretarySelfStudent = 1;
+
         public const double ExaminerNotPresident = 1;
 
         public const string FirstExamStartsSoon = "x^2*5";

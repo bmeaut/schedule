@@ -351,7 +351,7 @@ namespace FinalExamScheduling.Model
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.DayNr;
                     ws_scheduling.Cells[i, 2].Value = exam.RoomNr;
-                    ws_scheduling.Cells[i, 3].Value = exam.startTs;
+                    ws_scheduling.Cells[i, 3].Value = exam.StartTs;
                     ws_scheduling.Cells[i, 4].Value = exam.EndTs;
 
                     ws_scheduling.Cells[i, 5].Value = exam.Student.Name;
@@ -780,10 +780,10 @@ namespace FinalExamScheduling.Model
                 {
                     if (fe != null)
                     {
-                        ws_scheduling.Cells[row, 1].Value = fe.startTs / Constants.tssInOneDay;
+                        ws_scheduling.Cells[row, 1].Value = fe.StartTs / Constants.tssInOneDay;
                         ws_scheduling.Cells[row, 2].Value = fe.RoomNr;
 
-                        int tsStart = fe.startTs % Constants.tssInOneDay;
+                        int tsStart = fe.StartTs % Constants.tssInOneDay;
                         var dateTime = dt.AddMinutes(5 * tsStart);
                         ws_scheduling.Cells[row, 3].Value = dateTime.ToString("HH:mm");
 
