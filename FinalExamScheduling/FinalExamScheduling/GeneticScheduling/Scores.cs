@@ -27,9 +27,12 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double BlockLengthWorst = 1000;
         public const double BlockLengthBad = 40;
 
-        public const double ProgrammeOrLevelChangeInBlockWorst = 10000;
-        public const double ProgrammeOrLevelChangeInBlockWorse = 100;
-        public const double ProgrammeOrLevelChangeInBlockBad = 20;
+        public const double LevelChangeInBlockWorst = 10000;
+        public const double LevelChangeInBlockWorse = 100;
+        public const double LevelChangeInBlockBad = 20;
+        public const double ProgrammeChangeInBlockWorst = 10000;
+        public const double ProgrammeChangeInBlockWorse = 100;
+        public const double ProgrammeChangeInBlockBad = 20;
 
         public const double PresidentChangeInBlock = 1000;
         public const double SecretaryChangeInBlock = 1000;

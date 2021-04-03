@@ -43,9 +43,12 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetBlockLengthWorstScore,
                 GetBlockLengthBadScore,
 
-                GetProgrammeOrLevelChangeInBlockWorstScore,
-                GetProgrammeOrLevelChangeInBlockWorseScore,
-                GetProgrammeOrLevelChangeInBlockBadScore,
+                GetLevelChangeInBlockWorstScore,
+                GetLevelChangeInBlockWorseScore,
+                GetLevelChangeInBlockBadScore,
+                GetProgrammeChangeInBlockWorstScore,
+                GetProgrammeChangeInBlockWorseScore,
+                GetProgrammeChangeInBlockBadScore,
 
                 GetPresidentChangeInBlockScore,
                 GetSecretaryChangeInBlockScore,
@@ -488,7 +491,7 @@ namespace FinalExamScheduling.GeneticScheduling
             return new double[] { lunchStart, lunchEnd };
         }
 
-        public double ProgrammeOrLevelChangeInBlock(Schedule sch)
+        /*public double ProgrammeOrLevelChangeInBlock(Schedule sch)
         {
             double score = 0;
             List<List<FinalExam>> blocks = GetAllBlocks(sch);
@@ -518,7 +521,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
             return score;
-        }
+        }*/
         #endregion
 
 
@@ -1030,8 +1033,8 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
 
-        //TODO: nem akarom 3x lefuttatni (most csak 1x fut), de látványosabbak a pontok, ha külön vannak szedve
-        public double GetProgrammeOrLevelChangeInBlockWorstScore(Schedule sch)
+        //TODO: nem akarom 3x lefuttatni, de látványosabbak a pontok, ha külön vannak szedve
+        public double GetLevelChangeInBlockWorstScore(Schedule sch)
         {
             double score = 0;
             List<List<FinalExam>> blocks = GetAllBlocks(sch);
@@ -1040,7 +1043,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 int changeCounter = 0;
                 for (int i = 1; i < block.Count; i++)
                 {
-                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    if (!block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel))
                     {
                         changeCounter++;
                     }
@@ -1054,14 +1057,14 @@ namespace FinalExamScheduling.GeneticScheduling
                     case 2:
                         break;
                     default:
-                        score += Scores.ProgrammeOrLevelChangeInBlockWorst;
+                        score += Scores.LevelChangeInBlockWorst;
                         break;
                 }
             }
             return score;
         }
 
-        public double GetProgrammeOrLevelChangeInBlockWorseScore(Schedule sch)
+        public double GetLevelChangeInBlockWorseScore(Schedule sch)
         {
             double score = 0;
             List<List<FinalExam>> blocks = GetAllBlocks(sch);
@@ -1070,7 +1073,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 int changeCounter = 0;
                 for (int i = 1; i < block.Count; i++)
                 {
-                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    if (!block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel))
                     {
                         changeCounter++;
                     }
@@ -1078,7 +1081,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 switch (changeCounter)
                 {
                     case 2:
-                        score += Scores.ProgrammeOrLevelChangeInBlockWorse;
+                        score += Scores.LevelChangeInBlockWorse;
                         break;
                     default:
                         break;
@@ -1087,7 +1090,7 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
-        public double GetProgrammeOrLevelChangeInBlockBadScore(Schedule sch)
+        public double GetLevelChangeInBlockBadScore(Schedule sch)
         {
             double score = 0;
             List<List<FinalExam>> blocks = GetAllBlocks(sch);
@@ -1096,7 +1099,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 int changeCounter = 0;
                 for (int i = 1; i < block.Count; i++)
                 {
-                    if (!(block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel) && block[i].Programme.Equals(block[i - 1].Programme)))
+                    if (!block[i].DegreeLevel.Equals(block[i - 1].DegreeLevel))
                     {
                         changeCounter++;
                     }
@@ -1104,7 +1107,89 @@ namespace FinalExamScheduling.GeneticScheduling
                 switch (changeCounter)
                 {
                     case 1:
-                        score += Scores.ProgrammeOrLevelChangeInBlockBad;
+                        score += Scores.LevelChangeInBlockBad;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return score;
+        }
+
+        public double GetProgrammeChangeInBlockWorstScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!block[i].Programme.Equals(block[i - 1].Programme))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    default:
+                        score += Scores.ProgrammeChangeInBlockWorst;
+                        break;
+                }
+            }
+            return score;
+        }
+
+        public double GetProgrammeChangeInBlockWorseScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!block[i].Programme.Equals(block[i - 1].Programme))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 2:
+                        score += Scores.ProgrammeChangeInBlockWorse;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return score;
+        }
+
+        public double GetProgrammeChangeInBlockBadScore(Schedule sch)
+        {
+            double score = 0;
+            List<List<FinalExam>> blocks = GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
+            {
+                int changeCounter = 0;
+                for (int i = 1; i < block.Count; i++)
+                {
+                    if (!block[i].Programme.Equals(block[i - 1].Programme))
+                    {
+                        changeCounter++;
+                    }
+                }
+                switch (changeCounter)
+                {
+                    case 1:
+                        score += Scores.ProgrammeChangeInBlockBad;
                         break;
                     default:
                         break;
@@ -1208,6 +1293,7 @@ namespace FinalExamScheduling.GeneticScheduling
             return score;
         }
 
+        //slow function, outcommented
         #region slow function - instructor breaks
         /*//only works as expected if instructor has maximum one exam at a time - too slow :(
         public double GetInstructorBreakScore(Schedule sch)

@@ -8,7 +8,7 @@ namespace FinalExamScheduling.Model
 {
     static class Constants
     {
-        public const int days = 7; //let be calculated out of input -> rip
+        public const int days = 7; //let be calculated out of input -> rip <- or not rip (?)
         //public const int daysCS = 8;
         //public const int daysEE = 5;
         public const int roomCount = 2;

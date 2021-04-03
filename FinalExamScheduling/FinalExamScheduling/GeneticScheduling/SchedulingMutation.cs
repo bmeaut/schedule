@@ -31,17 +31,17 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
             //swaps 2 exam's timeandplace
-            if (RandomizationProvider.Current.GetDouble() <= probability*3)
+            if (RandomizationProvider.Current.GetDouble() <= probability * 3)
             {
                 var indexes = RandomizationProvider.Current.GetUniqueInts(2, 0, chromosome.Length);
                 var firstIndex = indexes[0];
                 var secondIndex = indexes[1];
-                var fe1= (FinalExam)chromosome.GetGene(firstIndex).Value;
-                var fe2= (FinalExam)chromosome.GetGene(secondIndex).Value;
-                if(fe1.Student.ExamCourse2!=null && fe2.Student.ExamCourse2!=null || fe1.Student.ExamCourse2==null && fe2.Student.ExamCourse2 == null)
+                var fe1 = (FinalExam)chromosome.GetGene(firstIndex).Value;
+                var fe2 = (FinalExam)chromosome.GetGene(secondIndex).Value;
+                if (fe1.Student.ExamCourse2 != null && fe2.Student.ExamCourse2 != null || fe1.Student.ExamCourse2 == null && fe2.Student.ExamCourse2 == null)
                 {
-                    var firstGene =fe1.Clone();
-                    var secondGene =fe2.Clone();
+                    var firstGene = fe1.Clone();
+                    var secondGene = fe2.Clone();
                     fe1.DayNr = secondGene.DayNr;
                     fe1.RoomNr = secondGene.RoomNr;
                     fe1.StartTs = secondGene.StartTs;
@@ -70,7 +70,7 @@ namespace FinalExamScheduling.GeneticScheduling
             //set exam's day to examiner's availability
             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
             {
-                foreach(FinalExam fe in sch.FinalExams)
+                foreach (FinalExam fe in sch.FinalExams)
                 {
                     if (fe.Student.ExamCourse2 != null)
                     {
@@ -98,9 +98,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             }
                             for (int i = 0; i < Constants.days * Constants.tssInOneDay; i++)
                             {
-                                foreach(Instructor ex1 in allexaminers1)
+                                foreach (Instructor ex1 in allexaminers1)
                                 {
-                                    foreach(Instructor ex2 in allexaminers2)
+                                    foreach (Instructor ex2 in allexaminers2)
                                     {
                                         if (fe.Examiner1.Availability[i] && fe.Examiner2.Availability[i])
                                         {
@@ -289,6 +289,45 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
 
+            //instructors shall meet the programme
+            if (RandomizationProvider.Current.GetDouble() <= probability * 10)
+            {
+                List<List<FinalExam>> blocks = new SchedulingFitness(ctx).GetAllBlocks(sch);
+                foreach(List<FinalExam> block in blocks)
+                {
+                    for (int i = 0; i < block.Count; i++)
+                    {
+                        FinalExam fe = block[i];
+                        if (!fe.President.Programs.HasFlag(fe.Programme) && RandomizationProvider.Current.GetDouble() <= probability * 10)
+                        {
+                            var index = RandomizationProvider.Current.GetInt(0, chromosome.Length);
+                            var fe1 = (FinalExam)chromosome.GetGene(index).Value;
+                            var fe2 = fe;
+                            if (fe1.Student.ExamCourse2 != null && fe2.Student.ExamCourse2 != null || fe1.Student.ExamCourse2 == null && fe2.Student.ExamCourse2 == null)
+                            {
+                                var firstGene = fe1.Clone();
+                                var secondGene = fe2.Clone();
+                                fe1.DayNr = secondGene.DayNr;
+                                fe1.RoomNr = secondGene.RoomNr;
+                                fe1.StartTs = secondGene.StartTs;
+                                fe2.DayNr = firstGene.DayNr;
+                                fe2.RoomNr = firstGene.RoomNr;
+                                fe2.StartTs = firstGene.StartTs;
+                            }
+                        }
+                        if (!fe.President.Programs.HasFlag(fe.Programme)) fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
+                        if (!fe.Secretary.Programs.HasFlag(fe.Programme)) fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+                        if (!fe.Member.Programs.HasFlag(fe.Programme)) fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
+                    }
+                }
+            }
+
+            //if too many programme or degree level changes, replace some exams
+            if (RandomizationProvider.Current.GetDouble() <= probability * 10)
+            {
+                DegreeLevelChanges(sch, chromosome);
+            }
+
             //Fix block lengths
             if (RandomizationProvider.Current.GetDouble() <= probability * 5)
             {
@@ -300,7 +339,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
-                        for(int i=0; i<=1; i++)
+                        for (int i = 0; i <= 1; i++)
                         {
                             if (blocks[d + r + i].Count < 3 && blocks[d + r + i].Count > 0) lessThanThree.Add(blocks[d + r + i]);
                             else if (blocks[d + r + i].Count > 5) moreThanFive.Add(blocks[d + r + i]);
@@ -308,12 +347,12 @@ namespace FinalExamScheduling.GeneticScheduling
                         }
                     }
                 }
-                foreach(List<FinalExam> block in moreThanFive)
+                foreach (List<FinalExam> block in moreThanFive)
                 {
                     while (block.Count > 5)
                     {
                         bool replaced = false;
-                        foreach(List<FinalExam> smallblock in lessThanThree)
+                        foreach (List<FinalExam> smallblock in lessThanThree)
                         {
                             if (smallblock.Count < 5)
                             {
@@ -331,7 +370,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         }
                         if (!replaced)
                         {
-                            foreach(List<FinalExam> normalblock in threeOrFour)
+                            foreach (List<FinalExam> normalblock in threeOrFour)
                             {
                                 if (normalblock.Count < 5)
                                 {
@@ -350,7 +389,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         if (!replaced) break;
                     }
                 }
-                foreach(List<FinalExam> block in lessThanThree)
+                foreach (List<FinalExam> block in lessThanThree)
                 {
                     if (block.Count < 3)
                     {
@@ -378,8 +417,8 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
 
-            //Swipe exams in blocks, then fix lunchtime
-            if (RandomizationProvider.Current.GetDouble() <= probability * 5)
+            //Swipe exams in blocks, then fix lunchtime and spaces
+            if (RandomizationProvider.Current.GetDouble() <= probability * 20) //TODO: isn't it too little?
             {
                 for (int d = 0; d < Constants.days; d++)
                 {
@@ -391,9 +430,9 @@ namespace FinalExamScheduling.GeneticScheduling
                         if (RandomizationProvider.Current.GetDouble() <= probability * 5)
                         {
                             //if block lenghts worst, replace some exams from block
-                            if(examsBeforeLunch.Count<2 || examsBeforeLunch.Count > 5)
+                            if (examsBeforeLunch.Count < 2 || examsBeforeLunch.Count > 5)
                             {
-                                for(int i=0; i < examsBeforeLunch.Count; i++)
+                                for (int i = 0; i < examsBeforeLunch.Count; i++)
                                 {
                                     if (RandomizationProvider.Current.GetDouble() <= probability * 10)
                                     {
@@ -450,6 +489,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         }
                         examsBeforeLunch = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r);
                         examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r);
+
                         //clean up overlaps and spaces
                         for (int i = 1; i < examsBeforeLunch.Count; i++)
                         {
@@ -477,47 +517,46 @@ namespace FinalExamScheduling.GeneticScheduling
                         double[] lunchTime = new SchedulingFitness(ctx).GetLunchStartEnd(sch, d, r);
                         if (lunchTime[1] - lunchTime[0] + 1 > 16)
                         {
-                                int randDiff = RandomizationProvider.Current.GetInt(0, (int)((lunchTime[1] - lunchTime[0] - 10) / 2));
-                                for (int e = 0; e < examsBeforeLunch.Count; e++)
+                            int randDiff = RandomizationProvider.Current.GetInt(0, (int)((lunchTime[1] - lunchTime[0] - 10) / 2));
+                            for (int e = 0; e < examsBeforeLunch.Count; e++)
+                            {
+                                if (examsBeforeLunch[e].EndTs + randDiff < Constants.tssInOneDay)
                                 {
-                                    if (examsBeforeLunch[e].EndTs + randDiff < Constants.tssInOneDay)
-                                    {
-                                        examsBeforeLunch[e].StartTs += randDiff;
-                                    }
+                                    examsBeforeLunch[e].StartTs += randDiff;
                                 }
-                                randDiff = RandomizationProvider.Current.GetInt(0, (int)((lunchTime[1] - lunchTime[0] - 10) / 2));
-                                for (int e = 0; e < examsAfterLunch.Count; e++)
+                            }
+                            randDiff = RandomizationProvider.Current.GetInt(0, (int)((lunchTime[1] - lunchTime[0] - 10) / 2));
+                            for (int e = 0; e < examsAfterLunch.Count; e++)
+                            {
+                                if (examsAfterLunch[e].StartTs - randDiff >= 0)
                                 {
-                                    if (examsAfterLunch[e].StartTs - randDiff >= 0)
-                                    {
-                                        examsAfterLunch[e].StartTs -= randDiff;
-                                    }
+                                    examsAfterLunch[e].StartTs -= randDiff;
                                 }
+                            }
                         }
-                        else if(lunchTime[1] - lunchTime[0] + 1 < 8)
+                        else if (lunchTime[1] - lunchTime[0] + 1 < 8)
                         {
-                                int randDiff = RandomizationProvider.Current.GetInt(0, (int)((14 - (lunchTime[1] - lunchTime[0])) / 2));
-                                for (int e = 0; e < examsBeforeLunch.Count; e++)
+                            int randDiff = RandomizationProvider.Current.GetInt(0, (int)((14 - (lunchTime[1] - lunchTime[0])) / 2));
+                            for (int e = 0; e < examsBeforeLunch.Count; e++)
+                            {
+                                if (examsBeforeLunch[e].StartTs - randDiff >= 0)
                                 {
-                                    if (examsBeforeLunch[e].StartTs - randDiff >= 0)
-                                    {
-                                        examsBeforeLunch[e].StartTs -= randDiff;
-                                    }
+                                    examsBeforeLunch[e].StartTs -= randDiff;
                                 }
-                                for (int e = 0; e < examsAfterLunch.Count; e++)
+                            }
+                            for (int e = 0; e < examsAfterLunch.Count; e++)
+                            {
+                                if (examsAfterLunch[e].EndTs + randDiff < Constants.tssInOneDay)
                                 {
-                                    if (examsAfterLunch[e].EndTs + randDiff < Constants.tssInOneDay)
-                                    {
-                                        examsAfterLunch[e].StartTs += randDiff;
-                                    }
+                                    examsAfterLunch[e].StartTs += randDiff;
                                 }
-
+                            }
                         }
                         //fix lunch start and end
                         if (lunchTime[0] < Constants.lunchFirstStart)
                         {
                             int randDiff = RandomizationProvider.Current.GetInt((int)(Constants.lunchFirstStart - lunchTime[0]), (int)(Constants.lunchLastEnd - lunchTime[0] - 9));
-                            for(int i = 0; i < examsBeforeLunch.Count; i++)
+                            for (int i = 0; i < examsBeforeLunch.Count; i++)
                             {
                                 examsBeforeLunch[i].StartTs += randDiff;
                             }
@@ -705,62 +744,162 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
 
-            //if instructors present in more rooms, replace them
-            if (RandomizationProvider.Current.GetDouble() <= probability * 5)
+            //if supervisor can be president, let be president
+            if (RandomizationProvider.Current.GetDouble() <= probability * 8)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int i = 0; i < ctx.NOStudents; i++)
                 {
-                    for (int r1 = 0; r1 < Constants.roomCount - 1; r1++)
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President)
                     {
-                        for(int r2 = 1; r2 < Constants.roomCount; r2++)
+                        finalExam.President = finalExam.Supervisor;
+                        //chromosome.ReplaceGene(i, gene);
+                    }
+                }
+            }
+
+            //if supervisor can be secretary, let be secretary
+            if (RandomizationProvider.Current.GetDouble() <= probability * 8)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) && finalExam.Supervisor != finalExam.Secretary)
+                    {
+                        finalExam.Secretary = finalExam.Supervisor;
+                        //chromosome.ReplaceGene(i, gene);
+                    }
+                }
+            }
+
+            //if supervisor can be member, let be member
+            if (RandomizationProvider.Current.GetDouble() <= probability * 8)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Member) && finalExam.Supervisor != finalExam.Member)
+                    {
+                        finalExam.Member = finalExam.Supervisor;
+                        //chromosome.ReplaceGene(i, gene);
+                    }
+                }
+            }
+
+            //if supervisor can be examiner, let be examiner
+            if (RandomizationProvider.Current.GetDouble() <= probability * 8)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Student.ExamCourse1.Instructors.Contains(finalExam.Supervisor) && finalExam.Supervisor!=finalExam.Examiner1)
+                    {
+                        finalExam.Examiner1 = finalExam.Supervisor;
+                    }
+                    else if (finalExam.Examiner2 != null)
+                    {
+                        if (finalExam.Student.ExamCourse2.Instructors.Contains(finalExam.Supervisor) && finalExam.Supervisor != finalExam.Examiner2)
                         {
-                            List<FinalExam> exams1 = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r1);
-                            List<FinalExam> examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r1);
-                            foreach (FinalExam fe in examsAfterLunch)
-                            {
-                                exams1.Add(fe);
-                            }
-                            List<FinalExam> exams2 = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r2);
-                            examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r2);
-                            foreach (FinalExam fe in examsAfterLunch)
-                            {
-                                exams2.Add(fe);
-                            }
-                            foreach(FinalExam fe1 in exams1)
-                            {
-                                foreach(FinalExam fe2 in exams2)
-                                {
-                                    if(fe1.StartTs<=fe2.StartTs &&fe1.EndTs>=fe2.StartTs || fe2.StartTs <= fe1.StartTs && fe2.EndTs >= fe1.StartTs)
-                                    {
-                                        if (fe1.President.Equals(fe2.President)) fe2.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
-                                        if (fe1.Secretary.Equals(fe2.Secretary)) fe2.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
-                                        if (fe1.Member.Equals(fe2.Member)) fe2.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-                                    }
-                                }
-                            }
+                            finalExam.Examiner2 = finalExam.Supervisor;
+                        }
+                    }
+                }
+            }
+
+            //if examiner can be president, let be president
+            if (RandomizationProvider.Current.GetDouble() <= probability * 4)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Examiner1.Roles.HasFlag(Roles.President) && finalExam.Examiner1 != finalExam.President)
+                    {
+                        finalExam.President = finalExam.Examiner1;
+                    }
+                    else if(finalExam.Examiner2 != null)
+                    {
+                        if (finalExam.Examiner2.Roles.HasFlag(Roles.President) && finalExam.Examiner2 != finalExam.President)
+                        {
+                            finalExam.President = finalExam.Examiner2;
+                        }
+                    }
+                }
+            }
+
+            //if examiner can be secretary, let be secretary
+            if (RandomizationProvider.Current.GetDouble() <= probability * 4)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Examiner1.Roles.HasFlag(Roles.Secretary) && finalExam.Examiner1 != finalExam.Secretary)
+                    {
+                        finalExam.Secretary = finalExam.Examiner1;
+                        //chromosome.ReplaceGene(i, gene);
+                    }
+                    else if (finalExam.Examiner2 != null)
+                    {
+                        if (finalExam.Examiner2.Roles.HasFlag(Roles.Secretary) && finalExam.Examiner2 != finalExam.Secretary)
+                        {
+                            finalExam.Secretary = finalExam.Examiner2;
+                        }
+                    }
+                }
+            }
+
+            //if examiner can be member, let be member
+            if (RandomizationProvider.Current.GetDouble() <= probability * 4)
+            {
+                for (int i = 0; i < ctx.NOStudents; i++)
+                {
+                    Gene gene = chromosome.GetGene(i);
+                    FinalExam finalExam = (FinalExam)gene.Value;
+
+                    if (finalExam.Examiner1.Roles.HasFlag(Roles.Member) && finalExam.Examiner1 != finalExam.Member)
+                    {
+                        finalExam.Member = finalExam.Examiner1;
+                        //chromosome.ReplaceGene(i, gene);
+                    }
+                    else if (finalExam.Examiner2 != null)
+                    {
+                        if (finalExam.Examiner2.Roles.HasFlag(Roles.Member) && finalExam.Examiner2 != finalExam.Member)
+                        {
+                            finalExam.Member = finalExam.Examiner2;
                         }
                     }
                 }
             }
 
             //set most common available president for all day
-            if (RandomizationProvider.Current.GetDouble() <= probability * 5)
+            if (RandomizationProvider.Current.GetDouble() <= probability * 20)
             {
                 for (int d = 0; d < Constants.days; d++)
                 {
-                    for(int r = 0; r < Constants.roomCount; r++)
+                    for (int r = 0; r < Constants.roomCount; r++)
                     {
                         List<FinalExam> exams = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r);
                         List<FinalExam> examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r);
-                        foreach(FinalExam fe in examsAfterLunch)
+                        foreach (FinalExam fe in examsAfterLunch)
                         {
                             exams.Add(fe);
                         }
                         Dictionary<Instructor, int> count = new Dictionary<Instructor, int>();
-                        foreach(FinalExam fe in exams)
+                        foreach (FinalExam fe in exams)
                         {
                             Instructor instructor = fe.President;
-                            for(int f = fe.StartTs; f <= fe.EndTs; f++)
+                            for (int f = fe.StartTs; f <= fe.EndTs; f++)
                             {
                                 if (instructor.Availability[d * Constants.tssInOneDay + f])
                                 {
@@ -802,7 +941,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
 
             //set most common available secretary for all day
-            if (RandomizationProvider.Current.GetDouble() <= probability * 5)
+            if (RandomizationProvider.Current.GetDouble() <= probability * 20)
             {
                 for (int d = 0; d < Constants.days; d++)
                 {
@@ -854,43 +993,119 @@ namespace FinalExamScheduling.GeneticScheduling
                                     fe.Secretary = instructor;
                                 }
                             }
+                            else
+                            {
+                                foreach(var fe in exams)
+                                {
+                                    fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            //if supervisor can be president, let be president
-            if (RandomizationProvider.Current.GetDouble() <= probability * 10)
+            //if instructors present in more rooms, replace them
+            if (RandomizationProvider.Current.GetDouble() <= probability * 20)
             {
-                for (int i = 0; i < ctx.NOStudents; i++)
+                for (int d = 0; d < Constants.days; d++)
                 {
-                    Gene gene = chromosome.GetGene(i);
-                    FinalExam finalExam = (FinalExam)gene.Value;
-
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.President) && finalExam.Supervisor != finalExam.President && RandomizationProvider.Current.GetDouble() <= probability)
+                    for (int r1 = 0; r1 < Constants.roomCount - 1; r1++)
                     {
-                        finalExam.President = finalExam.Supervisor;
-                        //chromosome.ReplaceGene(i, gene);
+                        for (int r2 = r1+1; r2 < Constants.roomCount; r2++)
+                        {
+                            List<FinalExam> exams1 = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r1);
+                            List<FinalExam> examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r1);
+                            foreach (FinalExam fe in examsAfterLunch)
+                            {
+                                exams1.Add(fe);
+                            }
+                            List<FinalExam> exams2 = new SchedulingFitness(ctx).GetExamsBeforeLunch(sch, d, r2);
+                            examsAfterLunch = new SchedulingFitness(ctx).GetExamsAfterLunch(sch, d, r2);
+                            foreach (FinalExam fe in examsAfterLunch)
+                            {
+                                exams2.Add(fe);
+                            }
+                            foreach (FinalExam fe1 in exams1)
+                            {
+                                foreach (FinalExam fe2 in exams2)
+                                {
+                                    if (fe1.StartTs <= fe2.StartTs && fe1.EndTs >= fe2.StartTs || fe2.StartTs <= fe1.StartTs && fe2.EndTs >= fe1.StartTs)
+                                    {
+                                        if (fe1.President.Equals(fe2.President)) fe2.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
+                                        if (fe1.Secretary.Equals(fe2.Secretary)) fe2.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
+                                        if (fe1.Member.Equals(fe2.Member)) fe2.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
+                                        if (fe1.Examiner1.Equals(fe2.Examiner1)) fe2.Examiner1 = fe2.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe2.Student.ExamCourse1.Instructors.Length)];
+                                        if (fe1.Examiner2 != null && fe2.Examiner2 != null)
+                                        {
+                                            if (fe1.Examiner2.Equals(fe2.Examiner2)) fe2.Examiner2 = fe2.Student.ExamCourse2.Instructors[ctx.Rnd.Next(0, fe2.Student.ExamCourse2.Instructors.Length)];
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
+        }
 
-            //if supervisor can be secretary, let be secretary
-            if (RandomizationProvider.Current.GetDouble() <= probability * 10)
+        //TODO: write functions here
+
+        //if too many degree level or programme changes, replace some exams
+        public void DegreeLevelChanges(Schedule sch, IChromosome chromosome)
+        {
+            List<List<FinalExam>> blocks = new SchedulingFitness(ctx).GetAllBlocks(sch);
+            foreach (List<FinalExam> block in blocks)
             {
-                for (int i = 0; i < ctx.NOStudents; i++)
+                int counter = 0;
+                for(int i = 1; i < block.Count; i++)
                 {
-                    Gene gene = chromosome.GetGene(i);
-                    FinalExam finalExam = (FinalExam)gene.Value;
-
-                    if (finalExam.Supervisor.Roles.HasFlag(Roles.Secretary) && finalExam.Supervisor != finalExam.Secretary && RandomizationProvider.Current.GetDouble() <= probability)
+                    if (!(block[i].Programme.Equals(block[i - 1].Programme) && block[i].DegreeLevel.Equals(block[i-1].DegreeLevel)))
                     {
-                        finalExam.Secretary = finalExam.Supervisor;
-                        //chromosome.ReplaceGene(i, gene);
+                        counter++;
+                    }
+                }
+                double probability = 0;
+                switch (counter)
+                {
+                    case 0:
+                        break;
+                    case 1:
+                        probability = 0.2;
+                        break;
+                    case 2:
+                        probability = 0.4;
+                        break;
+                    default:
+                        probability = 1;
+                        break;
+                }
+                if (RandomizationProvider.Current.GetDouble() <= probability)
+                {
+                    for (int i = 0; i < block.Count; i++)
+                    {
+                        var index = RandomizationProvider.Current.GetInt(0, chromosome.Length);
+                        var fe1 = (FinalExam)chromosome.GetGene(index).Value;
+                        var fe2 = block[i];
+                        if (fe1.Student.ExamCourse2 != null && fe2.Student.ExamCourse2 != null || fe1.Student.ExamCourse2 == null && fe2.Student.ExamCourse2 == null)
+                        {
+                            var firstGene = fe1.Clone();
+                            var secondGene = fe2.Clone();
+                            fe1.DayNr = secondGene.DayNr;
+                            fe1.RoomNr = secondGene.RoomNr;
+                            fe1.StartTs = secondGene.StartTs;
+                            fe2.DayNr = firstGene.DayNr;
+                            fe2.RoomNr = firstGene.RoomNr;
+                            fe2.StartTs = firstGene.StartTs;
+                        }
+                        /*
+                        block[i].DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                        if (block[i].Student.ExamCourse2 != null) block[i].StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
+                        else block[i].StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
+                        block[i].RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);*/
                     }
                 }
             }
-
         }
     }
 }

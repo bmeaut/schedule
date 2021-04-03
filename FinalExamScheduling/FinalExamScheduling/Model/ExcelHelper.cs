@@ -160,27 +160,27 @@ namespace FinalExamScheduling.Model
                     Roles tempRoles = new Roles();
                     Programme tempPrograms = new Programme();
 
-                    if (ws_instructors.Cells[iRow, 2].Text == "x")
+                    if (String.Equals(ws_instructors.Cells[iRow, 2].Text, "x", StringComparison.OrdinalIgnoreCase))
                     {
                         tempRoles |= Roles.President;
                     }
 
-                    if (ws_instructors.Cells[iRow, 3].Text == "x")
+                    if (String.Equals(ws_instructors.Cells[iRow, 3].Text, "x", StringComparison.OrdinalIgnoreCase))
                     {
                         tempRoles |= Roles.Member;
                     }
 
-                    if (ws_instructors.Cells[iRow, 4].Text == "x")
+                    if (String.Equals(ws_instructors.Cells[iRow, 4].Text, "x", StringComparison.OrdinalIgnoreCase))
                     {
                         tempRoles |= Roles.Secretary;
                     }
 
-                    if (ws_instructors.Cells[iRow, 5].Text == "x")
+                    if (String.Equals(ws_instructors.Cells[iRow, 5].Text, "x", StringComparison.OrdinalIgnoreCase))
                     {
                         tempPrograms |= Programme.ComputerScience;
                     }
 
-                    if (ws_instructors.Cells[iRow, 6].Text == "x")
+                    if (String.Equals(ws_instructors.Cells[iRow, 6].Text, "x", StringComparison.OrdinalIgnoreCase))
                     {
                         tempPrograms |= Programme.ElectricalEngineering;
                     }
@@ -190,7 +190,7 @@ namespace FinalExamScheduling.Model
                     {
                         for (int i = 0; i < 12; i++)
                         {
-                            if (ws_instructors.Cells[iRow, iCol].Text == "x") tempAvailability.Add(true);
+                            if (String.Equals(ws_instructors.Cells[iRow, iCol].Text, "x", StringComparison.OrdinalIgnoreCase)) tempAvailability.Add(true);
                             else tempAvailability.Add(false);
                         }
                     }
