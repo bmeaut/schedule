@@ -34,11 +34,12 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetMemberNotAvailableScore,
                 GetSupervisorNotAvailableScore,
 
+                GetInstructorInMoreRoomsScore,/*
                 GetPresidentInMoreRoomsScore,
                 GetSecretaryInMoreRoomsScore,
                 GetExaminerInMoreRoomsScore,
                 GetMemberInMoreRoomsScore,
-                GetSupervisorInMoreRoomsScore,
+                GetSupervisorInMoreRoomsScore,*/
 
                 GetBlockLengthWorstScore,
                 GetBlockLengthBadScore,
@@ -55,8 +56,10 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetPresidentChangeInDayScore,
                 GetSecretaryChangeInDayScore,
 
-                GetInstructorBadProgrammeScore,
-                //GetInstructorBreakScore,
+                GetPresidentBadProgrammeScore,
+                GetSecretaryBadProgrammeScore,
+                GetMemberBadProgrammeScore,
+                GetInstructorBreakScore, //lassú
 
                 GetPresidentWorkloadWorstScore,
                 GetPresidentWorkloadWorseScore,
@@ -174,8 +177,8 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public double[] GetLunchStartEnd(Schedule sch, int dayNr, int roomNr)
         {
-            double lunchStart = -1;
-            double lunchEnd = 121;
+            double lunchStart = -1; //included
+            double lunchEnd = 121; //included
             double lastStartBefore1130 = -1; //no exam start before 11:30
             double lastStartBefore1130sEnd = -1; //same
             double firstEndAfter1340 = 121; //no exam end after =13:40
@@ -228,14 +231,14 @@ namespace FinalExamScheduling.GeneticScheduling
                 if (firstStartAfter1130 == 121) //no exam start after =11:30
                 {
                     lunchStart = Constants.lunchFirstStart;
-                    lunchEnd = lunchStart + 12;
+                    lunchEnd = lunchStart + 11;
                 }
                 else //exam start after =11:30
                 {
-                    if (firstStartAfter1130sEnd == firstEndAfter1340) //no exam between 11:30 and 13:40
+                    if (firstStartAfter1130sEnd == firstEndAfter1340) //no exam ends between 11:30 and 13:40
                     {
-                        lunchEnd = firstEndAfter1340sStart;
-                        lunchStart = lunchEnd - 12;
+                        lunchStart = Constants.lunchFirstStart;
+                        lunchEnd = lunchStart + 11;
                     }
                     else if (firstEndAfter1340 == 121) //no exam end after =13:40
                     {
@@ -243,13 +246,13 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (firstStartAfter1130 - Constants.lunchFirstStart > Constants.lunchLastEnd - lastEndBefore1340)
                             {
-                                lunchEnd = firstStartAfter1130;
-                                lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 12);
+                                lunchEnd = firstStartAfter1130-1;
+                                lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 11);
                             }
                             else
                             {
-                                lunchStart = lastEndBefore1340;
-                                lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 12);
+                                lunchStart = lastEndBefore1340+1;
+                                lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 11);
                             }
                         }
                         else
@@ -269,23 +272,27 @@ namespace FinalExamScheduling.GeneticScheduling
                                     }
                                 }
                             }
-                            if (isthereathird) { } //3 exams between ~
+                            if (isthereathird) //3 exams between ~
+                            {
+                                lunchStart = Constants.lunchFirstStart;
+                                lunchEnd = Math.Max(firstStartAfter1130 - 1, lunchStart+5);
+                            }
                             else //2 exams between ~
                             {
                                 if (firstStartAfter1130 - Constants.lunchFirstStart > Math.Max(lastEndBefore1340sStart - firstStartAfter1130sEnd, Constants.lunchLastEnd - lastEndBefore1340))
                                 {
-                                    lunchEnd = firstStartAfter1130;
-                                    lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 12);
+                                    lunchEnd = firstStartAfter1130-1;
+                                    lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 11);
                                 }
                                 else if (lastEndBefore1340sStart - firstStartAfter1130sEnd > Constants.lunchLastEnd - lastEndBefore1340)
                                 {
-                                    lunchStart = firstStartAfter1130sEnd;
-                                    lunchEnd = lastEndBefore1340sStart;
+                                    lunchStart = firstStartAfter1130sEnd+1;
+                                    lunchEnd = lastEndBefore1340sStart-1;
                                 }
                                 else
                                 {
-                                    lunchStart = lastEndBefore1340;
-                                    lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 12);
+                                    lunchStart = lastEndBefore1340+1;
+                                    lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 11);
                                 }
                             }
                         }
@@ -296,13 +303,13 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (firstStartAfter1130 - Constants.lunchFirstStart > firstEndAfter1340sStart - lastEndBefore1340)
                             {
-                                lunchEnd = firstStartAfter1130;
-                                lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 12);
+                                lunchEnd = firstStartAfter1130-1;
+                                lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 11);
                             }
                             else
                             {
-                                lunchStart = lastEndBefore1340;
-                                lunchEnd = firstEndAfter1340sStart;
+                                lunchStart = lastEndBefore1340+1;
+                                lunchEnd = firstEndAfter1340sStart-1;
                             }
                         }
                         else
@@ -324,25 +331,25 @@ namespace FinalExamScheduling.GeneticScheduling
                             }
                             if (isthereathird) //3 exams between ~
                             {
-                                lunchStart = lastEndBefore1340;
-                                lunchEnd = Math.Min(lunchStart + 6, firstEndAfter1340sStart);
+                                lunchStart = lastEndBefore1340+1;
+                                lunchEnd = Math.Min(lunchStart + 5, firstEndAfter1340sStart-1);
                             }
                             else //2 exams between ~
                             {
                                 if (firstStartAfter1130 - Constants.lunchFirstStart > Math.Max(lastEndBefore1340sStart - firstStartAfter1130sEnd, firstEndAfter1340sStart - lastEndBefore1340))
                                 {
-                                    lunchEnd = firstStartAfter1130;
-                                    lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 12);
+                                    lunchEnd = firstStartAfter1130-1;
+                                    lunchStart = Math.Max(Constants.lunchFirstStart, lunchEnd - 11);
                                 }
                                 else if (lastEndBefore1340sStart - firstStartAfter1130sEnd > firstEndAfter1340sStart - lastEndBefore1340)
                                 {
-                                    lunchStart = firstStartAfter1130sEnd;
-                                    lunchEnd = lastEndBefore1340sStart;
+                                    lunchStart = firstStartAfter1130sEnd+1;
+                                    lunchEnd = lastEndBefore1340sStart-1;
                                 }
                                 else
                                 {
-                                    lunchStart = lastEndBefore1340;
-                                    lunchEnd = firstEndAfter1340sStart;
+                                    lunchStart = lastEndBefore1340+1;
+                                    lunchEnd = firstEndAfter1340sStart-1;
                                 }
                             }
                         }
@@ -353,15 +360,15 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 if (firstStartAfter1130 == 121) //no exam start after =11:30
                 {
-                    lunchStart = lastStartBefore1130sEnd;
-                    lunchEnd = lunchStart + 12;
+                    lunchStart = lastStartBefore1130sEnd+1;
+                    lunchEnd = lunchStart + 11;
                 }
                 else //exam start after =11:30
                 {
                     if (lastStartBefore1130 == lastEndBefore1340sStart) //no exam between 11:30 and 13:40
                     {
-                        lunchStart = lastStartBefore1130sEnd;
-                        lunchEnd = firstEndAfter1340sStart;
+                        lunchStart = lastStartBefore1130sEnd+1;
+                        lunchEnd = firstEndAfter1340sStart-1;
                     }
                     else if (firstEndAfter1340 == 121) //no exam end after =13:40
                     {
@@ -369,13 +376,13 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (firstStartAfter1130 - lastStartBefore1130sEnd > Constants.lunchLastEnd - lastEndBefore1340)
                             {
-                                lunchStart = lastStartBefore1130sEnd;
-                                lunchEnd = firstStartAfter1130;
+                                lunchStart = lastStartBefore1130sEnd+1;
+                                lunchEnd = firstStartAfter1130-1;
                             }
                             else
                             {
-                                lunchStart = lastEndBefore1340;
-                                lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 12);
+                                lunchStart = lastEndBefore1340+1;
+                                lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 11);
                             }
                         }
                         else
@@ -397,25 +404,25 @@ namespace FinalExamScheduling.GeneticScheduling
                             }
                             if (isthereathird) //3 exams between ~
                             {
-                                lunchEnd = firstStartAfter1130;
-                                lunchStart = Math.Max(lunchEnd - 6, lastStartBefore1130sEnd);
+                                lunchEnd = firstStartAfter1130-1;
+                                lunchStart = Math.Max(lunchEnd - 5, lastStartBefore1130sEnd+1);
                             }
                             else //2 exams between ~
                             {
                                 if (firstStartAfter1130 - lastStartBefore1130sEnd > Math.Max(lastEndBefore1340sStart - firstStartAfter1130sEnd, Constants.lunchLastEnd - lastEndBefore1340))
                                 {
-                                    lunchStart = lastStartBefore1130sEnd;
-                                    lunchEnd = firstStartAfter1130;
+                                    lunchStart = lastStartBefore1130sEnd+1;
+                                    lunchEnd = firstStartAfter1130-1;
                                 }
                                 else if (lastEndBefore1340sStart - firstStartAfter1130sEnd > Constants.lunchLastEnd - lastEndBefore1340)
                                 {
-                                    lunchStart = firstStartAfter1130sEnd;
-                                    lunchEnd = lastEndBefore1340sStart;
+                                    lunchStart = firstStartAfter1130sEnd+1;
+                                    lunchEnd = lastEndBefore1340sStart-1;
                                 }
                                 else
                                 {
-                                    lunchStart = lastEndBefore1340;
-                                    lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 12);
+                                    lunchStart = lastEndBefore1340+1;
+                                    lunchEnd = Math.Min(Constants.lunchLastEnd, lunchStart + 11);
                                 }
                             }
                         }
@@ -426,13 +433,13 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (firstStartAfter1130 - lastStartBefore1130sEnd > firstEndAfter1340sStart - lastEndBefore1340)
                             {
-                                lunchStart = lastStartBefore1130sEnd;
-                                lunchEnd = firstStartAfter1130;
+                                lunchStart = lastStartBefore1130sEnd+1;
+                                lunchEnd = firstStartAfter1130-1;
                             }
                             else
                             {
-                                lunchStart = lastEndBefore1340;
-                                lunchEnd = firstEndAfter1340sStart;
+                                lunchStart = lastEndBefore1340+1;
+                                lunchEnd = firstEndAfter1340sStart-1;
                             }
                         }
                         else
@@ -456,31 +463,31 @@ namespace FinalExamScheduling.GeneticScheduling
                             {
                                 if(firstStartAfter1130 - lastStartBefore1130sEnd > firstEndAfter1340sStart - lastEndBefore1340)
                                 {
-                                    lunchEnd = firstStartAfter1130;
-                                    lunchStart = Math.Max(lunchEnd - 6, lastStartBefore1130sEnd);
+                                    lunchEnd = firstStartAfter1130-1;
+                                    lunchStart = Math.Max(lunchEnd - 5, lastStartBefore1130sEnd+1);
                                 }
                                 else
                                 {
-                                    lunchStart = lastEndBefore1340;
-                                    lunchEnd = Math.Min(lunchStart + 6, firstEndAfter1340sStart);
+                                    lunchStart = lastEndBefore1340+1;
+                                    lunchEnd = Math.Min(lunchStart + 5, firstEndAfter1340sStart-1);
                                 }
                             }
                             else //2 exams between ~
                             {
                                 if (firstStartAfter1130 - lastStartBefore1130sEnd > Math.Max(lastEndBefore1340sStart - firstStartAfter1130sEnd, firstEndAfter1340sStart - lastEndBefore1340))
                                 {
-                                    lunchEnd = firstStartAfter1130;
-                                    lunchStart = lastStartBefore1130sEnd;
+                                    lunchEnd = firstStartAfter1130-1;
+                                    lunchStart = lastStartBefore1130sEnd+1;
                                 }
                                 else if (lastEndBefore1340sStart - firstStartAfter1130sEnd > firstEndAfter1340sStart - lastEndBefore1340)
                                 {
-                                    lunchStart = firstStartAfter1130sEnd;
-                                    lunchEnd = lastEndBefore1340sStart;
+                                    lunchStart = firstStartAfter1130sEnd+1;
+                                    lunchEnd = lastEndBefore1340sStart-1;
                                 }
                                 else
                                 {
-                                    lunchStart = lastEndBefore1340;
-                                    lunchEnd = firstEndAfter1340sStart;
+                                    lunchStart = lastEndBefore1340+1;
+                                    lunchEnd = firstEndAfter1340sStart-1;
                                 }
                             }
                         }
@@ -688,16 +695,69 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
 
+        public double GetInstructorInMoreRoomsScore(Schedule sch)
+        {
+            double score = 0;
+            for (int i = 0; i < sch.FinalExams.Length - 1; i++)
+            {
+                FinalExam fei = sch.FinalExams[i];
+                HashSet<Instructor> instis = new HashSet<Instructor>{ fei.President, fei.Secretary, fei.Member, fei.Examiner1, fei.Supervisor };
+                if (!(fei.Examiner2 == null))
+                {
+                    instis.Add(fei.Examiner2);
+                }
+                for (int j = i + 1; j < sch.FinalExams.Length; j++)
+                {
+                    FinalExam fej = sch.FinalExams[j];
+                    if (fei.DayNr == fej.DayNr)
+                    {
+                        if (fei.RoomNr != fej.RoomNr)
+                        {
+                            HashSet<Instructor> instjs = new HashSet<Instructor> { fej.President, fej.Secretary, fej.Member, fej.Examiner1, fej.Supervisor };
+                            if (!(fej.Examiner2 == null))
+                            {
+                                instjs.Add(fej.Examiner2);
+                            }
+                            foreach (Instructor insti in instis)
+                            {
+                                foreach (Instructor instj in instjs)
+                                {
+                                    if (insti.Equals(instj))
+                                    {
+                                        bool overlap = false;
+                                        for (int ti = fei.StartTs; ti <= fei.EndTs; ti++)
+                                        {
+                                            for (int tj = fej.StartTs; tj <= fej.EndTs; tj++)
+                                            {
+                                                if (ti == tj)
+                                                {
+                                                    score += Scores.InstructorInMoreRooms;
+                                                    overlap = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (overlap) break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return score;
+        }
+        /*
         public double GetPresidentInMoreRoomsScore(Schedule sch)
         {
             double score = 0;
             for (int i = 0; i < sch.FinalExams.Length - 1; i++)
             {
                 FinalExam fei = sch.FinalExams[i];
-                for (int j = 0; j < sch.FinalExams.Length; j++)
+                for (int j = i+1; j < sch.FinalExams.Length; j++)
                 {
                     FinalExam fej = sch.FinalExams[j];
-                    if (fei.President.Equals(fej.President)) {
+                    if (fei.President.Equals(fej.President)||fei.President.Equals(fej.Secretary)||fei.President.Equals(fej.Member)||fei.President.Equals(fej.Examiner1)||fei.President.Equals(fej.Examiner2)||fei.President.Equals(fej.Supervisor)) {
                         if (fei.DayNr == fej.DayNr)
                         {
                             if (fei.RoomNr != fej.RoomNr)
@@ -976,7 +1036,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
             return score;
         }
-
+        */
 
 
         public double GetBlockLengthWorstScore(Schedule sch)
@@ -1278,16 +1338,40 @@ namespace FinalExamScheduling.GeneticScheduling
 
 
 
-        public double GetInstructorBadProgrammeScore(Schedule sch)
+        public double GetPresidentBadProgrammeScore(Schedule sch)
         {
             double score = 0;
             foreach(List<FinalExam> block in GetAllBlocks(sch))
             {
                 foreach(FinalExam fe in block)
                 {
-                    if (!fe.President.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
-                    if (!fe.Secretary.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
-                    if (!fe.Member.Programs.HasFlag(fe.Programme)) score += Scores.InstructorBadProgramme;
+                    if (!fe.President.Programs.HasFlag(fe.Programme)) score += Scores.PresidentBadProgramme;
+                }
+            }
+            return score;
+        }
+
+        public double GetSecretaryBadProgrammeScore(Schedule sch)
+        {
+            double score = 0;
+            foreach (List<FinalExam> block in GetAllBlocks(sch))
+            {
+                foreach (FinalExam fe in block)
+                {
+                    if (!fe.Secretary.Programs.HasFlag(fe.Programme)) score += Scores.SecretaryBadProgramme;
+                }
+            }
+            return score;
+        }
+
+        public double GetMemberBadProgrammeScore(Schedule sch)
+        {
+            double score = 0;
+            foreach (List<FinalExam> block in GetAllBlocks(sch))
+            {
+                foreach (FinalExam fe in block)
+                {
+                    if (!fe.Member.Programs.HasFlag(fe.Programme)) score += Scores.MemberBadProgramme;
                 }
             }
             return score;
@@ -1295,7 +1379,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
         //slow function, outcommented
         #region slow function - instructor breaks
-        /*//only works as expected if instructor has maximum one exam at a time - too slow :(
+        //only works as expected if instructor has maximum one exam at a time - too slow :(
         public double GetInstructorBreakScore(Schedule sch)
         {
             double score = 0;
@@ -1348,7 +1432,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
             return score;
         }
-        */
+        
         #endregion
 
 

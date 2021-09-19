@@ -8,10 +8,10 @@ namespace FinalExamScheduling.GeneticScheduling
 {
     public class Parameters
     {
-        public const int MinPopulationSize = 100; //5000
-        public const int MaxPopulationSize = 150; //7500
+        public const int MinPopulationSize = 150; //5000 //100
+        public const int MaxPopulationSize = 225; //7500 //150
 
-        public const int StagnationTermination = 100;  //20
+        public const int StagnationTermination = 30;  //20 //100
 
         public const bool GetInfo = true;
 

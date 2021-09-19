@@ -11,20 +11,21 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double StudentDuplicated = 10000;
         public const double TimeOverLap = 10000;
 
-        public const double PresidentNotAvailable = 1000;
-        public const double SecretaryNotAvailable = 1000;
-        public const double Examiner1NotAvailable = 1000;
-        public const double Examiner2NotAvailable = 1000;
-        public const double MemberNotAvailable = 50;
+        public const double PresidentNotAvailable = 10000;
+        public const double SecretaryNotAvailable = 10000;
+        public const double Examiner1NotAvailable = 10000;
+        public const double Examiner2NotAvailable = 10000;
+        public const double MemberNotAvailable = 500;
         public const double SupervisorNotAvailable = 5;
 
-        public const double PresidentInMoreRooms = 1000;
-        public const double SecretaryInMoreRooms = 1000;
-        public const double ExaminerInMoreRooms = 1000; //independent of No. 1 or 2
-        public const double MemberInMoreRooms = 50;
-        public const double SupervisorInMoreRooms = 5;
+        public const double InstructorInMoreRooms = 10000;/*
+        public const double PresidentInMoreRooms = 10000;
+        public const double SecretaryInMoreRooms = 10000;
+        public const double ExaminerInMoreRooms = 10000; //independent of No. 1 or 2
+        public const double MemberInMoreRooms = 500;
+        public const double SupervisorInMoreRooms = 5;*/
 
-        public const double BlockLengthWorst = 1000;
+        public const double BlockLengthWorst = 10000;
         public const double BlockLengthBad = 40;
 
         public const double LevelChangeInBlockWorst = 10000;
@@ -34,13 +35,15 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double ProgrammeChangeInBlockWorse = 100;
         public const double ProgrammeChangeInBlockBad = 20;
 
-        public const double PresidentChangeInBlock = 1000;
-        public const double SecretaryChangeInBlock = 1000;
+        public const double PresidentChangeInBlock = 10000;
+        public const double SecretaryChangeInBlock = 10000;
         public const double PresidentChangeInDay = 10;
         public const double SecretaryChangeInDay = 10;
 
-        public const double InstructorBadProgramme = 10000;
-        //public const double InstructorBreak = 2;
+        public const double PresidentBadProgramme = 10000;
+        public const double SecretaryBadProgramme = 10000;
+        public const double MemberBadProgramme = 10000;
+        public const double InstructorBreak = 2; //lassú
 
         public const double PresidentWorkloadWorst = 30;
         public const double PresidentWorkloadWorse = 20;
@@ -62,7 +65,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
         public const double LunchStartsSoon = 40;
         public const double LunchEndsLate = 40;
-        public const double LunchLengthWorst = 1000;
+        public const double LunchLengthWorst = 5000;
         public const double LunchLengthWorse = 2;
         public const double LunchLengthBad = 1;
     }

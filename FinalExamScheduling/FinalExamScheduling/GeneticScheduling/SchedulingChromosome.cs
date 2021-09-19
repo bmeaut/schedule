@@ -59,14 +59,14 @@ namespace FinalExamScheduling.GeneticScheduling
             //fe.Student = ctx.Students[ctx.Rnd.Next(0, ctx.Students.Length)];
 
             fe.Student = ctx.RandStudents[geneIndex];
-            fe.Supervisor = fe.Student.Supervisor;
-            fe.President = ctx.Presidents[ctx.Rnd.Next(0, ctx.Presidents.Length)];
-            fe.Secretary = ctx.Secretaries[ctx.Rnd.Next(0, ctx.Secretaries.Length)];
-            fe.Member = ctx.Members[ctx.Rnd.Next(0, ctx.Members.Length)];
-            fe.Examiner1 = fe.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse1.Instructors.Length)];
-            if (fe.Student.ExamCourse2 != null) fe.Examiner2 = fe.Student.ExamCourse2.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse2.Instructors.Length)];
             fe.DegreeLevel = fe.Student.DegreeLevel;
             fe.Programme = fe.Student.Programme;
+            fe.Supervisor = fe.Student.Supervisor;
+            fe.President = ctx.Presidents.Where(p=>p.Programs.Equals(fe.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Presidents.Where(p=>p.Programs.Equals(fe.Programme)).Count())];
+            fe.Secretary = ctx.Secretaries.Where(p => p.Programs.Equals(fe.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Secretaries.Where(p => p.Programs.Equals(fe.Programme)).Count())];
+            fe.Member = ctx.Members.Where(p => p.Programs.Equals(fe.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Members.Where(p => p.Programs.Equals(fe.Programme)).Count())];
+            fe.Examiner1 = fe.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse1.Instructors.Length)];
+            if (fe.Student.ExamCourse2 != null) fe.Examiner2 = fe.Student.ExamCourse2.Instructors[ctx.Rnd.Next(0, fe.Student.ExamCourse2.Instructors.Length)];
             //fe.RoomNr = new Random().Next(0, 3);
             fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
             //fe.DayNr = new Random().Next(0, Constants.days);
