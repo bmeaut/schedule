@@ -351,8 +351,10 @@ namespace FinalExamScheduling.Model
                 {
                     ws_scheduling.Cells[i, 1].Value = exam.DayNr;
                     ws_scheduling.Cells[i, 2].Value = exam.RoomNr;
-                    ws_scheduling.Cells[i, 3].Value = exam.StartTs;
-                    ws_scheduling.Cells[i, 4].Value = exam.EndTs;
+                    //ws_scheduling.Cells[i, 3].Value = exam.StartTs;
+                    ws_scheduling.Cells[i, 3].Value = TimeSpan.FromMinutes(exam.StartTs * 5 + 480).ToString("hh':'mm");
+                    //ws_scheduling.Cells[i, 4].Value = exam.EndTs;
+                    ws_scheduling.Cells[i, 4].Value = TimeSpan.FromMinutes(exam.EndTs * 5 + 485).ToString("hh':'mm");
 
                     ws_scheduling.Cells[i, 5].Value = exam.Student.Name;
                     //double studentScore = sch.Details[exam.Id].StudentScore;

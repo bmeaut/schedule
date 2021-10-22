@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FinalExamScheduling
 {
@@ -16,9 +17,25 @@ namespace FinalExamScheduling
         static GeneticScheduler scheduler;
         //static HeuristicScheduler heuristicScheduler;
 
+        [STAThread]
         static void Main(string[] args)
         {
-            RunGenetic();
+            Console.WriteLine("Válassz egy bemenetet az alábbiak közül:");
+            var path = "";
+            var files = Directory.GetFiles(Directory.GetCurrentDirectory() + "/inputs");
+            foreach(var file in files)
+            {
+                Console.WriteLine(Path.GetFileNameWithoutExtension(file));
+            }
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.InitialDirectory = (Directory.GetCurrentDirectory() + "\\inputs");
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    path = dialog.FileName;
+                }
+            }
+            RunGenetic(path);
         }
 
         /*
@@ -42,11 +59,11 @@ namespace FinalExamScheduling
         }
         */
 
-        static void RunGenetic()
+        static void RunGenetic(string path)
         {
             var watch = Stopwatch.StartNew();
 
-            FileInfo existingFile = new FileInfo("input2.xlsx");
+            FileInfo existingFile = new FileInfo(/*"Input2.xlsx"*/path);
 
             var context = ExcelHelper.ReadFull(existingFile);
             context.Init();

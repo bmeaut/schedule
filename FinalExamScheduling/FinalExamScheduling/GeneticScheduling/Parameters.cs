@@ -11,7 +11,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public const int MinPopulationSize = 150; //5000 //100
         public const int MaxPopulationSize = 225; //7500 //150
 
-        public const int StagnationTermination = 50;  //20 //100
+        public const int StagnationTermination = 30;  //20 //100
 
         public const bool GetInfo = true;
 

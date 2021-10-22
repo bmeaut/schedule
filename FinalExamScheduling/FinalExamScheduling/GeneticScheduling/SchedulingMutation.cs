@@ -36,7 +36,7 @@ namespace FinalExamScheduling.GeneticScheduling
             {
                 SwapExams(chromosome, probability * 3);
             }
-
+            /*
             var randcycle = RandomizationProvider.Current.GetInt(5, RandomizationProvider.Current.GetInt(20,200));
             var randfunction = RandomizationProvider.Current.GetInts(randcycle, 0, 24);
             for (int i = 0; i < randcycle; i++)
@@ -119,7 +119,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         break;
                 }
             }
-            OrderExams(sch, probability);
+            OrderExams(sch, probability);*/
             /*
             RandomReplace(chromosome, probability * 4);
             FixBlockLength(sch, probability * 5);
@@ -153,7 +153,7 @@ namespace FinalExamScheduling.GeneticScheduling
             ExamToProgramme(chromosome, sch, probability * 10);
             OrderExams(sch, probability);*/
 
-            /*RandomReplace(chromosome, probability * 2);
+            RandomReplace(chromosome, probability * 2);
 
             ExamToExaminer(sch, probability * 10);
 
@@ -214,7 +214,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
             InstructorToProgramme(sch, chromosome, probability);
 
-            OrderExams(sch, probability);*/
+            OrderExams(sch, probability);
         }
 
 
