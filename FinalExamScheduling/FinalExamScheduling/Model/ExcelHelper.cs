@@ -153,6 +153,7 @@ namespace FinalExamScheduling.Model
                 var endInst = ws_instructors.Dimension.End;
                 var endCour = ws_courses.Dimension.End;
                 var endPres = ws_presidents.Dimension.End;
+                Constants.Days = (endInst.Column - 6)/10;
 
                 //Instructor
                 for (int iRow = 3; iRow <= endInst.Row; iRow++)

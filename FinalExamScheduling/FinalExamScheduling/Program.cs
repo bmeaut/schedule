@@ -20,13 +20,13 @@ namespace FinalExamScheduling
         [STAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine("Válassz egy bemenetet az alábbiak közül:");
+            //Console.WriteLine("Válassz egy bemenetet az alábbiak közül:");
             var path = "";
-            var files = Directory.GetFiles(Directory.GetCurrentDirectory() + "/inputs");
+            /*var files = Directory.GetFiles(Directory.GetCurrentDirectory() + "/inputs");
             foreach(var file in files)
             {
                 Console.WriteLine(Path.GetFileNameWithoutExtension(file));
-            }
+            }*/
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.InitialDirectory = (Directory.GetCurrentDirectory() + "\\inputs");
@@ -79,7 +79,7 @@ namespace FinalExamScheduling
                 double penaltyScore = evaluator.EvaluateAll(resultSchedule);
                 Console.WriteLine("Penalty score: " + penaltyScore);
 
-                ExcelHelper.Write(@"..\..\Results\Done_Ge_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness), context);
+                ExcelHelper.Write(@"..\..\Results\Final\Done_Ge_" + Path.GetFileNameWithoutExtension(path) + "_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".xlsx", scheduleTask.Result, elapsed, scheduler.GenerationFitness, scheduler.GetFinalScores(resultSchedule, scheduler.Fitness), context);
 
             }
             );

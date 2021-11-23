@@ -70,7 +70,7 @@ namespace FinalExamScheduling.GeneticScheduling
             //fe.RoomNr = new Random().Next(0, 3);
             fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
             //fe.DayNr = new Random().Next(0, Constants.days);
-            fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+            fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
             //fe.startTs = new Random().Next(0, 120);
             if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
             else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);

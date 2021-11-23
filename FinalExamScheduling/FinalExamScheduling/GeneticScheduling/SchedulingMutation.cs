@@ -292,7 +292,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 }
             }
             */
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -408,7 +408,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability * 2)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -427,7 +427,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -437,7 +437,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 5)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -447,7 +447,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 2)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -458,7 +458,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -468,7 +468,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -492,7 +492,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         {
                                             if (RandomizationProvider.Current.GetDouble() <= probability * 6)
                                             {
-                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -517,7 +517,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 List<List<FinalExam>> lessThanThree = new List<List<FinalExam>>();
                 List<List<FinalExam>> threeOrFour = new List<List<FinalExam>>();
                 List<List<FinalExam>> moreThanFive = new List<List<FinalExam>>();
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -666,7 +666,7 @@ namespace FinalExamScheduling.GeneticScheduling
                     if (RandomizationProvider.Current.GetDouble() <= probability)
                     {
                         FinalExam finalExam = (FinalExam)chromosome.GetGene(i).Value;
-                        finalExam.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                        finalExam.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                         if (finalExam.Student.ExamCourse2 != null) finalExam.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                         else finalExam.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                         finalExam.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -767,7 +767,7 @@ namespace FinalExamScheduling.GeneticScheduling
                             {
                                 allexaminers2.Add(ex);
                             }
-                            for (int i = 0; i < Constants.days * Constants.tssInOneDay; i++)
+                            for (int i = 0; i < Constants.Days * Constants.tssInOneDay; i++)
                             {
                                 foreach (Instructor ex1 in allexaminers1)
                                 {
@@ -786,7 +786,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 int index = RandomizationProvider.Current.GetInt(0, examiners.Count / 2);
                                 fe.Examiner1 = examiners[index * 2];
                                 fe.Examiner2 = examiners[(index * 2) + 1];
-                                for (int i = 0; i < Constants.days * Constants.tssInOneDay; i++)
+                                for (int i = 0; i < Constants.Days * Constants.tssInOneDay; i++)
                                 {
                                     if (fe.Examiner1.Availability[i] && fe.Examiner2.Availability[i])
                                     {
@@ -824,7 +824,7 @@ namespace FinalExamScheduling.GeneticScheduling
                             {
                                 allexaminers1.Add(ex);
                             }
-                            for (int i = 0; i < Constants.days * Constants.tssInOneDay; i++)
+                            for (int i = 0; i < Constants.Days * Constants.tssInOneDay; i++)
                             {
                                 foreach (Instructor ex1 in allexaminers1)
                                 {
@@ -835,7 +835,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                 }
                             }
                             fe.Examiner1 = examiners[RandomizationProvider.Current.GetInt(0, examiners.Count)];
-                            for (int i = 0; i < Constants.days * Constants.tssInOneDay; i++)
+                            for (int i = 0; i < Constants.Days * Constants.tssInOneDay; i++)
                             {
                                 if (fe.Examiner1.Availability[i])
                                 {
@@ -933,7 +933,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability * 5)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -963,7 +963,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability * 5)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -1036,7 +1036,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability * 10)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r1 = 0; r1 < Constants.roomCount - 1; r1++)
                     {
@@ -1063,7 +1063,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                         while (fe1.President.Equals(fe2.President)) fe2.President = ctx.Presidents.Where(p => p.Programs.Equals(fe2.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Presidents.Where(p => p.Programs.Equals(fe2.Programme)).Count())];
                                         while (fe1.Secretary.Equals(fe2.Secretary)) fe2.Secretary = ctx.Secretaries.Where(p => p.Programs.Equals(fe2.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Secretaries.Where(p => p.Programs.Equals(fe2.Programme)).Count())];
                                         while (fe1.Member.Equals(fe2.Member)) fe2.Member = ctx.Members.Where(p => p.Programs.Equals(fe2.Programme)).ToArray()[ctx.Rnd.Next(0, ctx.Members.Where(p => p.Programs.Equals(fe2.Programme)).Count())];
-                                        if (fe1.Examiner1.Equals(fe2.Examiner1)) fe2.Examiner1 = fe2.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe2.Student.ExamCourse1.Instructors.Length)];
+                                        /*if (fe1.Examiner1.Equals(fe2.Examiner1)) fe2.Examiner1 = fe2.Student.ExamCourse1.Instructors[ctx.Rnd.Next(0, fe2.Student.ExamCourse1.Instructors.Length)];
                                         if (fe1.Examiner2 != null)
                                         {
                                             if (fe2.Examiner2 != null)
@@ -1083,7 +1083,7 @@ namespace FinalExamScheduling.GeneticScheduling
                                             {
                                                 while (fe1.Examiner1.Equals(fe2.Examiner1) && RandomizationProvider.Current.GetDouble() <= probability * 19) fe2.Examiner2 = fe2.Student.ExamCourse2.Instructors[ctx.Rnd.Next(0, fe2.Student.ExamCourse2.Instructors.Length)];
                                             }
-                                        }
+                                        }*/
                                     }
                                 }
                             }
@@ -1107,7 +1107,7 @@ namespace FinalExamScheduling.GeneticScheduling
                     {
                         if (!examiner1.Availability[fe.DayNr * Constants.tssInOneDay + f])
                         {
-                            fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                            fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                             if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                             else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                             fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -1116,7 +1116,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (!examiner2.Availability[fe.DayNr * Constants.tssInOneDay + f])
                             {
-                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -1142,7 +1142,7 @@ namespace FinalExamScheduling.GeneticScheduling
                         {
                             if (RandomizationProvider.Current.GetDouble() <= probability * 2)
                             {
-                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.days);
+                                fe.DayNr = RandomizationProvider.Current.GetInt(0, Constants.Days);
                                 if (fe.Student.ExamCourse2 != null) fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 8);
                                 else fe.StartTs = RandomizationProvider.Current.GetInt(0, Constants.tssInOneDay - 7);
                                 fe.RoomNr = RandomizationProvider.Current.GetInt(0, Constants.roomCount);
@@ -1317,7 +1317,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -1378,7 +1378,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {
@@ -1445,7 +1445,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             if (RandomizationProvider.Current.GetDouble() <= probability)
             {
-                for (int d = 0; d < Constants.days; d++)
+                for (int d = 0; d < Constants.Days; d++)
                 {
                     for (int r = 0; r < Constants.roomCount; r++)
                     {

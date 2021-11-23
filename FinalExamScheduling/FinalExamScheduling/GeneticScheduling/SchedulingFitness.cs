@@ -164,7 +164,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public List<List<FinalExam>> GetAllBlocks(Schedule sch)
         {
             List<List<FinalExam>> blocks = new List<List<FinalExam>>();
-            for(int d=0; d < Constants.days; d++)
+            for(int d=0; d < Constants.Days; d++)
             {
                 for(int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1042,7 +1042,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetBlockLengthWorstScore(Schedule sch)
         {
             double score = 0;
-            for(int d=0; d < Constants.days; d++)
+            for(int d=0; d < Constants.Days; d++)
             {
                 for(int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1072,7 +1072,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetBlockLengthBadScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1297,7 +1297,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetPresidentChangeInDayScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1318,7 +1318,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetSecretaryChangeInDayScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1384,7 +1384,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             double score = 0;
             List<FinalExam> block = new List<FinalExam>();
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 foreach (Instructor inst in ctx.Instructors)
                 {
@@ -1799,7 +1799,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetFirstExamStartsSoonScore(Schedule sch)
         {
             double score = 0;
-            for(int d = 0; d < Constants.days; d++)
+            for(int d = 0; d < Constants.Days; d++)
             {
                 int minstart = 120;
                 for(int i = 0; i < sch.FinalExams.Length; i++)
@@ -1823,7 +1823,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLastExamEndsLateScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 int maxend = -1;
                 for (int i = 0; i < sch.FinalExams.Length; i++)
@@ -1849,7 +1849,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLunchStartsSoonScore(Schedule sch)
         {
             double score = 0;
-            for(int d=0; d < Constants.days; d++)
+            for(int d=0; d < Constants.Days; d++)
             {
                 for(int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1868,7 +1868,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLunchEndsLateScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1887,7 +1887,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLunchLengthWorstScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1906,7 +1906,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLunchLengthWorseScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
@@ -1925,7 +1925,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public double GetLunchLengthBadScore(Schedule sch)
         {
             double score = 0;
-            for (int d = 0; d < Constants.days; d++)
+            for (int d = 0; d < Constants.Days; d++)
             {
                 for (int r = 0; r < Constants.roomCount; r++)
                 {
