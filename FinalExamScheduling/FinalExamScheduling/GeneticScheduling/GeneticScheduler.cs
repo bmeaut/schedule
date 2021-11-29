@@ -91,7 +91,7 @@ namespace FinalExamScheduling.GeneticScheduling
         {
             ctx.FillDetails = true;
             
-            sch.Details = Enumerable.Range(0, ctx.NOStudents).Select(i => new FinalExamDetail()).ToArray();
+            //sch.Details = Enumerable.Range(0, ctx.NOStudents).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
          

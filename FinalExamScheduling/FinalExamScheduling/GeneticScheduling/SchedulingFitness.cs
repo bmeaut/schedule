@@ -93,7 +93,7 @@ namespace FinalExamScheduling.GeneticScheduling
             int score = 0;
 
 
-            sch.Details = new FinalExamDetail[ctx.NOStudents];
+            //sch.Details = new FinalExamDetail[ctx.NOStudents];
 
             var tasks = CostFunctions.Select(cf => Task.Run(() => cf(sch))).ToArray();
             Task.WaitAll(tasks);
@@ -111,7 +111,7 @@ namespace FinalExamScheduling.GeneticScheduling
 
             Schedule sch = new Schedule(ctx.NOStudents);
             //sch.FinalExams = new FinalExam[ctx.NOStudents];
-            sch.Details = new FinalExamDetail[ctx.NOStudents];
+            //sch.Details = new FinalExamDetail[ctx.NOStudents];
             for (int i = 0; i < ctx.NOStudents; i++)
             {
                 sch.FinalExams[i]=((FinalExam)chromosome.GetGene(i).Value)/*.Clone()*/;
@@ -1736,8 +1736,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.PresidentSelfStudent;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.PresidentSelfStudent;
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not President: {Scores.PresidentSelfStudent}\n";
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.PresidentSelfStudent;
                     }
                 }
             }
@@ -1754,8 +1754,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.SecretarySelfStudent;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.SecretarySelfStudent;
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorComment += $"Not Secretary: {Scores.SecretarySelfStudent}\n";
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].SupervisorScore += Scores.SecretarySelfStudent;
                     }
                 }
             }
@@ -1776,8 +1776,8 @@ namespace FinalExamScheduling.GeneticScheduling
                         score += Scores.ExaminerNotPresident;
                         if (ctx.FillDetails)
                         {
-                            sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
-                            sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
+                            //sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
+                            //sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
                         }
                     }
                 }
@@ -1786,8 +1786,8 @@ namespace FinalExamScheduling.GeneticScheduling
                     score += Scores.ExaminerNotPresident;
                     if (ctx.FillDetails)
                     {
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
-                        sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerComment += $"Not President: {Scores.ExaminerNotPresident}\n";
+                        //sch.Details[Array.IndexOf(sch.FinalExams, fi)].ExaminerScore += Scores.ExaminerNotPresident;
                     }
                 }
             }
