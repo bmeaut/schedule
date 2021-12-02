@@ -13,7 +13,7 @@ namespace FinalExamScheduling.GeneticScheduling
     //TODO: needs to be finetuned
     public class SchedulingMutation : MutationBase
     {
-        Context ctx;
+        private Context ctx;
 
         public SchedulingMutation(Context context)
         {

@@ -90,52 +90,8 @@ namespace FinalExamScheduling.GeneticScheduling
         public double[] GetFinalScores(Schedule sch, SchedulingFitness fitness)
         {
             ctx.FillDetails = true;
-            
-            //sch.Details = Enumerable.Range(0, ctx.NOStudents).Select(i => new FinalExamDetail()).ToArray();
 
             var results = fitness.CostFunctions.Select(cf => cf(sch)).ToList();
-         
-
-            //List<double> results = new List<double>
-            //{
-                
-            //    fitness.GetStudentDuplicatedScore(sch),
-            //    fitness.GetPresidentNotAvailableScore(sch),
-            //    fitness.GetSecretaryNotAvailableScore(sch),
-            //    fitness.GetExaminerNotAvailableScore(sch),
-            //    fitness.GetMemberNotAvailableScore(sch),
-            //    fitness.GetSupervisorNotAvailableScore(sch),
-            //    fitness.GetPresidentChangeScore(sch),
-            //    fitness.GetSecretaryChangeScore(sch),
-
-            //    fitness.GetPresidentWorkloadWorstScore(sch),
-            //    fitness.GetPresidentWorkloadWorseScore(sch),
-            //    fitness.GetPresidentWorkloadBadScore(sch),
-
-            //    fitness.GetSecretaryWorkloadWorstScore(sch),
-            //    fitness.GetSecretaryWorkloadWorseScore(sch),
-            //    fitness.GetSecretaryWorkloadBadScore(sch),
-
-            //    fitness.GetMemberWorkloadWorstScore(sch),
-            //    fitness.GetMemberWorkloadWorseScore(sch),
-            //    fitness.GetMemberWorkloadBadScore(sch),
-
-            //    fitness.GetPresidentSelfStudentScore(sch),
-            //    fitness.GetSecretarySelfStudentScore(sch),
-            //    fitness.GetExaminerNotPresidentScore(sch)
-            //};
-
-
-            /*foreach (FieldInfo info in typeof(Scores).GetFields().Where(x => x.IsStatic && x.IsLiteral))
-            {
-                results.Add((double)info.GetValue(info));
-                //ws_info.Cells[row, 4].Value = info.Name;
-                //ws_info.Cells[row, 5].Value = info.GetValue(info);
-                //row++;
-                results.Add()
-
-            }*/
-
 
             return results.ToArray();
         }

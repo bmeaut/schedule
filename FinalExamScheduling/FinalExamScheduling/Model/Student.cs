@@ -15,6 +15,5 @@ namespace FinalExamScheduling.Model
         public Instructor Supervisor;
         public Course ExamCourse1;
         public Course ExamCourse2 = null;
-        //public int TimeSlot;
     }
 }

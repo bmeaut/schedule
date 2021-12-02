@@ -9,17 +9,6 @@ namespace FinalExamScheduling.Model
     public class Context
     {
 
-        public Context() { } //are constructors used anywhere? they haven't been here before - LP
-        public Context(Context context)
-        {
-            Students = context.Students;
-            Secretaries = context.Secretaries;
-            Presidents = context.Presidents;
-            Members = context.Members;
-            Courses = context.Courses;
-            Instructors = context.Instructors;
-        }
-
         public Student[] Students;
         public Instructor[] Instructors;
         public Course[] Courses;
@@ -36,6 +25,8 @@ namespace FinalExamScheduling.Model
         public Student[] RandStudents;
 
         public int NOStudents;
+
+        public Context() { }
 
         public void Init()
         {

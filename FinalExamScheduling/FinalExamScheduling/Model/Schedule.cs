@@ -11,8 +11,6 @@ namespace FinalExamScheduling.Model
     public class Schedule
     {
         public FinalExam[] FinalExams;
-        //public FinalExamDetail[] Details;
-        public string[,] objectiveValues = null; //what is this? - LP, irrelevant - but it appears in excelhelper, smh
         public Schedule(int examCount)
         {
             FinalExams = new FinalExam[examCount];
