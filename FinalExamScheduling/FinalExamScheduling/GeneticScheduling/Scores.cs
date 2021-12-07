@@ -43,7 +43,7 @@ namespace FinalExamScheduling.GeneticScheduling
         public const double PresidentBadProgramme = 10000;
         public const double SecretaryBadProgramme = 10000;
         public const double MemberBadProgramme = 10000;
-        public const double InstructorBreak = 2; //lassú
+        //public const double InstructorBreak = 2; //lassú
 
         public const double PresidentWorkloadWorst = 30;
         public const double PresidentWorkloadWorse = 20;

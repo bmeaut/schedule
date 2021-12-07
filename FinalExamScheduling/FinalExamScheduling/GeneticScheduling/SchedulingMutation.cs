@@ -379,23 +379,31 @@ namespace FinalExamScheduling.GeneticScheduling
                         }
                     }
                     //fix day start and end
-                    if (examsBeforeLunch.Count > 0)
+                    if (examsAfterLunch.Count > 0)
                     {
-                        foreach (FinalExam fe in examsBeforeLunch)
+                        foreach (FinalExam fe in examsAfterLunch)
                         {
                             if (fe.EndTs >= Constants.tssInOneDay)
                             {
                                 fe.StartTs -= ((fe.EndTs - Constants.tssInOneDay) + 1);
                             }
+                            if (fe.StartTs < 0)
+                            {
+                                fe.StartTs = 0;
+                            }
                         }
                     }
-                    if (examsAfterLunch.Count > 0)
+                    if (examsBeforeLunch.Count > 0)
                     {
-                        foreach (FinalExam fe in examsAfterLunch)
+                        foreach (FinalExam fe in examsBeforeLunch)
                         {
                             if (fe.StartTs < 0)
                             {
                                 fe.StartTs = 0;
+                            }
+                            if (fe.EndTs >= Constants.tssInOneDay)
+                            {
+                                fe.StartTs -= ((fe.EndTs - Constants.tssInOneDay) + 1);
                             }
                         }
                     }
@@ -707,9 +715,9 @@ namespace FinalExamScheduling.GeneticScheduling
                             prob = 1;
                             break;
                     }
-                    if (RandomizationProvider.Current.GetDouble() <= prob)
+                    for (int i = 0; i < block.Count; i++)
                     {
-                        for (int i = 0; i < block.Count; i++)
+                        if (RandomizationProvider.Current.GetDouble() <= prob)
                         {
                             var index = RandomizationProvider.Current.GetInt(0, chromosome.Length);
                             var fe1 = (FinalExam)chromosome.GetGene(index).Value;

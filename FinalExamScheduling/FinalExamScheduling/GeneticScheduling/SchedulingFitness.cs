@@ -59,7 +59,7 @@ namespace FinalExamScheduling.GeneticScheduling
                 GetPresidentBadProgrammeScore,
                 GetSecretaryBadProgrammeScore,
                 GetMemberBadProgrammeScore,
-                GetInstructorBreakScore, //lassú
+                //GetInstructorBreakScore, //lassú
 
                 GetPresidentWorkloadWorstScore,
                 GetPresidentWorkloadWorseScore,
@@ -1380,7 +1380,7 @@ namespace FinalExamScheduling.GeneticScheduling
         //slow function, outcommented
         #region slow function - instructor breaks
         //only works as expected if instructor has maximum one exam at a time - too slow :(
-        public double GetInstructorBreakScore(Schedule sch)
+        /*public double GetInstructorBreakScore(Schedule sch)
         {
             double score = 0;
             List<FinalExam> block = new List<FinalExam>();
@@ -1432,7 +1432,7 @@ namespace FinalExamScheduling.GeneticScheduling
             }
             return score;
         }
-        
+        */
         #endregion
 
 
