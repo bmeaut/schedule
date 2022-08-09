@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C6474B07-5F89-4A38-8736-E8A07D367D5A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FinalExamScheduling</RootNamespace>
+    <AssemblyName>FinalExamScheduling</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Gurobi91.NET">
+      <HintPath>..\..\..\schedule_sima_LP\schedule_sima_LP\FinalExamScheduling\FinalExamScheduling\bin\Debug\Gurobi91.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="HeuristicScheduling\EgervaryAlgorithm.cs" />
+    <Compile Include="HeuristicScheduling\HeuristicContext.cs" />
+    <Compile Include="HeuristicScheduling\HeuristicScheduler.cs" />
+    <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
+    <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPConstraints2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPHelper2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPSchedulerFull2.cs" />
+    <Compile Include="LPScheduling\FullScheduler2\LPVariables2.cs" />
+    <Compile Include="LPScheduling\GRBHelper.cs" />
+    <Compile Include="LPScheduling\FullScheduler\LPConstraints.cs" />
+    <Compile Include="LPScheduling\FullScheduler\LPHelper.cs" />
+    <Compile Include="LPScheduling\FullScheduler\LPVariables.cs" />
+    <Compile Include="LPScheduling\LPScheduler.cs" />
+    <Compile Include="LPScheduling\FullScheduler\LPSchedulerFull.cs" />
+    <Compile Include="Model\Constants.cs" />
+    <Compile Include="Model\Context.cs" />
+    <Compile Include="Model\Course.cs" />
+    <Compile Include="Model\Enums.cs" />
+    <Compile Include="Model\ExcelHelper.cs" />
+    <Compile Include="Model\FinalExam.cs" />
+    <Compile Include="Model\Entity.cs" />
+    <Compile Include="Model\FinalExamDetail.cs" />
+    <Compile Include="Model\Instructor.cs" />
+    <Compile Include="Model\Schedule.cs" />
+    <Compile Include="Model\Student.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GeneticScheduling\GeneticScheduler.cs" />
+    <Compile Include="GeneticScheduling\Parameters.cs" />
+    <Compile Include="GeneticScheduling\SchedulingChromosome.cs" />
+    <Compile Include="GeneticScheduling\SchedulingFitness.cs" />
+    <Compile Include="GeneticScheduling\SchedulingMutation.cs" />
+    <Compile Include="GeneticScheduling\SchedulingTermination.cs" />
+    <Compile Include="Model\Scores.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Input.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Input2.xlsx" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EPPlus">
+      <Version>6.0.6</Version>
+    </PackageReference>
+    <PackageReference Include="GeneticSharp">
+      <Version>1.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="MathNet.Numerics">
+      <Version>3.20.0</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers">
+      <Version>0.4.336902</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

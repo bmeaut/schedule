@@ -1,0 +1,4289 @@
+Microsoft Windows [Version 10.0.18362.778]
+(c) 2019 Microsoft Corporation. All rights reserved.
+
+C:\Work\FinalExamScheduler\Remote\Scheduler\FinalExamScheduling\Debug>FinalExamScheduling.exe
+Reading of Excel was succesful
+Academic license - for non-commercial use only
+Reading of Presidents was succesful
+
+Solving model using baseline parameter set with TimeLimit=22600s
+
+Solving with random seed #1 ...
+Optimize a model with 1118311 rows, 655141 columns and 3487291 nonzeros
+Model fingerprint: 0xdda07623
+Model has 173068 general constraints
+Variable types: 0 continuous, 655141 integer (655113 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [5e-01, 4e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 787540 rows and 464134 columns (presolve time = 5s) ...
+Presolve removed 793813 rows and 469563 columns (presolve time = 36s) ...
+Presolve removed 754071 rows and 462829 columns
+Presolve time: 35.70s
+Presolved: 364240 rows, 192312 columns, 1397579 nonzeros
+Variable types: 0 continuous, 192312 integer (190738 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6850000e+03   4.211000e+03   4.376482e+11     38s
+   17459    6.6105387e+02   2.883323e+02   1.046987e+11     40s
+   32424    7.2487716e+02   2.519509e+01   2.106570e+10     45s
+   42920    5.7677684e+02   3.781837e-01   1.212175e+10     50s
+   46577    1.5077838e+03   0.000000e+00   3.706395e+05     53s
+   51534    5.4824255e+02   0.000000e+00   1.337293e+07     55s
+   60786    2.8411011e+02   0.000000e+00   3.554041e+05     60s
+   67166    2.0300509e+02   0.000000e+00   1.671315e+06     65s
+   72270    1.4011570e+02   0.000000e+00   2.566606e+05     70s
+   77693    8.6352894e+01   0.000000e+00   7.731353e+04     75s
+   83754    6.8264426e+01   0.000000e+00   5.424602e+05     80s
+   89177    5.5002096e+01   0.000000e+00   1.536845e+05     85s
+   90500    5.4000000e+01   0.000000e+00   0.000000e+00     89s
+Concurrent spin time: 10.69s
+
+Solved with primal simplex
+
+Root relaxation: objective 5.400000e+01, 90500 iterations, 62.81 seconds
+Total elapsed time = 171.43s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   54.00000    0 4625          -   54.00000      -     -  185s
+     0     0   54.00000    0 5465          -   54.00000      -     -  217s
+     0     0   54.00000    0 5487          -   54.00000      -     -  224s
+     0     0   54.00000    0 3330          -   54.00000      -     -  435s
+     0     0   54.00000    0 3523          -   54.00000      -     -  439s
+     0     0   54.00000    0 4310          -   54.00000      -     -  736s
+     0     0   54.00000    0 4223          -   54.00000      -     -  742s
+     0     0   54.00000    0 4504          -   54.00000      -     - 1003s
+     0     0   54.00000    0 4408          -   54.00000      -     - 1019s
+     0     0   54.00000    0 4097          -   54.00000      -     - 1401s
+     0     0   54.00000    0 4097          -   54.00000      -     - 1571s
+     3     4   54.00000    2  910          -   54.00000      - 377471 2055s
+     9    14   54.00000    4  826          -   54.00000      - 127271 2060s
+    21    26   54.00000    5  934          -   54.00000      - 55207 2067s
+    42    48   54.00000    9  822          -   54.00000      - 27922 2072s
+    59   102   54.00000   10  813          -   54.00000      - 20239 2075s
+   113   137   54.00000   20  923          -   54.00000      - 10914 2087s
+   172   258   54.00000   22  902          -   54.00000      -  7596 2108s
+   309   769   55.00000   48  755          -   54.00000      -  4929 2142s
+   981   773   54.00000    2 2759          -   54.00000      -  2345 3753s
+   983   775   54.00000    3 2902          -   54.00000      -  2356 3769s
+   987   781   54.00000    4 2995          -   54.00000      -  2365 3791s
+   993   787   54.00000    5 2845          -   54.00000      -  2388 3804s
+   999   793   54.00000    5 2975          -   54.00000      -  2402 3809s
+  1005   799   54.00000    6 2870          -   54.00000      -  2397 3810s
+  1011   810   54.00000    6 2834          -   54.00000      -  2389 3815s
+  1032   838   54.00000    9 2823          -   54.00000      -  2363 3868s
+  1056   858   54.00000   13 2785          -   54.00000      -  2384 3915s
+  1076   951   54.00000   16 2420          -   54.00000      -  2410 4029s
+  1177  1282   54.00000   39 2345          -   54.00000      -  2502 4187s
+  1576  1892   55.76087   80  556          -   54.00000      -  2520 4217s
+  2502     1   54.00000    0 2093          -   54.00000      -   0.0 4346s
+  2502     1   54.00000    0 2741          -   54.00000      -   0.0 4379s
+  2502     1   54.00000    0 2687          -   54.00000      -   0.0 4394s
+  2502     1   54.00000    0 2478          -   54.00000      -   0.0 4665s
+  2502     1   54.00000    0 2699          -   54.00000      -   0.0 4675s
+  2502     1   54.00000    0 2729          -   54.00000      -   0.0 4969s
+  2502     1   54.00000    0 2679          -   54.00000      -   0.0 4983s
+  2502     1   54.00000    0 3128          -   54.00000      -   0.0 5208s
+  2502     1   54.00000    0 2925          -   54.00000      -   0.0 5430s
+  2502     1   54.00000    0 2925          -   54.00000      -   0.0 5519s
+  2503     5   54.00000   16 2208          -   54.00000      -   311 5723s
+  2505     8   54.00000   17 2380          -   54.00000      -   319 5762s
+  2509    14   54.00000   18 2381          -   54.00000      -   330 5775s
+  2515    20   54.00000   19 2335          -   54.00000      -   338 5789s
+  2521    26   54.00000   19 2371          -   54.00000      -   346 5791s
+  2533    41   54.00000   21 2284          -   54.00000      -   351 5798s
+  2550    68   54.00000   23 2129          -   54.00000      -   360 5806s
+  2569    78   54.00000   25 2106          -   54.00000      -   372 5848s
+  2579   125   54.00000   27 1822          -   54.00000      -   396 5867s
+  2626   183   54.00000   33 1699          -   54.00000      -   431 6135s
+  2690   328   54.00000   42 1771          -   54.00000      -   579 6384s
+  2867   684   54.00000   49 1259          -   54.00000      -   676 6575s
+  3323  1060   54.00000  100 1389          -   54.00000      -   762 6624s
+  3551  1060   54.00000   71 1576          -   54.00000      -   742 6625s
+  3779  1414   54.00000  162  835          -   54.00000      -   731 6659s
+  4235  1738   54.00000  218  290          -   54.00000      -   698 6683s
+H 4275   658                      54.0000000   54.00000  0.00%   693 6683s
+
+Cutting planes:
+  Gomory: 1
+  MIR: 17
+  StrongCG: 1
+  Zero half: 93
+  RLT: 18
+
+Explored 4691 nodes (7886238 simplex iterations) in 6683.94 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 54
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.400000000000e+01, best bound 5.400000000000e+01, gap 0.0000%
+
+Solving with random seed #2 ...
+Optimize a model with 1118311 rows, 655141 columns and 3487291 nonzeros
+Model fingerprint: 0xdda07623
+Model has 173068 general constraints
+Variable types: 0 continuous, 655141 integer (655113 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [5e-01, 4e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 787540 rows and 464134 columns (presolve time = 6s) ...
+Presolve removed 793813 rows and 469563 columns (presolve time = 37s) ...
+Presolve removed 754071 rows and 462829 columns
+Presolve time: 36.77s
+Presolved: 364240 rows, 192312 columns, 1397579 nonzeros
+Variable types: 0 continuous, 192312 integer (190738 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6850000e+03   4.211000e+03   4.376482e+11     39s
+   11995    7.9322031e+02   7.471823e+02   9.746702e+10     40s
+   22880    7.0603153e+02   1.179015e+02   3.500863e+10     45s
+   35286    7.3161006e+02   1.529895e+01   2.008101e+10     50s
+   42919    6.4827490e+02   7.111715e-01   1.347449e+10     55s
+   48538    1.3200000e+02   1.749526e+00   0.000000e+00     60s
+   48985    1.5447126e+03   0.000000e+00   4.356671e+05     63s
+   53919    1.2157204e+03   0.000000e+00   2.105913e+05     65s
+   62215    2.5295518e+02   0.000000e+00   4.216200e+05     70s
+   70509    1.1697204e+02   0.000000e+00   1.100921e+06     75s
+   76889    7.3023354e+01   0.000000e+00   9.180894e+05     80s
+   83269    5.5203954e+01   0.000000e+00   2.260346e+04     85s
+   84427    5.4000000e+01   0.000000e+00   0.000000e+00     88s
+Concurrent spin time: 9.97s
+
+Solved with primal simplex
+
+Root relaxation: objective 5.400000e+01, 84427 iterations, 60.04 seconds
+Total elapsed time = 200.67s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   54.00000    0 4305          -   54.00000      -     -  246s
+     0     0   54.00000    0 5229          -   54.00000      -     -  275s
+     0     0   54.00000    0 5162          -   54.00000      -     -  281s
+     0     0   54.00000    0 3928          -   54.00000      -     -  554s
+     0     0   54.00000    0 3904          -   54.00000      -     -  557s
+     0     0   54.00000    0 4141          -   54.00000      -     -  850s
+     0     0   54.00000    0 4157          -   54.00000      -     -  858s
+     0     0   54.00000    0 3166          -   54.00000      -     - 1192s
+     0     0   54.00000    0 3665          -   54.00000      -     - 1203s
+     0     0   54.00000    0 3982          -   54.00000      -     - 1500s
+     0     0   54.00000    0 3302          -   54.00000      -     - 1812s
+     3     4   54.00000    2 1153          -   54.00000      - 416237 2322s
+     9    14   54.00000    4 1205          -   54.00000      - 139955 2326s
+    27    32   54.00000    7 1225          -   54.00000      - 47096 2330s
+    33    39   54.00000    7 1321          -   54.00000      - 38607 2335s
+    58    81   54.00000    8 1394          -   54.00000      - 22801 2342s
+    98   168   54.00000   10 1497          -   54.00000      - 13815 2349s
+   189   395   56.80808   29 1078          -   54.00000      -  7577 2364s
+   483     1   54.00000    0 3302          -   54.00000      -   0.0 2397s
+   483     1   54.00000    0 2796          -   54.00000      -   0.0 2604s
+   483     1   54.00000    0 3250          -   54.00000      -   0.0 2648s
+   483     1   54.00000    0 3254          -   54.00000      -   0.0 2672s
+   483     1   54.00000    0 2704          -   54.00000      -   0.0 3150s
+   483     1   54.00000    0 2800          -   54.00000      -   0.0 3157s
+   483     1   54.00000    0 2717          -   54.00000      -   0.0 3336s
+   483     1   54.00000    0 2461          -   54.00000      -   0.0 3350s
+   483     1   54.00000    0 3098          -   54.00000      -   0.0 3552s
+   483     1   54.00000    0 3098          -   54.00000      -   0.0 3721s
+   483     1   54.00000    0 3098          -   54.00000      -   0.0 3736s
+   484     5   54.00000   16 2296          -   54.00000      -  1884 4081s
+   486     8   54.00000   17 2106          -   54.00000      -  1895 4102s
+   490    14   54.00000   18 2080          -   54.00000      -  1913 4119s
+   496    20   54.00000   19 1927          -   54.00000      -  1938 4138s
+   502    26   54.00000   19 1979          -   54.00000      -  1976 4150s
+   508    28   54.00000   20 1993          -   54.00000      -  2016 4206s
+   514    35   54.00000   20 1930          -   54.00000      -  2112 4237s
+   521    45   54.00000   21 1994          -   54.00000      -  2141 4259s
+   531    50   54.00000   21 1986          -   54.00000      -  2152 4287s
+   540    56   54.00000   22 2201          -   54.00000      -  2182 4321s
+   546    75   54.00000   23 1984          -   54.00000      -  2245 4403s
+   565   167   54.00000   25 1819          -   54.00000      -  2327 4469s
+   667   241   54.00000   26 1815          -   54.00000      -  2270 4861s
+   753   569   54.00000   33 1999          -   54.00000      -  2735 5310s
+  1151   917   54.00000   83 2548          -   54.00000      -  2420 5467s
+  1607  1255   54.00000  139 1927          -   54.00000      -  1962 5537s
+  2063  1580   54.00000  187 1545          -   54.00000      -  1632 5647s
+* 2470   669             217      54.0000000   54.00000  0.00%  1454 5647s
+
+Cutting planes:
+  MIR: 25
+  Zero half: 81
+  RLT: 30
+
+Explored 2486 nodes (5711778 simplex iterations) in 5647.94 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 54
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.400000000000e+01, best bound 5.400000000000e+01, gap 0.0000%
+
+Solving with random seed #3 ...
+Optimize a model with 1118311 rows, 655141 columns and 3487291 nonzeros
+Model fingerprint: 0xdda07623
+Model has 173068 general constraints
+Variable types: 0 continuous, 655141 integer (655113 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [5e-01, 4e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 787540 rows and 464134 columns (presolve time = 6s) ...
+Presolve removed 793813 rows and 469563 columns (presolve time = 33s) ...
+Presolve removed 754071 rows and 462829 columns
+Presolve time: 33.16s
+Presolved: 364240 rows, 192312 columns, 1397579 nonzeros
+Variable types: 0 continuous, 192312 integer (190738 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.6850000e+03   4.211000e+03   4.376482e+11     35s
+   27336    6.7616078e+02   5.848467e+01   2.620399e+10     40s
+   39738    7.0076563e+02   3.204767e+00   2.326016e+10     45s
+   46295    1.3200000e+02   2.093624e+00   0.000000e+00     51s
+   46531    1.6545768e+03   0.000000e+00   5.034562e+05     52s
+   52708    6.1669543e+02   0.000000e+00   1.455636e+06     55s
+   62916    2.1130295e+02   0.000000e+00   5.102062e+05     60s
+   70891    1.3494443e+02   0.000000e+00   3.577124e+05     65s
+   78228    1.0414554e+02   0.000000e+00   4.678391e+05     70s
+   83332    8.0325524e+01   0.000000e+00   8.436803e+04     75s
+   88436    6.1406916e+01   0.000000e+00   1.224612e+05     80s
+   92987    5.4000000e+01   3.476627e-01   0.000000e+00     85s
+   93328    5.4000000e+01   0.000000e+00   0.000000e+00     87s
+Concurrent spin time: 9.34s
+
+Solved with primal simplex
+
+Root relaxation: objective 5.400000e+01, 93328 iterations, 61.93 seconds
+Total elapsed time = 161.72s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   54.00000    0 4586          -   54.00000      -     -  179s
+     0     0   54.00000    0 5382          -   54.00000      -     -  207s
+     0     0   54.00000    0 5201          -   54.00000      -     -  211s
+     0     0   54.00000    0 3502          -   54.00000      -     -  360s
+     0     0   54.00000    0 3704          -   54.00000      -     -  368s
+     0     0   54.00000    0 3455          -   54.00000      -     -  714s
+     0     0   54.00000    0 3604          -   54.00000      -     -  722s
+     0     0   54.00000    0 4174          -   54.00000      -     -  906s
+     0     0   54.00000    0 4204          -   54.00000      -     -  911s
+     0     0   54.00000    0 3552          -   54.00000      -     - 1187s
+     0     0   54.00000    0 3474          -   54.00000      -     - 1195s
+     0     0   54.00000    0 3810          -   54.00000      -     - 1481s
+     0     0   54.00000    0 3810          -   54.00000      -     - 1571s
+     3     4   54.00000    2 1923          -   54.00000      - 408109 1939s
+     5     6   54.00000    3 1772          -   54.00000      - 246262 1944s
+     9    10   54.00000    4 1435          -   54.00000      - 138232 1948s
+    21    20   54.00000    6 1381          -   54.00000      - 60749 1953s
+    33    32   54.00000    7 1370          -   54.00000      - 38779 1956s
+    56    59   54.00000   10 1569          -   54.00000      - 23128 1961s
+    66    72 infeasible   11               -   54.00000      - 19880 1967s
+    83     1   54.00000    0 3236          -   54.00000      -   0.0 2221s
+    83     1   54.00000    0 3941          -   54.00000      -   0.0 2279s
+    83     1   54.00000    0 3915          -   54.00000      -   0.0 2299s
+    83     1   54.00000    0 3361          -   54.00000      -   0.0 2636s
+    83     1   54.00000    0 3622          -   54.00000      -   0.0 2647s
+    83     1   54.00000    0 3069          -   54.00000      -   0.0 2973s
+    83     1   54.00000    0 2898          -   54.00000      -   0.0 2981s
+    83     1   54.00000    0 2929          -   54.00000      -   0.0 3342s
+    83     1   54.00000    0 3240          -   54.00000      -   0.0 3358s
+    83     1   54.00000    0 2518          -   54.00000      -   0.0 3686s
+    83     1   54.00000    0 2641          -   54.00000      -   0.0 3695s
+    83     1   54.00000    0 2851          -   54.00000      -   0.0 3930s
+    83     1   54.00000    0 2095          -   54.00000      -   0.0 4132s
+    83     1   54.00000    0 2095          -   54.00000      -   0.0 4145s
+    84     5   54.00000   12 1747          -   54.00000      - 16428 4280s
+    86     8   54.00000   13 1770          -   54.00000      - 16226 4296s
+    90    14   54.00000   14 1930          -   54.00000      - 15661 4315s
+    96    20   54.00000   15 1789          -   54.00000      - 14942 4356s
+   114    39   54.00000   17 1784          -   54.00000      - 13028 4362s
+   132    58   54.00000   18 1860          -   54.00000      - 11407 4365s
+   142    89   54.00000   19 1730          -   54.00000      - 10702 4385s
+   175   115   54.00000   23 1529          -   54.00000      -  9168 4518s
+   207   199   54.00000   25 1454          -   54.00000      -  8739 4619s
+   303   549   54.00000   35 1319          -   54.00000      -  6585 4752s
+   757   917   54.00000   84 1212          -   54.00000      -  3189 4819s
+  1213  1236   54.00000  131 1140          -   54.00000      -  2161 4879s
+  1642  1582   54.00000  162  579          -   54.00000      -  1771 4926s
+H 1732   690                      54.0000000   54.00000  0.00%  1697 4926s
+
+Cutting planes:
+  MIR: 17
+  Zero half: 42
+  RLT: 40
+
+Explored 2098 nodes (4721678 simplex iterations) in 4927.23 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 54
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.400000000000e+01, best bound 5.400000000000e+01, gap 0.0000%
+
+
+-------------------------------------------------------------------------------
+Begin tuning (baseline mean runtime 5753.07s)...
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 2...
+
+        Presolve 2
+
+Solving with random seed #1 ... runtime 4398.67s
+Solving with random seed #2 ... runtime 2862.29s
+Solving with random seed #3 ... runtime 2861.02s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 3374.00s
+Total elapsed tuning time 27382s (198618s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 3...
+
+        GomoryPasses 1
+
+Solving with random seed #1 ... runtime 4741.57s
+Solving with random seed #2 ... runtime 5499.17s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 37623s (188377s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 4...
+
+        Aggregate 0
+        Presolve 2
+
+Solving with random seed #1 ... runtime 5498.41s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 43121s (182879s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 5...
+
+        BranchDir -1
+
+Solving with random seed #1 ... runtime 5499.21s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 48621s (177379s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 6...
+
+        MIPFocus 2
+        Presolve 2
+
+Solving with random seed #1 ... runtime 5227.62s
+Solving with random seed #2 ... runtime 5502.18s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 59351s (166649s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 7...
+
+        BranchDir -1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2934.67s
+Solving with random seed #2 ... runtime 5499.12s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 67784s (158216s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 8...
+
+        Aggregate 0
+
+Solving with random seed #1 ... runtime 5498.37s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 73283s (152717s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 9...
+
+        Heuristics 0
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2882.64s
+Solving with random seed #2 ... runtime 4618.34s
+Solving with random seed #3 ... runtime 2776.87s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 83561s (142439s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 10...
+
+        Cuts 3
+        Presolve 2
+
+Solving with random seed #1 ... runtime 5498.63s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 89060s (136940s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 11...
+
+        PreDual 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 5498.56s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 94559s (131441s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 12...
+
+        Method 2
+        Presolve 2
+
+Solving with random seed #1 ... runtime 5498.76s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 100057s (125943s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 13...
+
+        Method 0
+        Presolve 2
+
+Solving with random seed #1 ... runtime 3026.41s
+Solving with random seed #2 ... runtime 3696.45s
+Solving with random seed #3 ... runtime 4655.65s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 111436s (114564s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 14...
+
+        Symmetry 2
+        Presolve 2
+
+Solving with random seed #1 ... runtime 3745.27s
+Solving with random seed #2 ... runtime 3887.38s
+Solving with random seed #3 ... runtime 3430.40s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 122500s (103500s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 15...
+
+        Heuristics 0.001
+
+Solving with random seed #1 ... runtime 4179.54s
+Solving with random seed #2 ... runtime 5060.51s
+Solving with random seed #3 ... runtime 5498.42s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 137238s (88762s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 16...
+
+        PreDual 0
+        Presolve 2
+
+Solving with random seed #1 ... runtime 4406.81s
+Solving with random seed #2 ... runtime 2867.07s
+Solving with random seed #3 ... runtime 2885.26s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 3374.00s
+Total elapsed tuning time 147398s (78602s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 17...
+
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 3178.34s
+Solving with random seed #2 ... runtime 3107.01s
+Solving with random seed #3 ... runtime 1760.00s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 2681.78s
+Total elapsed tuning time 155443s (70557s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 18...
+
+        Heuristics 0.001
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2560.23s
+Solving with random seed #2 ... runtime 2944.82s
+Solving with random seed #3 ... runtime 1830.54s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 2445.19s
+Total elapsed tuning time 162779s (63221s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 19...
+
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2534.58s
+Solving with random seed #2 ... runtime 2158.42s
+Solving with random seed #3 ... runtime 1700.18s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 2131.06s
+Total elapsed tuning time 169173s (56827s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 20...
+
+        Symmetry 2
+        CutPasses 1
+        PreDepRow 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2510.31s
+Solving with random seed #2 ... runtime 2171.97s
+Solving with random seed #3 ... runtime 1705.13s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 2129.14s
+Total elapsed tuning time 175560s (50440s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 21...
+
+        Symmetry 2
+
+Solving with random seed #1 ... runtime 3140.52s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2129.14s
+Total elapsed tuning time 178701s (47299s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 22...
+
+        Heuristics 0.001
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2668.20s
+Solving with random seed #2 ... runtime 2976.06s
+Solving with random seed #3 ... runtime 1847.04s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2129.14s
+Total elapsed tuning time 186192s (39808s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 23...
+
+        DegenMoves 9
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2267.46s
+Solving with random seed #2 ... runtime 2058.63s
+Solving with random seed #3 ... runtime 2014.40s
+
+Improvement found:
+  baseline: mean runtime 5753.07s
+  improved: mean runtime 2113.50s
+Total elapsed tuning time 192533s (33467s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 24...
+
+        DegenMoves 8
+        Symmetry 2
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2834.49s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2113.50s
+Total elapsed tuning time 195368s (30632s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 25...
+
+        Symmetry 2
+        CutPasses 1
+
+Solving with random seed #1 ... runtime 1869.39s
+Solving with random seed #2 ... runtime 2697.84s
+Solving with random seed #3 ... runtime 2813.83s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2113.50s
+Total elapsed tuning time 202749s (23251s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 26...
+
+        CutPasses 1
+
+Solving with random seed #1 ... runtime 2410.00s
+Solving with random seed #2 ... runtime 2834.84s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2113.50s
+Total elapsed tuning time 207994s (18006s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 27...
+
+        Cuts 1
+        CutPasses 1
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2808.60s
+Solving with random seed #2 ... runtime 2834.58s+
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2113.50s
+Total elapsed tuning time 213637s (12363s remaining)
+
+-------------------------------------------------------------------------------
+
+Testing candidate parameter set 28...
+
+        Symmetry 2
+        CutPasses 1
+        GomoryPasses 5
+        Presolve 2
+
+Solving with random seed #1 ... runtime 2507.24s
+Solving with random seed #2 ... runtime 2167.21s
+Solving with random seed #3 ... runtime 1707.35s
+
+Progress so far:
+  baseline: mean runtime 5753.07s
+  best:     mean runtime 2113.50s
+Total elapsed tuning time 220019s (5981s remaining)
+
+-------------------------------------------------------------------------------
+
+Tested 28 parameter sets in 220019.30s
+
+Baseline parameter set: mean runtime 5753.07s
+
+Improved parameter set 1 (mean runtime 2113.50s):
+
+        DegenMoves 9
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Improved parameter set 2 (mean runtime 2127.27s):
+
+        Symmetry 2
+        CutPasses 1
+        GomoryPasses 5
+        Presolve 2
+
+Improved parameter set 3 (mean runtime 2129.14s):
+
+        Symmetry 2
+        CutPasses 1
+        PreDepRow 1
+        Presolve 2
+
+Improved parameter set 4 (mean runtime 2131.06s):
+
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Improved parameter set 5 (mean runtime 2445.19s):
+
+        Heuristics 0.001
+        CutPasses 1
+        Presolve 2
+
+Improved parameter set 6 (mean runtime 2460.35s):
+
+        Symmetry 2
+        CutPasses 1
+
+Improved parameter set 7 (mean runtime 2497.10s):
+
+        Heuristics 0.001
+        Symmetry 2
+        CutPasses 1
+        Presolve 2
+
+Improved parameter set 8 (mean runtime 2681.78s):
+
+        CutPasses 1
+        Presolve 2
+
+Improved parameter set 9 (mean runtime 3374.00s):
+
+        Presolve 2
+
+Improved parameter set 10 (mean runtime 3386.38s):
+
+        PreDual 0
+        Presolve 2
+
+Gurobi Optimizer version 9.0.2 build v9.0.2rc0 (win64)
+Optimize a model with 1118311 rows, 655141 columns and 3487291 nonzeros
+Model fingerprint: 0xdda07623
+Model has 173068 general constraints
+Variable types: 0 continuous, 655141 integer (655113 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [5e-01, 4e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+01]
+Presolve removed 787540 rows and 464134 columns (presolve time = 7s) ...
+Presolve removed 793240 rows and 469320 columns (presolve time = 10s) ...
+Presolve removed 793813 rows and 469563 columns (presolve time = 98s) ...
+Presolve removed 754071 rows and 462829 columns
+Presolve time: 98.25s
+Presolved: 364240 rows, 192312 columns, 1568286 nonzeros
+Variable types: 0 continuous, 192312 integer (190738 binary)
+
+Deterministic concurrent LP optimizer: primal and dual simplex
+Showing first log only...
+
+Presolve removed 3071 rows and 1523 columns
+Presolved: 361169 rows, 190789 columns, 1458071 nonzeros
+
+
+Root simplex log...
+
+Iteration    Objective       Primal Inf.    Dual Inf.      Time
+       0    1.7640000e+03   3.802000e+03   3.979705e+11    102s
+   25111    9.3238495e+02   1.304374e+02   5.134571e+10    105s
+   38743    1.0267261e+03   1.292232e+01   4.776010e+10    110s
+   48198    1.3200000e+02   6.621526e-01   0.000000e+00    116s
+   48566    1.9918496e+03   0.000000e+00   3.522446e+05    117s
+   54975    1.1834351e+03   0.000000e+00   1.374515e+06    120s
+   64802    8.7165121e+02   0.000000e+00   7.829737e+05    125s
+Concurrent spin time: 0.00s
+
+Solved with dual simplex
+
+Root relaxation: objective 5.400000e+01, 49169 iterations, 30.64 seconds
+Total elapsed time = 216.30s
+Total elapsed time = 262.58s
+Total elapsed time = 286.70s
+Total elapsed time = 306.76s
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   54.00000    0 4826          -   54.00000      -     -  316s
+     0     0   54.00000    0 5894          -   54.00000      -     -  356s
+     0     0   54.00000    0 5630          -   54.00000      -     -  367s
+     0     0   54.00000    0 5919          -   54.00000      -     -  592s
+     0     0   54.00000    0 5740          -   54.00000      -     -  598s
+     0     0   54.00000    0 5994          -   54.00000      -     -  787s
+     0     0   54.00000    0 5890          -   54.00000      -     -  794s
+     0     0   54.00000    0 6085          -   54.00000      -     -  985s
+     0     0   54.00000    0 4632          -   54.00000      -     - 1263s
+     3     1   54.00000    0 4632          -   54.00000      -   0.0 1541s
+     3     1   54.00000    0 2247          -   54.00000      -   0.0 1642s
+     3     1   54.00000    0 2589          -   54.00000      -   0.0 1710s
+     3     1   54.00000    0 2581          -   54.00000      -   0.0 1719s
+     3     1   54.00000    0 2580          -   54.00000      -   0.0 1842s
+     3     1   54.00000    0 2566          -   54.00000      -   0.0 1848s
+     3     1   54.00000    0 2026          -   54.00000      -   0.0 2014s
+     3     1   54.00000    0 2074          -   54.00000      -   0.0 2023s
+     3     1   54.00000    0 2217          -   54.00000      -   0.0 2142s
+     3     1   54.00000    0 2217          -   54.00000      -   0.0 2249s
+     3     1   54.00000    0 2217          -   54.00000      -   0.0 2266s
+     4     5   54.00000   12 2153          -   54.00000      - 191926 2496s
+     6     8   54.00000   13 1872          -   54.00000      - 131034 2546s
+    10    14   54.00000   14 1881          -   54.00000      - 81894 2566s
+    16    18   54.00000   15 1522          -   54.00000      - 53145 2607s
+    22    24   54.00000   16 1534          -   54.00000      - 40546 2610s
+    28    28   54.00000   16 1511          -   54.00000      - 32144 2663s
+    34    34   54.00000   17 1483          -   54.00000      - 27861 2723s
+    44    41   54.00000   18 1417          -   54.00000      - 24029 2770s
+    51    45   54.00000   19 1384          -   54.00000      - 21431 2803s
+    57    56   54.00000   20 1281          -   54.00000      - 19857 2860s
+    68   130   54.00000   20 1354          -   54.00000      - 17312 2896s
+   146   241 infeasible   28               -   54.00000      -  9051 3057s
+   269   340   54.00000   50  943          -   54.00000      -  6740 3728s
+   390   660   54.00000   52  975          -   54.00000      -  6964 4377s
+H  397   649                      54.0000000   54.00000  0.00%  6992 4377s
+
+Cutting planes:
+  Gomory: 2
+  MIR: 20
+  Zero half: 42
+  RLT: 28
+
+Explored 810 nodes (4522939 simplex iterations) in 4378.19 seconds
+Thread count was 12 (of 12 available processors)
+
+Solution count 1: 54
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.400000000000e+01, best bound 5.400000000000e+01, gap 0.0000%
+
+tsNr: 0
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Iváncsy Szabolcs
+
+tsNr: 1
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Varjasi István
+
+tsNr: 2
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Fehér Béla
+
+tsNr: 3
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Majzik István
+
+tsNr: 4
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Divényi Dániel Péter
+
+tsNr: 5
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Magdics Milán
+
+tsNr: 6
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Blázovics László
+
+tsNr: 7
+roomNr: 0       BSc     CS      Asztalos Márk   Imre Gábor      St:Király Zoltán
+roomNr: 1       Skip    Dudás Akos
+
+tsNr: 8
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Divényi Dániel Péter
+
+tsNr: 9
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Bányász Gábor
+
+tsNr: 10
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Max Gyula
+
+tsNr: 11
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Kovács Viktor
+
+tsNr: 12
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Szemenyei Márton
+
+tsNr: 13
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Kovári Bence András
+
+tsNr: 14
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Sik Tamás Dávid
+
+tsNr: 15
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Rajacsics Tamás
+
+tsNr: 16
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Braun Patrik János
+
+tsNr: 17
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Kovács Viktor
+
+tsNr: 18
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Kiss Dávid
+roomNr: 1       Skip    Kundra László János
+
+tsNr: 19
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Kovács Tibor
+
+tsNr: 20
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Némethné Vidovszky Agnes
+
+tsNr: 21
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Gulyás Gábor György
+
+tsNr: 22
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Kardos Gergely
+
+tsNr: 23
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Aszódi Attila
+
+tsNr: 24
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Kovács Adorján
+
+tsNr: 25
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Albert István
+
+tsNr: 26
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Balogh Tamás
+
+tsNr: 27
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Albert István
+
+tsNr: 28
+roomNr: 0       MSc     CS      Asztalos Márk   Imre Gábor      St:Vágujhelyi Gergely
+roomNr: 1       Skip    Max Gyula
+
+tsNr: 29
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Vidács Attila
+
+tsNr: 30
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Somogyi Ferenc Attila
+
+tsNr: 31
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Braun Patrik János
+
+tsNr: 32
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Varjasi István
+
+tsNr: 33
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Vidács Attila
+
+tsNr: 34
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Sik Tamás Dávid
+
+tsNr: 35
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Sik Tamás Dávid
+
+tsNr: 36
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Rajacsics Tamás
+
+tsNr: 37
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Tevesz Gábor
+
+tsNr: 38
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Hideg Attila
+
+tsNr: 39
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Somogyi Ferenc Attila
+
+tsNr: 40
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Simon Balázs
+
+tsNr: 41
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Micskei Zoltán Imre
+
+tsNr: 42
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Gazdi László
+
+tsNr: 43
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Albert István
+
+tsNr: 44
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Vajk István
+
+tsNr: 45
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Dávid Bence
+
+tsNr: 46
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Acs Judit
+
+tsNr: 47
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Dunaev Dmitriy
+
+tsNr: 48
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Gál Tibor
+
+tsNr: 49
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Acs Evelin Kitti
+
+tsNr: 50
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Jánoky László Viktor
+
+tsNr: 51
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Balogh Tamás
+
+tsNr: 52
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Iváncsy Szabolcs
+
+tsNr: 53
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Kovács Adám
+
+tsNr: 54
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Gál Tibor
+
+tsNr: 55
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Skip    Albert István
+
+tsNr: 56
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Lunch   Tevesz Gábor
+
+tsNr: 57
+roomNr: 0       Lunch   CS      Asztalos Márk
+roomNr: 1       Lunch   Gazdi László
+
+tsNr: 58
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Magdics Milán
+
+tsNr: 59
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Kovács Viktor
+
+tsNr: 60
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Sipos Márton Akos
+
+tsNr: 61
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Szántó Péter
+
+tsNr: 62
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Balogh Attila
+
+tsNr: 63
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Szegletes Luca
+
+tsNr: 64
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Lunch   Acs Judit
+
+tsNr: 65
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Lunch   Nagy Akos
+
+tsNr: 66
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Lunch   Acs Evelin Kitti
+
+tsNr: 67
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Lunch   Gulyás Gábor György
+
+tsNr: 68
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Skip    Acs Judit
+
+tsNr: 69
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Skip    Balogh Tamás
+
+tsNr: 70
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Skip    Iváncsy Tamás
+
+tsNr: 71
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Skip    Kardos Gergely
+
+tsNr: 72
+roomNr: 0       BSc     CS      Asztalos Márk   Gincsai Gábor   St:Szabó Bence Farkas
+roomNr: 1       Skip    Balogh Attila
+
+tsNr: 73
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Dávid Bence
+
+tsNr: 74
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Nagy Akos
+
+tsNr: 75
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Kovács Tibor
+
+tsNr: 76
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Harmati István
+
+tsNr: 77
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Szabó Zoltán
+
+tsNr: 78
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Acs Evelin Kitti
+
+tsNr: 79
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Somogyi Ferenc Attila
+
+tsNr: 80
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Bencsáth Boldizsár
+
+tsNr: 81
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Buttyán Levente
+
+tsNr: 82
+roomNr: 0       MSc     CS      Albert István   Asztalos Márk   St:Barmenov Bauyrzhan
+roomNr: 1       Skip    Kundra László János
+
+tsNr: 83
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Szabó Gábor
+
+tsNr: 84
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Max Gyula
+
+tsNr: 85
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Cserkuti Péter
+
+tsNr: 86
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Rajacsics Tamás
+
+tsNr: 87
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Cserkuti Péter
+
+tsNr: 88
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Csorvási Gábor
+
+tsNr: 89
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Albert István
+
+tsNr: 90
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Iváncsy Tamás
+
+tsNr: 91
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Némethné Vidovszky Agnes
+
+tsNr: 92
+roomNr: 0       BSc     CS      Asztalos Márk   Hideg Attila    St:Nagy Adám Gyula
+roomNr: 1       Skip    Fehér Béla
+
+tsNr: 93
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Futó András
+
+tsNr: 94
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Vida Rolland
+
+tsNr: 95
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Magdics Milán
+
+tsNr: 96
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Braun Patrik János
+
+tsNr: 97
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Majzik István
+
+tsNr: 98
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Hideg Attila
+
+tsNr: 99
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Fehér Béla
+
+tsNr: 100
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Bányász Gábor
+
+tsNr: 101
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Hamar János Krisztián
+
+tsNr: 102
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Vajk István
+
+tsNr: 103
+roomNr: 0       MSc     CS      Asztalos Márk   Kahloot Khalid M.M.     St:Boran Can
+roomNr: 1       Skip    Gincsai Gábor
+
+tsNr: 104
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Szegletes Luca
+
+tsNr: 105
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Imre Gábor
+
+tsNr: 106
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Futó András
+
+tsNr: 107
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Ekler Péter
+
+tsNr: 108
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Micskei Zoltán Imre
+
+tsNr: 109
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Bányász Gábor
+
+tsNr: 110
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Ekler Péter
+
+tsNr: 111
+roomNr: 0       BSc     CS      Albert István   Asztalos Márk   St:Ujhelyi-Kiss Dániel
+roomNr: 1       Skip    Bencsáth Boldizsár
+
+tsNr: 112
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Budai Adám
+
+tsNr: 113
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Tömösvári Imre
+
+tsNr: 114
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Kardos Gergely
+
+tsNr: 115
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Braun Patrik János
+
+tsNr: 116
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Albert István
+
+tsNr: 117
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Oláh István
+
+tsNr: 118
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Vidács Attila
+
+tsNr: 119
+roomNr: 0       Skip    CS      Asztalos Márk
+roomNr: 1       Skip    Gulyás Gábor György
+
+tsNr: 120
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 121
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 122
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 123
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 124
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 125
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 126
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 127
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 128
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 129
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 130
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 131
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 132
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 133
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 134
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 135
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Enesei Lilla
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 136
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 137
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 138
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 139
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 140
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       BSc     CS      Kovács Tibor    Kundra László János     St:Dános Péter
+
+tsNr: 141
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 142
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 143
+roomNr: 0       BSc     CS      Tóth Tibor      Csorba Kristóf  St:Németh Bence
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 144
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 145
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 146
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 147
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 148
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 149
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 150
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 151
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 152
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 153
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 154
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 155
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 156
+roomNr: 0       MSc     CS      Csorba Kristóf  Jánoky László Viktor    St:Plutzer Ferenc
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 157
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       BSc     CS      Kovács Tibor    St:Komornik Gábor
+
+tsNr: 158
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 159
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 160
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 161
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 162
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 163
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 164
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 165
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 166
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 167
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 168
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 169
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 170
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 171
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 172
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 173
+roomNr: 0       Lunch   CS      Csorba Kristóf
+roomNr: 1       Lunch   CS      Kovács Tibor
+
+tsNr: 174
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 175
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 176
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 177
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 178
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 179
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 180
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 181
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 182
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       MSc     CS      Kovári Bence András     Kovács Tibor    St:Kovács Balázs
+
+tsNr: 183
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 184
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 185
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 186
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 187
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 188
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 189
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Tóth Adám Aladin
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 190
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 191
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 192
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 193
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 194
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 195
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 196
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 197
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 198
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 199
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 200
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 201
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       MSc     CS      Kovács Tibor    Budai Adám      St:Tóth Nikoletta
+
+tsNr: 202
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 203
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 204
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 205
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 206
+roomNr: 0       MSc     CS      Csorba Kristóf  St:Urbanovics Péter
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 207
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 208
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 209
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 210
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 211
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 212
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 213
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 214
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 215
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 216
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:Borbola Martin
+
+tsNr: 217
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 218
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 219
+roomNr: 0       MSc     CS      Ekler Péter     Csorba Kristóf  St:Vadász Sára
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 220
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 221
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 222
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 223
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 224
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 225
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 226
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Ekler Péter     Kovács Tibor    St:Radetzky Balázs
+
+tsNr: 227
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 228
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 229
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 230
+roomNr: 0       MSc     CS      Csorba Kristóf  Rajacsics Tamás St:Khalil (Moh'd Khair) Omar Said
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 231
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 232
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 233
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 234
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       BSc     CS      Kovács Tibor    Simon Gábor     St:László Balázs
+
+tsNr: 235
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 236
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 237
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 238
+roomNr: 0       BSc     CS      Ekler Péter     Csorba Kristóf  St:Sulyok Levente
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 239
+roomNr: 0       Skip    CS      Csorba Kristóf
+roomNr: 1       Skip    CS      Kovács Tibor
+
+tsNr: 240
+roomNr: 0       Skip    CS      Iváncsy Szabolcs
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 241
+roomNr: 0       Skip    CS      Charaf Hassan
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 242
+roomNr: 0       Skip    CS      Nagy Akos
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 243
+roomNr: 0       Skip    CS      Balogh Attila
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 244
+roomNr: 0       Skip    CS      Kiss Dávid
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 245
+roomNr: 0       Skip    CS      Buttyán Levente
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 246
+roomNr: 0       Skip    CS      Tevesz Gábor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 247
+roomNr: 0       Skip    CS      Tevesz Gábor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 248
+roomNr: 0       Skip    CS      Sik Tamás Dávid
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Béres András Kristóf
+
+tsNr: 249
+roomNr: 0       Skip    CS      Gazdi László
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 250
+roomNr: 0       Skip    CS      Micskei Zoltán Imre
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 251
+roomNr: 0       Skip    CS      Charaf Hassan
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 252
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 253
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 254
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 255
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 256
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 257
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 258
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 259
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       BSc     EE      Tevesz Gábor    Dávid Bence     St:Reucsán Bence
+
+tsNr: 260
+roomNr: 0       MSc     CS      Mezei Gergely   St:Sulyok Gábor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 261
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 262
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 263
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 264
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 265
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 266
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 267
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 268
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 269
+roomNr: 0       MSc     CS      Albert István   Mezei Gergely   St:Zeytin Canberk
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 270
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 271
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 272
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 273
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       MSc     EE      Tevesz Gábor    St:Pásztor Dániel
+
+tsNr: 274
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 275
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 276
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 277
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 278
+roomNr: 0       BSc     CS      Mezei Gergely   Braun Patrik János      St:Sívó Dóra
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 279
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 280
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 281
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 282
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 283
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 284
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 285
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 286
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 287
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 288
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 289
+roomNr: 0       MSc     CS      Mezei Gergely   St:Szegedi Zoltán
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 290
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 291
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 292
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 293
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Lunch   EE      Tevesz Gábor
+
+tsNr: 294
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 295
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 296
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 297
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 298
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 299
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 300
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 301
+roomNr: 0       Lunch   CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 302
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 303
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       BSc     EE      Tóth Tibor      Tevesz Gábor    St:Bujtás Akos
+
+tsNr: 304
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 305
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 306
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 307
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 308
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 309
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 310
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 311
+roomNr: 0       BSc     CS      Kovári Bence András     Mezei Gergely   St:Dócs Zoltán
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 312
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 313
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 314
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 315
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 316
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 317
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 318
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 319
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 320
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       MSc     EE      Blázovics László        Tevesz Gábor    St:Thamó Zsolt
+
+tsNr: 321
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 322
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 323
+roomNr: 0       MSc     CS      Kovári Bence András     Mezei Gergely   St:Halász Tamás Nándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 324
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 325
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 326
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 327
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 328
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 329
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 330
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 331
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 332
+roomNr: 0       BSc     CS      Mezei Gergely   Dudás Akos      St:Koppány Bence
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 333
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 334
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 335
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 336
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 337
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       MSc     EE      Csorvási Gábor  Tevesz Gábor    St:Foltányi Bence
+
+tsNr: 338
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 339
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 340
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 341
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 342
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 343
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 344
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 345
+roomNr: 0       MSc     CS      Mezei Gergely   St:Bácsi Sándor
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 346
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 347
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 348
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 349
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 350
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       MSc     EE      Tevesz Gábor    Max Gyula       St:Frank János
+
+tsNr: 351
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 352
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 353
+roomNr: 0       BSc     CS      Mezei Gergely   Acs Evelin Kitti        St:Holló-Szabó Akos Levente
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 354
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 355
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 356
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 357
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 358
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 359
+roomNr: 0       Skip    CS      Mezei Gergely
+roomNr: 1       Skip    EE      Tevesz Gábor
+
+tsNr: 360
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 361
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 362
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 363
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 364
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 365
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 366
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 367
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 368
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 369
+roomNr: 0       MSc     CS      Lengyel László  Kundra László János     St:Gulyás Gergely
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 370
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 371
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 372
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Kiss Domokos    St:Menyhárt-Radó Dávid
+
+tsNr: 373
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 374
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 375
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 376
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 377
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 378
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 379
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 380
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 381
+roomNr: 0       BSc     CS      Lengyel László  Pomázi Krisztián Dániel St:Tóthpál Csilla
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 382
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Szilágyi Erik Dániel
+
+tsNr: 383
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 384
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 385
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 386
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 387
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 388
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 389
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 390
+roomNr: 0       BSc     CS      Lengyel László  Gincsai Gábor   St:Dutova Anasztászija
+roomNr: 1       BSc     EE      Gál Tibor       Kovács Viktor   St:Márkus Balázs
+
+tsNr: 391
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 392
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 393
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 394
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 395
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 396
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 397
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 398
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 399
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 400
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 401
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 402
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 403
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 404
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 405
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 406
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 407
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 408
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 409
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 410
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 411
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 412
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 413
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 414
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 415
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       Lunch   EE      Gál Tibor
+
+tsNr: 416
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 417
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 418
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 419
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 420
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 421
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 422
+roomNr: 0       MSc     CS      Lengyel László  Rajacsics Tamás St:Baida Maryna
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 423
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 424
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       MSc     EE      Szabó Zoltán    Gál Tibor       St:Havasi Dávid
+
+tsNr: 425
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 426
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 427
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 428
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 429
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 430
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 431
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Bogáromi Zoltán
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 432
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 433
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 434
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 435
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 436
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 437
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 438
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 439
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 440
+roomNr: 0       BSc     CS      Lengyel László  Szegletes Luca  St:Farkas Levente
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 441
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 442
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 443
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 444
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 445
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 446
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 447
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 448
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 449
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 450
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 451
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 452
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 453
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 454
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 455
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 456
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 457
+roomNr: 0       MSc     CS      Blázovics László        Lengyel László  St:Vida-Sipos Viktória Dóra
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 458
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 459
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 460
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 461
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Lengyel László  Gál Tibor       St:Oláh Tamás Bence
+
+tsNr: 462
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 463
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 464
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 465
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 466
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 467
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 468
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 469
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 470
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Gál Tibor
+
+tsNr: 471
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 472
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 473
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 474
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 475
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 476
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 477
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 478
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 479
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Gál Tibor       Csorvási Gábor  St:Fürnstáhl Gergely
+
+tsNr: 480
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 481
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 482
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 483
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 484
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 485
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 486
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 487
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 488
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Ghiurutan-Bura Daniel
+
+tsNr: 489
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 490
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 491
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 492
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 493
+roomNr: 0       BSc     CS      Vajk István     Kövesdán Gábor  St:Bojkovski David
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 494
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 495
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 496
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 497
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 498
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 499
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 500
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 501
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 502
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Dudás Akos      Balogh Attila   St:Nagy Bálint Máté
+
+tsNr: 503
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 504
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 505
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 506
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 507
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 508
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 509
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 510
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 511
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 512
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 513
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 514
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 515
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 516
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 517
+roomNr: 0       MSc     CS      Vajk István     Jánoky László Viktor    St:Turjányi Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 518
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 519
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 520
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 521
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 522
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 523
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 524
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 525
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 526
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 527
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 528
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 529
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 530
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 531
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 532
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 533
+roomNr: 0       Lunch   CS      Vajk István
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 534
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 535
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 536
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 537
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 538
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 539
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 540
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 541
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 542
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szilágyi Dezso
+
+tsNr: 543
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 544
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 545
+roomNr: 0       BSc     CS      Albert István   Vajk István     St:László Dániel
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 546
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 547
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 548
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 549
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 550
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 551
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 552
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 553
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 554
+roomNr: 0       BSc     CS      Vajk István     Budai Adám      St:Bella Adrián Bence
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 555
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       BSc     EE      Albert István   Balogh Attila   St:Dámsa Levente Lajos
+
+tsNr: 556
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 557
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 558
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 559
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 560
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 561
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 562
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 563
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       BSc     EE      Balogh Attila   Kiss Dávid      St:Horváth Tamás
+
+tsNr: 564
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 565
+roomNr: 0       MSc     CS      Vajk István     Dudás Akos      St:Hadházy László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 566
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 567
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 568
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 569
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 570
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 571
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 572
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 573
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 574
+roomNr: 0       MSc     CS      Albert István   Vajk István     St:Agocsi-Kiss Bence
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 575
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 576
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Vajk István     Balogh Attila   St:Orgován József
+
+tsNr: 577
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 578
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 579
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 580
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 581
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 582
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 583
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 584
+roomNr: 0       BSc     CS      Vajk István     Gincsai Gábor   St:Kovács-Egri Kristóf
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 585
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Branauer Agoston
+
+tsNr: 586
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 587
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 588
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 589
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 590
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 591
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 592
+roomNr: 0       BSc     CS      Vajk István     Somogyi Ferenc Attila   St:Szabó Tímea
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 593
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 594
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 595
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 596
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 597
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 598
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 599
+roomNr: 0       Skip    CS      Vajk István
+roomNr: 1       MSc     EE      Balogh Attila   St:Turi Péter
+
+tsNr: 600
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 601
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 602
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 603
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 604
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 605
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 606
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 607
+roomNr: 0       BSc     CS      Lengyel László  Imre Gábor      St:Stahorszki László
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 608
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 609
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 610
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Csorba Kristóf  Varjasi István  St:Medgyesi Zsolt
+
+tsNr: 611
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 612
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 613
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 614
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 615
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 616
+roomNr: 0       MSc     CS      Lengyel László  St:Darwesh Ammar
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 617
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 618
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 619
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 620
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 621
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       MSc     EE      Varjasi István  St:Csonka Dávid Miklós
+
+tsNr: 622
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 623
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 624
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 625
+roomNr: 0       BSc     CS      Tóth Tibor      Lengyel László  St:Tóth András
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 626
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 627
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 628
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 629
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 630
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 631
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 632
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 633
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 634
+roomNr: 0       BSc     CS      Lengyel László  Kövesdán Gábor  St:Iványi Béla
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 635
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 636
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 637
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 638
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 639
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 640
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 641
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       BSc     EE      Szabó Zoltán    Varjasi István  St:Becsey Akos Zsolt
+
+tsNr: 642
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 643
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 644
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 645
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 646
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 647
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 648
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 649
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 650
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 651
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 652
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 653
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 654
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 655
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Lunch   EE      Varjasi István
+
+tsNr: 656
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 657
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 658
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 659
+roomNr: 0       Lunch   CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 660
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 661
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 662
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 663
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 664
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 665
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  St:Göntér Balázs
+
+tsNr: 666
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 667
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 668
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 669
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 670
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 671
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 672
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 673
+roomNr: 0       BSc     CS      Ekler Péter     Lengyel László  St:Hencz Tamás
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 674
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 675
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 676
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       MSc     EE      Varjasi István  Hamar János Krisztián   St:Zupkó Bence
+
+tsNr: 677
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 678
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 679
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 680
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 681
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 682
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 683
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 684
+roomNr: 0       MSc     CS      Kovári Bence András     Lengyel László  St:Tóth Márton Balázs
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 685
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 686
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 687
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 688
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 689
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 690
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 691
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 692
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 693
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 694
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 695
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       MSc     EE      Szabó Zoltán    Varjasi István  St:Stráhl Balázs
+
+tsNr: 696
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 697
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 698
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 699
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 700
+roomNr: 0       BSc     CS      Lengyel László  Braun Patrik János      St:Hammer Adám
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 701
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 702
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 703
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 704
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 705
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 706
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 707
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 708
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 709
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 710
+roomNr: 0       MSc     CS      Acs Judit       Lengyel László  St:Balogh Tamás
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 711
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 712
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 713
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 714
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 715
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       BSc     EE      Varjasi István  Budai Adám      St:Sánta Péter Zoltán
+
+tsNr: 716
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 717
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 718
+roomNr: 0       BSc     CS      Lengyel László  Kundra László János     St:Barton Péter
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 719
+roomNr: 0       Skip    CS      Lengyel László
+roomNr: 1       Skip    EE      Varjasi István
+
+tsNr: 720
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 721
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 722
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 723
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 724
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 725
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 726
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 727
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 728
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 729
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 730
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 731
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       BSc     EE      Balogh Attila   Kardos Gergely  St:Sipos Roland
+
+tsNr: 732
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 733
+roomNr: 0       MSc     CS      Forstner Bertalan       Gincsai Gábor   St:Deák Zsolt
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 734
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 735
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 736
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 737
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 738
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 739
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 740
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 741
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 742
+roomNr: 0       BSc     CS      Forstner Bertalan       Szabó Gábor     St:Frigh Adám László
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 743
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 744
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 745
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 746
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 747
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Bányász Gábor   Balogh Attila   St:Varga Adám
+
+tsNr: 748
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 749
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 750
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 751
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 752
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 753
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 754
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 755
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 756
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 757
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 758
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       MSc     EE      Balogh Attila   Kardos Gergely  St:Tóth Tamás
+
+tsNr: 759
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 760
+roomNr: 0       MSc     CS      Tóth Tibor      Forstner Bertalan       St:Kassai Dániel
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 761
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 762
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 763
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 764
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 765
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 766
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 767
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 768
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 769
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 770
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 771
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 772
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 773
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Lunch   EE      Balogh Attila
+
+tsNr: 774
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 775
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 776
+roomNr: 0       Lunch   CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 777
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 778
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 779
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 780
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 781
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 782
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 783
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 784
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 785
+roomNr: 0       BSc     CS      Forstner Bertalan       Kövesdán Gábor  St:Litkey Balmaz
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 786
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 787
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 788
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 789
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 790
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 791
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       BSc     EE      Oláh István     Balogh Attila   St:Kovács Aron Péter
+
+tsNr: 792
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 793
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 794
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 795
+roomNr: 0       MSc     CS      Forstner Bertalan       Oláh István     St:Zsigmond Attila
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 796
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 797
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 798
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 799
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 800
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 801
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 802
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 803
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 804
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Szenti Péter
+
+tsNr: 805
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 806
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 807
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 808
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 809
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 810
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 811
+roomNr: 0       MSc     CS      Forstner Bertalan       St:Radostyán Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 812
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 813
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 814
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 815
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 816
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 817
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 818
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 819
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 820
+roomNr: 0       MSc     CS      Forstner Bertalan       Rajacsics Tamás St:Mrad Mohamed Azouz
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Máté Zoltán
+
+tsNr: 821
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       Skip    EE      Balogh Attila
+
+tsNr: 822
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 823
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 824
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 825
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 826
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 827
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 828
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 829
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 830
+roomNr: 0       MSc     CS      Forstner Bertalan       Braun Patrik János      St:Velenyák János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Katona Attila Mihály
+
+tsNr: 831
+roomNr: 0       Skip    CS      Forstner Bertalan
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 832
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 833
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 834
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 835
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 836
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 837
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 838
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
+
+tsNr: 839
+roomNr: 0       BSc     CS      Forstner Bertalan       St:Lesti Péter János
+roomNr: 1       MSc     EE      Oláh István     Balogh Attila   St:Buchmüller Patrik
