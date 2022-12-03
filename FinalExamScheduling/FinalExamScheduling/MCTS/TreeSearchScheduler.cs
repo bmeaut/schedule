@@ -16,17 +16,13 @@ namespace FinalExamScheduling.MCTS
 {
 	public class TreeSearchScheduler
 	{
-		public event EventHandler SchedulingDone;
-
 		//TODO remove
-		private const int AwaitSecondsTaskDemo = 10;
+		private const int AwaitSecondsTaskDemo = 5;
 		private Context context;
 		private CancellationTokenSource cancellationSource;
 		private CancellationToken CancellationToken { get => cancellationSource.Token; }
 
-		//TODO if null check
 		Action<Schedule> evaluators;
-		
 
 		public TreeSearchScheduler(Context context, CancellationTokenSource tokenSource)
 		{
@@ -36,11 +32,11 @@ namespace FinalExamScheduling.MCTS
 
 		public TreeSearchScheduler WithEvaluator(Action<Schedule> evaluate)
 		{
-			evaluators += evaluate; 
+			evaluators += evaluate;
 			return this;
 		}
 
-		public void Unsubscribe(Action<Schedule> evaluate)	{ evaluators -= evaluate; }
+		public void Unsubscribe(Action<Schedule> evaluate) { evaluators -= evaluate; }
 
 		public async Task<Schedule> RunAsync(Action<Schedule> evaluate)
 		{
@@ -49,20 +45,18 @@ namespace FinalExamScheduling.MCTS
 		}
 		public async Task<Schedule> RunAsync()
 		{
-			await Task.Delay(TimeSpan.FromSeconds(5), CancellationToken);
 			var scheduleTask = Task.Run(ComputeSchedule, CancellationToken);
 			var evalTask = scheduleTask
 				.ContinueWith(task => {
 					Schedule schedule = task.Result;
-					evaluators(schedule);
+					evaluators?.Invoke(schedule);
 					return schedule;
 				}, TaskContinuationOptions.OnlyOnRanToCompletion);
 
 			return await evalTask;
 		}
 
-		protected virtual void OnSchedulingDone() => SchedulingDone?.Invoke(this, EventArgs.Empty);
-		private void OnSchedulingDoneThroughCancelToken() => cancellationSource?.Cancel();
+		protected virtual void OnSchedulingDone() => cancellationSource.Cancel();
 
 		private Schedule ComputeSchedule()
 		{
@@ -81,7 +75,6 @@ namespace FinalExamScheduling.MCTS
 				schedule.FinalExams = rootNode.exams;
 								
 				Debug.WriteLine("Schedule has finished long running process demo.");
-				OnSchedulingDone();
 			}
 			catch (AggregateException ae)
 			{
@@ -95,7 +88,8 @@ namespace FinalExamScheduling.MCTS
 					Debug.WriteLine(ae);
 				}
 			}
-			//Thread.Sleep(TimeSpan.FromSeconds(AwaitSecondsTaskDemo));
+
+			OnSchedulingDone();
 
 			return schedule;
 		}

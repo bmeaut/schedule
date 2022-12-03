@@ -30,7 +30,6 @@ namespace FinalExamScheduling.MCTS
 		#endregion
 
 		public const int ScanDelay = 100;   //TODO parametricize		
-		public static bool IsSchedulingDone { get; private set; } = false;
 
 		private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -57,20 +56,9 @@ namespace FinalExamScheduling.MCTS
 
 			ScanConsole(scanKey: ConsoleKey.Escape);
 
-			try
-			{
-				scheduleTask.WaitForCompleteOrCancel();
-			}
-			catch (AggregateException ae)
-			{
-				if (ae.InnerExceptions.All(exc => exc is TaskCanceledException))
-				{
-					Debug.WriteLine("Scheduling has been canceled before it could start.");
-				}
+			SafeWait(scheduleTask);
 
-			}
-			Debug.WriteLine($"All tasks have completed.");	 
-
+			Debug.WriteLine("All tasks are completed.");
 			Console.WriteLine("Press any key to continue...");
 			Console.ReadKey(true);
 		}
@@ -82,15 +70,29 @@ namespace FinalExamScheduling.MCTS
 			context.Init();
 
 			TreeSearchScheduler scheduler = new TreeSearchScheduler(context, tokenSource);
-			scheduler.SchedulingDone += OnSchedulingDone; 
 
 			return (context, scheduler);
 		}
 
+		private static void EvaluateResult(Schedule schedule)
+		{
+			//TODO Evaluation 
+			// a.) based on Fitness? 
+			// b.) based on own implementation
+			Debug.WriteLine("Evaluation starts.");
+
+			Thread.Sleep(1000);
+
+			Debug.WriteLine("Evaluation is done.");
+		}
+
 		private static void ScanConsole(ConsoleKey scanKey) 
 		{
+#if DEBUG
+			bool debugDidUserAbort = false;
+#endif
 			Debug.WriteLine($"Console scanning is ready, delay is set to {ScanDelay} ms.");
-			while (!IsSchedulingDone)
+			while (!tokenSource.Token.IsCancellationRequested)
 			{
 				Thread.Sleep(ScanDelay);
 
@@ -103,30 +105,31 @@ namespace FinalExamScheduling.MCTS
 					{
 						tokenSource.Cancel();
 						Debug.WriteLine("Cancelling requested.");
+#if DEBUG
+						debugDidUserAbort = true;
+#endif
 						break;
 					}					
 				}
 			}
-			Debug.WriteLineIf(!IsSchedulingDone, "Console scanning ended due to user input.");
-			Debug.WriteLineIf(IsSchedulingDone, "Console scanning ended as scheduling is done.");
+#if DEBUG
+			Debug.WriteLineIf(debugDidUserAbort, "Console scanning ended due to user input.");
+			Debug.WriteLineIf(!debugDidUserAbort, "Console scanning ended as scheduling is done.");
+#endif
 		}
 
-		private static void EvaluateResult(Schedule schedule)
+		private static void SafeWait(Task t)
 		{
-			//TODO Evaluation 
-			// a.) based on Fitness? 
-			// b.) based on own implementation
-			Debug.WriteLine("Evaluation starts.");			
-
-			Thread.Sleep(1000);
-
-			Debug.WriteLine("Evaluation is done.");
+			try
+			{
+				t.Wait();
+			}
+			catch (AggregateException ae)
+			{
+				if (ae.InnerException is TaskCanceledException)
+				Debug.WriteLine("Scheduling task has been cancelled before scheduling could start.");
+			}
 		}
 
-		private static void OnSchedulingDone(object obj, EventArgs eventArgs)
-		{
-			Debug.WriteLine("Scheduling is finished.");
-			IsSchedulingDone = true;
-		}
 	}
 }
