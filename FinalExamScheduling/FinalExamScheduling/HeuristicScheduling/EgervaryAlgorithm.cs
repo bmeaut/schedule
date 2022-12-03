@@ -70,7 +70,7 @@ namespace Alairas.Common
 
         public static void RunAlgorithm(MnMatrix graph, int[] copulationVerticesX, int[] copulationVerticesY)
         {
-            double min = graph.ToColumnWiseArray().Min();
+            double min = graph.ToColumnMajorArray().Min();
             if (min < 0)
             {
                 for (int i = 0; i < graph.ColumnCount; i++)

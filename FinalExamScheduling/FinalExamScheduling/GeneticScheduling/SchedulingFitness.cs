@@ -17,7 +17,6 @@ namespace FinalExamScheduling.GeneticScheduling
 
        public readonly List<Func<Schedule, double>> CostFunctions;
 
-
         public SchedulingFitness(Context context)
         {
             ctx = context;

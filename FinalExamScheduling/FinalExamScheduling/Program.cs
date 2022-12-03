@@ -19,7 +19,8 @@ namespace FinalExamScheduling
 
         static void Main(string[] args)
         {
-            RunGenetic();
+            RunMCTS(args);
+            //RunGenetic();
             //RunHeuristic();
             //RunLP();
 
@@ -85,6 +86,10 @@ namespace FinalExamScheduling
             Console.WriteLine();
         }
 
+        static void RunMCTS(string[] args)
+        {
+            MCTS.Orchestrator.Start(args);
+        }
 
     }
 }

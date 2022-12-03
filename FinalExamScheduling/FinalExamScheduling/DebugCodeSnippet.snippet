@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Surround with debug</Title>
+      <Author>Domonkos András Seben</Author>
+      <Description>Debug with indentation block snippet</Description>
+      <Shortcut>srnDebug</Shortcut>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+        <SnippetType>SurroundsWith</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[
+        Debug.WriteLine("$Method$ start.");
+        Debug.Indent();
+        $selected$
+        $end$
+        Debug.Unindent();
+        Debug.WriteLine("$Method$ stop.");]]>
+      </Code>
+      <Declarations>
+        <Literal>
+          <ID>Method</ID>
+          <ToolTip>Choose the string you want to include in the debug info.</ToolTip>
+          <Default>App</Default>
+        </Literal>
+      </Declarations>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

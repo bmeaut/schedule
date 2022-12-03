@@ -23,7 +23,7 @@ namespace FinalExamScheduling.Model
             var context = new Context();
             using (ExcelPackage xlPackage = new ExcelPackage(existingFile))
             {
-                Console.WriteLine("Reading of Excel was succesful");
+                Console.WriteLine("Reading of Excel was successful.");
 
                 ExcelWorksheet ws_students = xlPackage.Workbook.Worksheets[1];
                 ExcelWorksheet ws_instructors = xlPackage.Workbook.Worksheets[2];
@@ -159,6 +159,8 @@ namespace FinalExamScheduling.Model
                     cell.Style.Font.Size = 14;
                 }
                 string author = "Szilvia Erdős";
+                ws_scheduling.Workbook.Properties.Author = author;
+                ws_scheduling.Workbook.Properties.LastModifiedBy = author;
 
                 int i = 2;
                 foreach (FinalExam exam in sch.FinalExams)
