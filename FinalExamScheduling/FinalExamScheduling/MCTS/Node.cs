@@ -5,22 +5,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace FinalExamScheduling.MCTS
 {
-	public abstract class Node
+	public abstract class Node: Entity, IComparable<Node>
 	{
-		public double Score { get; set; }
-		public int Visits { get; set; }
+		public static int ExpansionExtent { get; set; }
+		private readonly Func<int> _parentVisits;
+
+		public abstract bool IsTerminal { get;  }
 
 		public virtual bool IsLeaf
 		{
-			get => children == null;
+			get => Children == null;
 		}
 
-		public List<Node> children;	
+		public double Score { get; set; } = 0;
+		public int Visits { get; private set; } = 0;
+		public int ParentVisits { get => _parentVisits != null ? _parentVisits() : 0; }
 
-		public abstract Node GetRandomChild();
-		public abstract List<Node> GetChildren();
+		public virtual IEnumerable<Node> Children { get; protected set; }
+
+		public Node(Node parent)
+		{
+			_parentVisits = () => parent.Visits;
+		}
+
+		protected Node() { }
+
+		public abstract Node PickChild();
+		public abstract void ExpandChildren(int maxNodes);
+
+		public virtual void AddVisit() => Visits++;
+
+		public int CompareTo(Node other) => MCTSAlgorithm.UCBScore(this).CompareTo(MCTSAlgorithm.UCBScore(other));
 	}
 }

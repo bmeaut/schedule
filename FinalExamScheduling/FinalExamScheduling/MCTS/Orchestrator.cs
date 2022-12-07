@@ -19,62 +19,119 @@ namespace FinalExamScheduling.MCTS
 	/// Additionally, it parses the command line arguments and starts a process to read
 	/// the standard IO inputs and control the algorithm accordingly. 
 	/// </summary>
-	public static class Orchestrator
+	public class Orchestrator : MCTSAlgorithm.IParameterSetter
 	{
 		#region Options for parsing
 		public class Options
 		{
-			[Option('i', "input", Required = false, Default = "Input.xlsx", HelpText = "Load in schedule data from the file with given path.")]
-			public string File { get; set; }
+			[Option('i', "input", Default = "Input.xlsx", HelpText = "Load in schedule data from the file with given path.")]
+			public string Input { get; set; }
+
+			[Option('o', "output", HelpText = "Save schedule to the file with given path.")]
+			public string Output { get; set; }
+
+			[Option('r', "scanRefreshRate", Default = DefaultScanRefreshRate, HelpText = "Sets in miliseconds the rate of the console scan for a key press.")]
+			public int ScanDelay { get; set; }
+
+			[AlgorithmParameter]
+			[Option('x', "explorationWeight", HelpText = "Sets exploration weight of the Monte Carlo Tree Search algorithm.")]
+			public float? ExplorationWeight { get; set; }
+
+			[AlgorithmParameter]
+			[Option('i', "iterations", HelpText = "Sets number of iterations before a node is selected.")]
+			public int? Iterations { get; set; }
+
+			[AlgorithmParameter]
+			[Option('e', "expansionExtent", HelpText = "Sets how many new nodes are added to the visited nodes in an expansion step.")]
+			public int? NodeExpansionExtent { get; set; }
+
+			[AlgorithmParameter]
+			[Option('s', "simulationDepth", HelpText = "Sets how many levels are traversed during a simulation.")]
+			public int? NodeSimulationDepth { get; set; }
+
+			[AlgorithmParameter]
+			[Option('r', "rollout", HelpText = "Sets the number of rollouts within an iteration.")]
+			public int? RolloutTotal { get; set; }
 		}
 		#endregion
 
-		public const int ScanDelay = 100;   //TODO parametricize		
+		public CancellationToken Token { get; private set; }
 
-		private static readonly CancellationTokenSource tokenSource = new CancellationTokenSource();
+		private Options opts;
+		private Action Cancel { get; set; }
+		private const int DefaultScanRefreshRate = 100;
 
-		public static void Start(string[] args)
+		#region Public functions
+
+		public static Orchestrator WithOptions(string[] args)
 		{
-			Parser.Default.ParseArguments<Options>(args)
-				.WithParsed(o =>
-				{
-					Start(o);
-				});
+			var opts = Parser.Default.ParseArguments<Options>(args).Value;
+			return new Orchestrator(opts);
 		}
 
-		//////////////////////////////////////////////////////////////////////////////////////
-		//																					//
-		//								PRIVATE FUNCTIONS									//
-		//																					//
-		//////////////////////////////////////////////////////////////////////////////////////
-
-		private static void Start(Options opts)
+		public static void StartDefault()
 		{
-			var (context, scheduler) = InitScheduling(opts.File);
+			var opts = Parser.Default.ParseArguments<Options>(null).Value;
+			new Orchestrator(opts).Start();
+		}
+
+		public void Start()
+		{
+			var (context, scheduler) = InitScheduling(opts.Input);
 
 			var scheduleTask = scheduler.WithEvaluator(EvaluateResult).RunAsync();
 
 			ScanConsole(scanKey: ConsoleKey.Escape);
 
-			SafeWait(scheduleTask);
+			scheduleTask.Wait();
 
-			Debug.WriteLine("All tasks are completed.");
 			Console.WriteLine("Press any key to continue...");
 			Console.ReadKey(true);
 		}
 
-		private static (Context c, TreeSearchScheduler s) InitScheduling(string inputPath)
-		{		
+		public MCTSAlgorithm.Parameters SetAlgorithmParameters()
+		{
+			var algoParams = new MCTSAlgorithm.Parameters();
+			if (opts != null)
+			{
+				var optsProperties = opts.GetType().GetProperties();
+				var paramsProperties = algoParams.GetType().GetProperties();
+				optsProperties
+					.Where(prop => prop.GetCustomAttributes(typeof(AlgorithmParameter), false).Length > 0)
+					.ToList()
+					.ForEach(prop =>
+					{
+						var algorithmProperty = paramsProperties.First(p => p.Name == prop.Name);
+						var propertyValue = prop.GetValue(opts);
+						if (propertyValue != null)
+						{
+							algorithmProperty.SetValue(algoParams, propertyValue);
+						}
+					});
+			}
+			Node.ExpansionExtent = algoParams.NodeExpansionExtent;
+			return algoParams;
+		}
+
+		#endregion
+
+		#region Private functions
+
+		private Orchestrator(Options options) => opts = options;
+
+		private (Context c, TreeSearchScheduler s) InitScheduling(string inputPath)
+		{
 			FileInfo file = new FileInfo(inputPath);
 			Context context = ExcelHelper.Read(file);
 			context.Init();
 
-			TreeSearchScheduler scheduler = new TreeSearchScheduler(context, tokenSource);
-
+			TreeSearchScheduler scheduler = new TreeSearchScheduler(context, this);
+			Token = scheduler.CancellationToken;
+			Cancel += scheduler.Cancel;
 			return (context, scheduler);
 		}
 
-		private static void EvaluateResult(Schedule schedule)
+		private void EvaluateResult(Schedule schedule)
 		{
 			//TODO Evaluation 
 			// a.) based on Fitness? 
@@ -86,50 +143,24 @@ namespace FinalExamScheduling.MCTS
 			Debug.WriteLine("Evaluation is done.");
 		}
 
-		private static void ScanConsole(ConsoleKey scanKey) 
+		private void ScanConsole(ConsoleKey scanKey)
 		{
-#if DEBUG
-			bool debugDidUserAbort = false;
-#endif
-			Debug.WriteLine($"Console scanning is ready, delay is set to {ScanDelay} ms.");
-			while (!tokenSource.Token.IsCancellationRequested)
+			Debug.WriteLine($"Console scanning is ready, delay is set to {opts.ScanDelay} ms.");
+			while (!Token.IsCancellationRequested)
 			{
-				Thread.Sleep(ScanDelay);
-
-				//if (Console.KeyAvailable && Console.ReadKey(true).Key == scanKey)
-				if (Console.KeyAvailable)
+				Thread.Sleep(opts.ScanDelay);
+				if (Console.KeyAvailable && Console.ReadKey(true).Key == scanKey)
 				{
-					var key = Console.ReadKey(true).Key;
-					Debug.WriteLine($"Console read \"{key}\"");
-					if (key == scanKey)
-					{
-						tokenSource.Cancel();
-						Debug.WriteLine("Cancelling requested.");
-#if DEBUG
-						debugDidUserAbort = true;
-#endif
-						break;
-					}					
+					Cancel();
+					Debug.WriteLine("Cancelling requested.");
+					break;
 				}
 			}
-#if DEBUG
-			Debug.WriteLineIf(debugDidUserAbort, "Console scanning ended due to user input.");
-			Debug.WriteLineIf(!debugDidUserAbort, "Console scanning ended as scheduling is done.");
-#endif
 		}
 
-		private static void SafeWait(Task t)
-		{
-			try
-			{
-				t.Wait();
-			}
-			catch (AggregateException ae)
-			{
-				if (ae.InnerException is TaskCanceledException)
-				Debug.WriteLine("Scheduling task has been cancelled before scheduling could start.");
-			}
-		}
+		#endregion
 
+		[AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+		private class AlgorithmParameter : System.Attribute { }
 	}
 }

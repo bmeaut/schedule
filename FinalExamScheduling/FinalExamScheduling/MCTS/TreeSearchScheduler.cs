@@ -16,18 +16,29 @@ namespace FinalExamScheduling.MCTS
 {
 	public class TreeSearchScheduler
 	{
-		//TODO remove
-		private const int AwaitSecondsTaskDemo = 5;
-		private Context context;
+		public class Parameters
+		{
+			//TODO what will happen with the remaining 10 timeslots? 
+			public const int ExamCount = 100;
+		}
+
 		private CancellationTokenSource cancellationSource;
-		private CancellationToken CancellationToken { get => cancellationSource.Token; }
+
+		public Context Context { get; private set; }
+		public CancellationToken CancellationToken { get => cancellationSource.Token; }
 
 		Action<Schedule> evaluators;
 
-		public TreeSearchScheduler(Context context, CancellationTokenSource tokenSource)
+		public TreeSearchScheduler(Context context)
 		{
-			this.context = context;
-			this.cancellationSource = tokenSource;
+			this.Context = context;
+			this.cancellationSource = new CancellationTokenSource();
+		}
+
+		public TreeSearchScheduler(Context context, MCTSAlgorithm.IParameterSetter algorithmParameterSetter)
+			: this(context)
+		{
+			MCTSAlgorithm.Setup(algorithmParameterSetter);
 		}
 
 		public TreeSearchScheduler WithEvaluator(Action<Schedule> evaluate)
@@ -37,6 +48,8 @@ namespace FinalExamScheduling.MCTS
 		}
 
 		public void Unsubscribe(Action<Schedule> evaluate) { evaluators -= evaluate; }
+
+		public void Cancel() { cancellationSource?.Cancel(); }
 
 		public async Task<Schedule> RunAsync(Action<Schedule> evaluate)
 		{
@@ -60,52 +73,55 @@ namespace FinalExamScheduling.MCTS
 
 		private Schedule ComputeSchedule()
 		{
-			var rootExams = new FinalExam[Parameters.ExamCount];
-			var rootNode = new ExamNode(rootExams);
+			//var rootExams = new FinalExam[Parameters.ExamCount];
 			var schedule = new Schedule(0);
 
-			var makeItFail = rootNode.IsLeaf;
-			Debug.WriteLine($"Root note is leaf: {makeItFail}");
+			#region DEMO
 
-			Debug.WriteLine($"Schedule will demo long running ({AwaitSecondsTaskDemo} s)");
-			try
-			{
-				Task.Delay(TimeSpan.FromSeconds(AwaitSecondsTaskDemo), CancellationToken).Wait();
+			ComputePresidents();
 
-				schedule.FinalExams = rootNode.exams;
-								
-				Debug.WriteLine("Schedule has finished long running process demo.");
-			}
-			catch (AggregateException ae)
-			{
-				if (ae.InnerException is TaskCanceledException)
-				{
-					Debug.WriteLine("Scheduling is canceled.");
-
-				}
-				else
-				{
-					Debug.WriteLine(ae);
-				}
-			}
+			#endregion
 
 			OnSchedulingDone();
 
 			return schedule;
 		}
 
-		// Starting at root node R, recursively select optimal child nodes (explained below) until a leaf node L is reached.
-		private void Select() { }
-		// If L is a not a terminal node (i.e. it does contain a complete scheduling) then create one or more child nodes and select one C.
-		private void Expand() { }
-		// Run a simulated playout from C until a result is achieved.
-		private void Simulate() { }
-		// Update the current move sequence with the simulation result.
-		private void Backup() { }
-
-		public class Parameters
+		private void ComputePresidents()
 		{
-			public const int ExamCount = 100;
+			Context mock = new Context();
+			mock.Presidents = new Instructor[] {
+				new Instructor { Availability = new bool[] {true, true, true, true, true,
+															true, true, false, false, false,
+															true, true, true, true, true}, Id = 0, Name = "A", Roles = Roles.President},
+				new Instructor { Availability = new bool[] {true, true, true, true, true,
+															false, true, true, true, false,
+															false, false, false, false, false}, Id = 1, Name = "B", Roles = Roles.President},
+				new Instructor { Availability = new bool[] {true, true, true, true, true,
+															false, true, false, false, true,
+															true, true, true, true, true,}, Id = 2, Name = "C", Roles = Roles.President},
+			};
+
+			var root = BlockNode.RootNode(mock, 15);
+			//var child = root.Child(2, null);
+			//var child2 = root.Child(200, null);
+			//var child3 = root.Child(19, 4, null);
+			//var child4 = root.Child(19, 5, null);
+			//var hasAny = root.Children.Any();
+			// Need to detect termination? 
+			var lvl1 = root.Children.First();
+			lvl1.ExpandChildren(3);
+			var lvl2 = lvl1.Children.First();
+			lvl2.ExpandChildren(3);
+			var lvl3 = lvl2.Children.First();
+			var isTerm = lvl3.IsTerminal;
+			var allChildren = root.CountAllTerminalNodes();
+			root.AddVisit();
+			lvl1.AddVisit();
+			lvl2.AddVisit();
+			lvl3.AddVisit();
 		}
+
+		
 	}
 }
