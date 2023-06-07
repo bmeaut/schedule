@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
+using FinalExamScheduling.GeneticScheduling;
 using FinalExamScheduling.Model;
 using MathNet.Numerics;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
@@ -15,7 +16,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 namespace FinalExamScheduling.MCTS
 {
 	/// <summary>
-	/// The Commander class launches the MCTS algorithm using its API methods.
+	/// The <see cref="FinalExamScheduling.MCTS.Orchestrator">Commander</see> class launches the MCTS algorithm using its API methods.
 	/// Additionally, it parses the command line arguments and starts a process to read
 	/// the standard IO inputs and control the algorithm accordingly. 
 	/// </summary>
@@ -57,8 +58,9 @@ namespace FinalExamScheduling.MCTS
 
 		public CancellationToken Token { get; private set; }
 
-		private Options opts;
+		private Context Context { get; set; }
 		private Action Cancel { get; set; }
+		private Options opts;
 		private const int DefaultScanRefreshRate = 100;
 
 		#region Public functions
@@ -69,21 +71,30 @@ namespace FinalExamScheduling.MCTS
 			return new Orchestrator(opts);
 		}
 
+		[Conditional("DEBUG")]
 		public static void StartDefault()
 		{
-			var opts = Parser.Default.ParseArguments<Options>(null).Value;
+			var opts = Parser.Default.ParseArguments<Options>(new string[] {}).Value;
 			new Orchestrator(opts).Start();
 		}
 
 		public void Start()
 		{
-			var (context, scheduler) = InitScheduling(opts.Input);
+			TreeSearchScheduler scheduler = InitScheduling(opts.Input);
 
 			var scheduleTask = scheduler.WithEvaluator(EvaluateResult).RunAsync();
 
 			ScanConsole(scanKey: ConsoleKey.Escape);
 
-			scheduleTask.Wait();
+			try
+			{
+				scheduleTask.Wait();
+			}
+			catch (AggregateException ae)
+			{
+				if (ae.InnerException is TaskCanceledException) Console.WriteLine("\nScheduling has been canceled.\n");
+				else throw ae;
+			}
 
 			Console.WriteLine("Press any key to continue...");
 			Console.ReadKey(true);
@@ -109,7 +120,6 @@ namespace FinalExamScheduling.MCTS
 						}
 					});
 			}
-			Node.ExpansionExtent = algoParams.NodeExpansionExtent;
 			return algoParams;
 		}
 
@@ -119,33 +129,44 @@ namespace FinalExamScheduling.MCTS
 
 		private Orchestrator(Options options) => opts = options;
 
-		private (Context c, TreeSearchScheduler s) InitScheduling(string inputPath)
+		private TreeSearchScheduler InitScheduling(string inputPath)
 		{
 			FileInfo file = new FileInfo(inputPath);
-			Context context = ExcelHelper.Read(file);
-			context.Init();
+			Context = ExcelHelper.Read(file);
+			Context.Init();
 
-			TreeSearchScheduler scheduler = new TreeSearchScheduler(context, this);
+			TreeSearchScheduler scheduler = new TreeSearchScheduler(Context, this);
 			Token = scheduler.CancellationToken;
 			Cancel += scheduler.Cancel;
-			return (context, scheduler);
+			return scheduler;
 		}
 
 		private void EvaluateResult(Schedule schedule)
 		{
-			//TODO Evaluation 
-			// a.) based on Fitness? 
-			// b.) based on own implementation
 			Debug.WriteLine("Evaluation starts.");
 
-			Thread.Sleep(1000);
+			var evaluator = new SchedulingFitness(Context);
+			var geneticScheduler = new GeneticScheduler(Context);
+			var finalScores = geneticScheduler.GetFinalScores(schedule, evaluator);
+			var penaltyScore = -finalScores.Sum();
 
-			Debug.WriteLine("Evaluation is done.");
-		}
+			Console.WriteLine($"Penalty score: {penaltyScore}.");
+
+			var prefix = @"..\..\Results\";
+			var filename = opts.Output;
+
+			if (filename == null)
+			{
+				filename = "Done_MCTS_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + "_" + penaltyScore + ".xlsx";
+			}
+			ExcelHelper.Write(prefix + filename, schedule, Context, finalScores);
+			Debug.WriteLine("Evaluation is done.");	}
 
 		private void ScanConsole(ConsoleKey scanKey)
 		{
 			Debug.WriteLine($"Console scanning is ready, delay is set to {opts.ScanDelay} ms.");
+			Console.WriteLine($"Abort scheduling by pressing {scanKey}");
+
 			while (!Token.IsCancellationRequested)
 			{
 				Thread.Sleep(opts.ScanDelay);

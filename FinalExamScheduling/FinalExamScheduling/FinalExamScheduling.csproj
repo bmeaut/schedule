@@ -101,10 +101,12 @@
     <Compile Include="HeuristicScheduling\HungarianAlgorithm.cs" />
     <Compile Include="HeuristicScheduling\StudentHeuristics.cs" />
     <Compile Include="MCTS\BlockNode.cs" />
-    <Compile Include="MCTS\ExamNode.cs" />
+    <Compile Include="MCTS\MonteCarloTreeSearchException.cs" />
+    <Compile Include="MCTS\StudentNode.cs" />
     <Compile Include="MCTS\Extensions.cs" />
     <Compile Include="MCTS\MCTSAlgorithm.cs" />
     <Compile Include="MCTS\Node.cs" />
+    <Compile Include="MCTS\NodeEvaluator.cs" />
     <Compile Include="MCTS\Orchestrator.cs" />
     <Compile Include="MCTS\TreeSearchScheduler.cs" />
     <Compile Include="Model\Context.cs" />

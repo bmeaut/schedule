@@ -18,7 +18,6 @@ namespace FinalExamScheduling.MCTS
 	{
 		public class Parameters
 		{
-			//TODO what will happen with the remaining 10 timeslots? 
 			public const int ExamCount = 100;
 		}
 
@@ -39,6 +38,11 @@ namespace FinalExamScheduling.MCTS
 			: this(context)
 		{
 			MCTSAlgorithm.Setup(algorithmParameterSetter);
+		}
+
+		~TreeSearchScheduler()
+		{
+			cancellationSource.Dispose();
 		}
 
 		public TreeSearchScheduler WithEvaluator(Action<Schedule> evaluate)
@@ -69,16 +73,36 @@ namespace FinalExamScheduling.MCTS
 			return await evalTask;
 		}
 
-		protected virtual void OnSchedulingDone() => cancellationSource.Cancel();
+		private void OnSchedulingDone() => cancellationSource.Cancel();
 
 		private Schedule ComputeSchedule()
 		{
-			//var rootExams = new FinalExam[Parameters.ExamCount];
-			var schedule = new Schedule(0);
+			var schedule = new Schedule(Parameters.ExamCount);
+			schedule.Details = new FinalExamDetail[Parameters.ExamCount];
 
-			#region DEMO
+			#region Block schedules (presidents, secretaries, members)
 
-			ComputePresidents();
+			var modifiedRoles = new Dictionary<Roles, Instructor[]>
+			{
+				{ Roles.Secretary, DeepCopy(Context.Secretaries) },
+				{ Roles.Member, DeepCopy(Context.Members) },
+			};
+
+			ComputeBlock("president", Context.Presidents, schedule, modifiedRoles.Values, (FinalExam fe, Instructor i) => fe.President = i);
+
+			Instructor[] secretaries = modifiedRoles[Roles.Secretary];
+			modifiedRoles.Remove(Roles.Secretary);
+			ComputeBlock("secretary", secretaries, schedule, modifiedRoles.Values, (FinalExam fe, Instructor i) => fe.Secretary = i);
+
+			Instructor[] members = modifiedRoles[Roles.Member];
+			modifiedRoles.Remove(Roles.Member);
+			ComputeBlock("member", members, schedule, modifiedRoles.Values, (FinalExam fe, Instructor i) => fe.Member = i);
+
+			#endregion
+
+			#region Student scheduling
+
+			ComputeStudent(schedule);
 
 			#endregion
 
@@ -87,41 +111,81 @@ namespace FinalExamScheduling.MCTS
 			return schedule;
 		}
 
-		private void ComputePresidents()
-		{
-			Context mock = new Context();
-			mock.Presidents = new Instructor[] {
-				new Instructor { Availability = new bool[] {true, true, true, true, true,
-															true, true, false, false, false,
-															true, true, true, true, true}, Id = 0, Name = "A", Roles = Roles.President},
-				new Instructor { Availability = new bool[] {true, true, true, true, true,
-															false, true, true, true, false,
-															false, false, false, false, false}, Id = 1, Name = "B", Roles = Roles.President},
-				new Instructor { Availability = new bool[] {true, true, true, true, true,
-															false, true, false, false, true,
-															true, true, true, true, true,}, Id = 2, Name = "C", Roles = Roles.President},
-			};
 
-			var root = BlockNode.RootNode(mock, 15);
-			//var child = root.Child(2, null);
-			//var child2 = root.Child(200, null);
-			//var child3 = root.Child(19, 4, null);
-			//var child4 = root.Child(19, 5, null);
-			//var hasAny = root.Children.Any();
-			// Need to detect termination? 
-			var lvl1 = root.Children.First();
-			lvl1.ExpandChildren(3);
-			var lvl2 = lvl1.Children.First();
-			lvl2.ExpandChildren(3);
-			var lvl3 = lvl2.Children.First();
-			var isTerm = lvl3.IsTerminal;
-			var allChildren = root.CountAllTerminalNodes();
-			root.AddVisit();
-			lvl1.AddVisit();
-			lvl2.AddVisit();
-			lvl3.AddVisit();
+		private void ComputeBlock(string instructorRole, Instructor[] instructorsToSchedule, Schedule schedule, IEnumerable<Instructor[]> excludeInstructors, Action<FinalExam, Instructor> update)
+		{
+			Debug.WriteLine($"Computing {instructorRole}s has started.");
+
+			BlockNode finalNode = RunBlockTreeSearch(instructorsToSchedule);
+			UpdateResults(schedule.FinalExams, finalNode.Instructors, excludeInstructors, update);
+			Debug.WriteLine($"Computing {instructorRole}s has stopped.");
 		}
 
-		
+		private void ComputeStudent(Schedule schedule)
+		{
+			Debug.WriteLine("Computing students has started.");
+
+			var root = StudentNode.RootNode(Context, schedule.FinalExams, Parameters.ExamCount);
+			var terminal = RunTreeSearch(root) as StudentNode;
+			schedule.FinalExams = terminal.Exams;
+
+			Debug.WriteLine("Computing students has stopped.");
+		}
+
+		private BlockNode RunBlockTreeSearch(Instructor[] instructorsToSchedule)
+		{
+			Node root = BlockNode.RootNode(instructorsToSchedule, Parameters.ExamCount, Context.Rnd);
+			return RunTreeSearch(root) as BlockNode;
+		}
+
+		private Node RunTreeSearch(Node root)
+		{
+			while (!root.IsTerminal)
+			{
+				for (int i = 0; i < MCTSAlgorithm.Parameter.Iterations; i++)
+				{
+					cancellationSource.Token.ThrowIfCancellationRequested();
+
+					MCTSAlgorithm.Run(root);
+				}
+
+				root = MCTSAlgorithm.Choose(root);
+			}
+			return root;
+		}
+
+		private void UpdateResults(FinalExam[] exams, Instructor[] scheduledInstructors, IEnumerable<Instructor[]> nextInstructors, Action<FinalExam, Instructor> overwriteInstructor)
+		{
+			for (int i = 0; i < Parameters.ExamCount; i++)
+			{
+				if (exams[i] == null)
+				{
+					exams[i] = new FinalExam();
+					exams[i].Id = i;
+				}
+				overwriteInstructor(exams[i], scheduledInstructors[i]);
+
+				foreach (Instructor[] instructorsOfRole in nextInstructors)
+				{
+					Instructor instructorAsNextRole = instructorsOfRole.FirstOrDefault(ins => ins.Id == scheduledInstructors[i].Id);
+					if (instructorAsNextRole != null)
+					{
+						instructorAsNextRole.Availability[i] = false;
+					}
+				}
+			}
+		}
+
+		private Instructor[] DeepCopy(Instructor[] instructors)
+		{
+			Instructor[] copy = instructors.Clone() as Instructor[];
+
+			foreach ((Instructor inst, Instructor copiedInst) in instructors.Zip(copy, (original, cpy) => (Original: original, Copy: cpy)))
+			{
+				copiedInst.Availability = inst.Availability.Clone() as bool[];
+			}
+
+			return copy;
+		}
 	}
 }

@@ -11,6 +11,7 @@ namespace FinalExamScheduling.MCTS
 {
 	public abstract class Node: Entity, IComparable<Node>
 	{
+		private static int IdCount = 0;
 		public static int ExpansionExtent { get; set; }
 		private readonly Func<int> _parentVisits;
 
@@ -30,12 +31,15 @@ namespace FinalExamScheduling.MCTS
 		public Node(Node parent)
 		{
 			_parentVisits = () => parent.Visits;
+			Id = IdCount++;
 		}
 
-		protected Node() { }
+		protected Node() { Id = -1; }
 
 		public abstract Node PickChild();
-		public abstract void ExpandChildren(int maxNodes);
+		public abstract void ExpandChildren();
+
+		public abstract double Evaluate();
 
 		public virtual void AddVisit() => Visits++;
 

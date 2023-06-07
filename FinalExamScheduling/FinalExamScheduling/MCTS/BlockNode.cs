@@ -1,137 +1,184 @@
-﻿using FinalExamScheduling.GeneticScheduling;
-using FinalExamScheduling.Model;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+﻿using FinalExamScheduling.Model;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace FinalExamScheduling.MCTS
 {
-	public class BlockNodeException : Exception
-	{
-		public BlockNodeException() { }
-		public BlockNodeException(string message) : base(message) { }
-		public BlockNodeException (string message, Exception innerException) : base(message, innerException) { }
-	}
 
 	internal class BlockNode : Node
 	{
-		private static Context Context { get; set; }
+		public const int BlockSize = 5;
 		private static int examCount;
 		private static int numBlocks;
-		private const int blockSize = 5;
 		private static int[] blockOrder;
 		private static Instructor[][] candidates;
-		private static int[] maxScores;
 
-		private Instructor[] Presidents { get; }
+		#region Properties
+
+		private static Random Random { get; set; }
+		private static Instructor[] AllInstructors { get; set; }
+
+		public static int NumBlocks { get => numBlocks; }
+
+		internal Instructor[] Instructors { get; }
 		private int Level { get; }
 
 		public override bool IsLeaf => base.IsLeaf || IsTerminal;
-		public override bool IsTerminal => numBlocks == Level;
+		public override bool IsTerminal => Instructors.All(inst => inst != null);
+		#endregion
 
 		#region Constructors
 
-		private BlockNode() => Presidents = new Instructor[examCount];
-		private BlockNode(BlockNode parent): base(parent)
+		private BlockNode() => Instructors = new Instructor[examCount];
+		private BlockNode(BlockNode parent) : base(parent)
+		{
+			if (parent.IsTerminal) throw new MonteCarloTreeSearchException("Parent node is a terminal node, which can not have children.", parent);
+			Instructors = parent.Instructors.Clone() as Instructor[];
+		}
+		private BlockNode(BlockNode parent, int blockSlot, Instructor instructor) : this(parent)
 		{
 			Level = parent.Level + 1;
-			if (Level > numBlocks) throw new BlockNodeException("Parent node is a terminal node, which can not have children.");
-			Presidents = parent.Presidents.Clone() as Instructor[];
-		}
-		private BlockNode(BlockNode parent, int blockSlot, Instructor president) : this(parent)
-		{
-			if (blockSlot >= numBlocks) throw new BlockNodeException("Specified block is larger than the number of blocks.");
-			for (int i = blockSlot * blockSize; i < Math.Min((blockSlot + 1) * blockSize, examCount); i++)
+			if (blockSlot >= numBlocks) throw new MonteCarloTreeSearchException($"Specified block ({blockSlot}) is larger than the number of blocks ({numBlocks}).");
+			for (int i = blockSlot * BlockSize; i < Math.Min((blockSlot + 1) * BlockSize, examCount); i++)
 			{
-				Presidents[i] = president;
+				Instructors[i] = instructor;
 			}
 		}
-		private BlockNode(BlockNode parent, int blockSlot, Instructor[] presidents) : this(parent)
+		private BlockNode(BlockNode parent, int blockSlot, Instructor[] instructors) : this(parent)
 		{
-			if (presidents.Length != blockSize) throw new BlockNodeException($"Unexpected number of presidents have been specified for block {blockSlot + 1}.");
+			if (!instructors.Contains(null)) Level = parent.Level + 1;
 
-			Presidents = Presidents.Take(blockSlot * blockSize).Concat(presidents).Concat(Presidents.Skip((blockSlot + 1) * blockSize)).ToArray();
+			if (instructors.Length != BlockSize) throw new MonteCarloTreeSearchException($"Unexpected number of instructors have been specified for block {blockSlot + 1}.");
+
+			Instructors = Instructors.Take(blockSlot * BlockSize).Concat(instructors).Concat(Instructors.Skip((blockSlot + 1) * BlockSize)).ToArray();
 		}
 
 		#endregion
 
+		#region Methods inherited from Node
 
-
-		public static BlockNode RootNode(Context context, int examCount)
-		{
-			BlockNode.Context = context;
-			BlockNode.examCount = examCount;
-			BlockNode.numBlocks = (examCount - 1) / blockSize + 1;
-
-			GetCandidates();
-
-			var root = new BlockNode();
-			root.ExpandChildren(ExpansionExtent);
-			return root;
-		}
-
-		public BlockNode BestChild()
-		{
-			if (Visits == 0) throw new BlockNodeException("Node has not been visited, cannot have a best child.");
-
-			return (Children as IEnumerable<BlockNode>).OrderByDescending(cn => cn.Visits).FirstOrDefault();
-		}
-
-		public override void ExpandChildren(int maxNodes)
+		public override void ExpandChildren()
 		{
 			Debug.Assert(candidates != null);
+			Debug.Assert(Children == null);
 
-			// All blocks are scheduled, we are a terminal node.
-			if (Level == numBlocks) return;
+			if (IsTerminal) return;
 
-			var nextBlockId = blockOrder[Level];
-			var maxScore = maxScores[nextBlockId];
+			var incompleteBlockId = blockOrder[Level];
 
-			// President candidates are fit to fill the whole block
-			if (maxScore == blockSize) Children = candidates[nextBlockId].Select(pres => Child(nextBlockId, pres)).Take(maxNodes).ToArray();
-			else Children = GetChildrenForFragmentedBlock(nextBlockId).ToArray();
+			List<BlockNode> children = new List<BlockNode>();
+			// Instructor candidates are fit to fill the whole block
+			if (candidates[incompleteBlockId].Any()) children.AddRange(candidates[incompleteBlockId].Take(ExpansionExtent).Select(pres => Child(incompleteBlockId, pres)).ToList());
+
+			int shortOfEE = ExpansionExtent - children.Count;
+			if (shortOfEE > 0)
+			{
+				children.AddRange(GetChildrenForFragmentedBlock(incompleteBlockId, shortOfEE));
+			}
+			Children = children.ToArray();
 		}
 
 		public override Node PickChild()
 		{
-			throw new NotImplementedException();
+			if (IsTerminal) throw new MonteCarloTreeSearchException("Terminal node cannot have a child.", this);
+
+			BlockNode child;
+
+			if (IsLeaf) {
+				int blockId = blockOrder[Level];
+				int numOfCandidates = candidates[blockId].Length;
+
+				if (numOfCandidates > 0)
+				{
+					// Block is not fragmented
+					int randomInstId = Random.Next(numOfCandidates);
+					Instructor instructor = candidates[blockId][randomInstId];
+					child = Child(blockId, instructor);
+				}
+				else
+				{
+					// Block is fragmented
+					int randInstrId = Random.Next(AllInstructors.Length);
+					Instructor randInstructor = AllInstructors[randInstrId];
+					Instructor[] block = GetCurrentBlock();
+					child = Child(blockId, AddInstructorRange(block, randInstructor));
+				}
+			}
+			else
+			{
+				var children = Children as BlockNode[];
+				int randomChildId = Random.Next(children.Length);
+				child = children[randomChildId];
+			}
+
+			return child;
 		}
 
-		private BlockNode Child(int blockSlot, Instructor president) => new BlockNode(this, blockSlot, president);
-		//TODO set private
-		public BlockNode Child(int blockSlot, Instructor[] presidents) => new BlockNode(this, blockSlot, presidents);
+		public override double Evaluate()
+		{
+			if (!IsTerminal) throw new MonteCarloTreeSearchException("Only terminal nodes can be evaluated.", this);
+
+			var evaluator = new NodeEvaluator(AllInstructors, this);
+			return evaluator.EvaluateAll();
+		}
+		#endregion
+
+		#region Public methods
+
+		public static BlockNode RootNode(Instructor[] instructorsToSchedule, int examCount, Random random)
+		{
+			Random = random;
+			AllInstructors = instructorsToSchedule;
+			BlockNode.examCount = examCount;
+			numBlocks = (examCount - 1) / BlockSize + 1;
+
+			GetCandidates();
+
+			var root = new BlockNode();
+			root.ExpandChildren();
+			return root;
+		}
+
+		public static BlockNode RootNode(Instructor[] instructorsToSchedule, int examCount) => RootNode(instructorsToSchedule, examCount, new Random());
+
+		#endregion
+
+		#region Private methods
+
+		private BlockNode Child(int blockSlot, Instructor instructor) => new BlockNode(this, blockSlot, instructor);
+		private BlockNode Child(int blockSlot, Instructor[] instructors) => new BlockNode(this, blockSlot, instructors);
 
 		private static void GetCandidates()
 		{
-			Debug.Assert(Context != null);
-			Debug.Assert(maxScores == null);
-			Debug.Assert(blockOrder == null);
-			Debug.Assert(candidates == null);
+			Debug.Assert(AllInstructors != null);
 
-			maxScores = new int[numBlocks];
+			int[] maxScores = new int[numBlocks];
 			var dict = new Dictionary<Instructor, int[]>();
-			foreach (var president in Context.Presidents)
+			foreach (var instructor in AllInstructors)
 			{
 				var scores = new int[numBlocks];
 				for (int block = 0; block < numBlocks; block++)
 				{
-					var presidentScoreForBlock = president.Availability.Skip(block * blockSize).Take(blockSize).Count(isAvailable => isAvailable);
-					scores[block] = presidentScoreForBlock;
+					var blockAvailabilities = instructor.Availability.Skip(block * BlockSize).Take(BlockSize).ToArray();
+					var instructorScoreForBlock = InstructorAvailableScore(blockAvailabilities).Length;
+					scores[block] = instructorScoreForBlock;
 
-					if (maxScores[block] < presidentScoreForBlock) { maxScores[block] = presidentScoreForBlock; }
+					if (maxScores[block] < instructorScoreForBlock) { maxScores[block] = instructorScoreForBlock; }
 				}
-				dict.Add(president, scores);
+				dict.Add(instructor, scores);
 			}
 
 			candidates = new Instructor[numBlocks][];
 			for (int block = 0; block < numBlocks; block++)
 			{
-				candidates[block] = dict.Where(pres => pres.Value[block] >= maxScores[block]).Select(pres => pres.Key).ToArray();
+				candidates[block] = maxScores[block] >= BlockSize ?
+										dict.Where(pres => pres.Value[block] >= maxScores[block])
+											.Select(pres => pres.Key)
+											.OrderBy(pres => Random.Next())
+											.ToArray() : Array.Empty<Instructor>();
 			}
 
 			blockOrder = Enumerable
@@ -142,67 +189,73 @@ namespace FinalExamScheduling.MCTS
 				.ToArray();
 		}
 
-		public IEnumerable<Node> GetChildrenForFragmentedBlock(int blockId)
+		private IEnumerable<BlockNode> GetChildrenForFragmentedBlock(int blockId, int numOfChildren)
 		{
-			Instructor[] instructors = new Instructor[blockSize];
-			Dictionary<Instructor, bool[]> availabilities = new Dictionary<Instructor, bool[]>();
+			Instructor[] instructors = GetBlock(blockId);
+			Dictionary<Instructor, (int From, int Length)> scores = new Dictionary<Instructor, (int, int)>();
 
-			foreach (Instructor president in Context.Presidents)
+			foreach (Instructor instructor in AllInstructors)
 			{
-				availabilities[president] = president.Availability.Skip(blockId * blockSize).Take(blockSize).ToArray();
+				var availabilities = instructor.Availability.Skip(blockId * BlockSize).Take(BlockSize).ToArray();
+				scores.Add(instructor, InstructorAvailableScore(availabilities));
 			}
 
-			var scheduleOptions = GetFragmentedChildrenRecursive(new Instructor[blockSize], availabilities);
-			var uniqueScheduleOptions = UniqueFragmentedCandidates(scheduleOptions);
-			return uniqueScheduleOptions.Select(schedule => Child(blockId, schedule));
+			return scores
+				.OrderByDescending(kv => kv.Value.Length)
+				.Take(numOfChildren)
+				.Select(scorePair =>
+				{
+					if (scorePair.Value.Length == 0)
+					{
+						return Child(blockId, AddInstructorRange(instructors, scorePair.Key));
+					}
+					else
+					{
+						return Child(blockId, AddInstructorRange(instructors, scorePair.Key, scorePair.Value));
+					}
+				});
 		}
 
-		private IEnumerable<Instructor[]> GetFragmentedChildrenRecursive(Instructor[] from, Dictionary<Instructor, bool[]> availabilities)
-        {
-			int availabilityScore(bool[] avs, Instructor[] ins) =>
-				avs.Where((av, id) => av && ins[id] == null).Count();
-
-			if (!from.Contains(null)) throw new BlockNodeException("Recursive get children call was invalid, full schedule has already been achieved.");
-
-			var scoreTuples = availabilities.Select(kv => (Instructor: kv.Key, Score: availabilityScore(kv.Value, from)));
-			int max = scoreTuples.Max(tup => tup.Score);
-			var candidates = scoreTuples.Where(tup => tup.Score == max).Select(tup => tup.Instructor).OrderBy(i => Context.Rnd.Next());
-
-			var schedules = new List<Instructor[]>();
-			foreach (var candidate in candidates)
-			{
-				Instructor[] newFrom = from.Select((pr, id) => pr == null && availabilities[candidate][id] ? candidate : pr).ToArray();
-				if (newFrom.Contains(null))	schedules.AddRange(GetFragmentedChildrenRecursive(newFrom, availabilities));
-				else schedules.Add(newFrom);
-			}
-			return schedules;
-
-		}
-
-		private IEnumerable<Instructor[]> UniqueFragmentedCandidates(IEnumerable<Instructor[]> candidates)
+		private static (int From, int Length) InstructorAvailableScore(bool[] availabilities)
 		{
-			var uCandidates = new List<Instructor[]>();
+			List<(int From, int Length)> intervalAvbs = new List<(int, int)>();
+			int from = availabilities[0] ? 0 : -1;
 
-			foreach (var candidate in candidates)
+			for (int i = 1; i <= availabilities.Length; i++)
 			{
-				if (!uCandidates.Any(cand => Enumerable.SequenceEqual(cand, candidate))) {
-					uCandidates.Add(candidate);
+				bool slotAvailable = i == availabilities.Length ? false : availabilities[i];
+				if (slotAvailable && from < 0)
+				{
+					from = i;
+				}
+				else if (!slotAvailable && from >= 0)
+				{
+					intervalAvbs.Add((From: from, Length: i - from));
+					from = -1;
 				}
 			}
 
-			return uCandidates;
+			return intervalAvbs.Any() ? intervalAvbs.OrderByDescending(kv => kv.Length).First() : (From: -1, Length: 0);
 		}
 
-		public int CountAllTerminalNodes()
+		private static Instructor[] AddInstructorRange(Instructor[] blockSchedule, Instructor instructor, (int From, int Length) range)
 		{
-			if (IsLeaf) return IsTerminal ? 1 : 0;
-
-			int sum = 0;
-			foreach (BlockNode child in Children)
+			var schedule = blockSchedule.Clone() as Instructor[];
+			for (int i = 0; i < range.Length && range.From + i < BlockSize; i++)
 			{
-				sum += child.CountAllTerminalNodes();
+				var index = range.From + i;
+				if (schedule[index] == null) schedule[index] = instructor;
 			}
-			return sum;
+			return schedule;
 		}
+
+		private static Instructor[] AddInstructorRange(Instructor[] blockSchedule, Instructor instructor)
+		{
+			return AddInstructorRange(blockSchedule, instructor, (From: 0, Length: BlockSize));
+		}
+
+		private Instructor[] GetBlock(int blockId) => Instructors.Skip(blockId * BlockSize).Take(BlockSize).ToArray();
+		private Instructor[] GetCurrentBlock() => GetBlock(blockOrder[Level]);
+        #endregion
 	}
 }
